@@ -1,0 +1,189 @@
+---
+- name: update all packages
+  apt: update_cache=yes
+  tags:
+    - package-update
+
+- name: upgrade all packages
+  apt: upgrade=yes
+  tags:
+    - package-update
+
+- name: set timestamp
+  set_fact: timestamp={{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}
+  tags:
+    - bash
+
+- name: Install virtualenv
+  apt: name=python-virtualenv state=latest
+
+- name: Install autoenv (https://github.com/kennethreitz/autoenv)
+  pip: name=autoenv state=latest
+  tags:
+    - autoenv
+
+- name: set up bashrc - back up old bashrc file
+  command: cp {{ item }} '{{ item }}.old_{{timestamp}}'
+  with_items:
+    - '{{ vagrant_bashrc_file }}'
+    - '{{ root_bashrc_file }}'
+  tags:
+    - bash
+
+- name: set up bashrc - copy new bashrc files
+  register: copy_bashrc_result
+  copy: src={{ item.from }} dest={{ item.to }}
+  with_items:
+    - { from: '.bashrc', to: '{{ vagrant_bashrc_file }}' }
+    - { from: 'root/.bashrc', to: '{{ root_bashrc_file }}' }
+  ignore_errors: True
+  tags:
+    - bash
+
+- name: Copying new bashrc files failed. Restoring...
+  when: copy_bashrc_result|failed
+  copy: src={{ item }}.old_{{timestamp}} dest={{ item }}
+  with_items:
+    - '{{ vagrant_bashrc_file }}'
+    - '{{ root_bashrc_file }}'
+  tags:
+    - bash
+
+- name: Closing playbook
+  fail: msg='Copying new bashrc files failed. Ending the game'
+  when: copy_bashrc_result|failed
+  tags:
+    - bash
+
+- name: Install tree
+  apt: name=tree state=latest
+  ignore_errors: True
+  register: install_tree_result
+  tags:
+    - tree
+
+- name: Alert tree install failure
+  debug: msg='Tree install failed. This is trivial. Will continue play'
+  when: install_tree_result|failed
+  tags:
+    - tree
+
+- name: Install curl
+  apt: name=curl state=latest
+
+- name: Install elinks
+  apt: name=elinks state=latest
+  tags:
+    - elinks
+
+- name: Install sqlite3
+  apt: name=sqlite3 state=latest
+  tags:
+    - sqlite
+
+- name: install latest git
+  apt: name=git state=latest
+
+- name: ensure ntpd is at the latest version
+  apt: name=ntp state=latest
+  notify:
+    - restart ntpd
+
+- name: Installs cachefilesd to improve performance over NFS
+  apt: name=cachefilesd state=latest
+  notify:
+    - restart nfs
+
+- name: install latest vim
+  apt: name=vim state=latest
+
+- name: install latest apache
+  apt: name=apache2 state=latest
+  notify:
+    - restart apache
+
+- name: Install mod wsgi
+  apt: name=libapache2-mod-wsgi state=latest
+  notify:
+    - restart apache
+  tags:
+    - mod_wsgi
+
+- name: push fdqn file
+  copy: content='ServerName {{inventory_hostname}}' dest={{apache_fqdn_path}}
+
+- name: add apache user to vagrant group
+  user: name={{apache_user}} groups='vagrant,dialout'
+
+- name: enable mod_rewrite
+  command: a2enmod rewrite
+  sudo: yes
+  notify:
+    - restart apache
+
+- name: install latest php
+  apt: name=libapache2-mod-php5 state=latest
+  notify:
+    - enable php
+    - restart apache
+
+- name: install latest mysql
+  apt: name={{item}} state=latest
+  with_items:
+    - mysql-server
+    - libapache2-mod-auth-mysql
+    - php5-mysql
+  register: mysql_install_result
+  notify:
+    - restart mysql
+  ignore_errors: True
+
+- name: set up mysql - install python-mysqldb
+  apt: name=python-mysqldb state=latest
+  when: mysql_install_result|success
+  register: py_mysqldb_install_result
+  ignore_errors: True
+
+- name: set up mysql - update mysql root password for all root accounts
+  mysql_user: name=root host=localhost password={{ root_db_password }}
+
+- name: set up mysql - copy .my.cnf file with root password credentials
+  template: src=root/.my.cnf dest=/root/.my.cnf owner=root mode=0600
+  notify:
+    - restart mysql
+
+- name: update bind address settings in mysql
+  command: sed -i "s/bind-address.*/bind-address = {{mysql_bind_address}}/" /etc/mysql/my.cnf
+  notify:
+    - restart mysql
+
+- name: set up mysql - update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ root_db_password }}
+  with_items:
+    - '{{ansible_hostname}}'
+    - '{{inventory_hostname}}'
+    - 127.0.0.1
+    - ::1
+
+- name: set up mysql - ensure anonymous users are not in the database
+  mysql_user: name='' host={{ item }} state=absent
+  with_items:
+    - localhost
+    - $inventory_hostname
+
+- name: set up mysql - create non-root user
+  mysql_user: name={{db_user_name}} host={{ item }} password={{db_user_pass}} priv=*.*:ALL state=present
+  with_items:
+    - '{{ansible_hostname}}'
+    - '{{inventory_hostname}}'
+    - '192.168.%.%'
+    - 127.0.0.1
+    - localhost
+    - ::1
+
+- name: Install Python dev package
+  apt: name=python-dev
+
+- name: Install n curses
+  apt: name=ncurses-dev
+

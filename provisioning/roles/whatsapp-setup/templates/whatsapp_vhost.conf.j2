@@ -1,0 +1,18 @@
+<VirtualHost *:{{whatsapp_app_vhost_port}}>
+    ServerName {{whatsapp_app_vhost_server_name}}
+    ServerAdmin admin@{{whatsapp_app_vhost_server_name}}
+    WSGIDaemonProcess whatsapp_api user={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} threads=1
+    WSGIScriptAlias / {{whatsapp_app_vhost_wsgi_file}}
+    <Directory {{whatsapp_app_webroot_path}}/whatsapp_api/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    Alias /static {{whatsapp_app_webroot_path}}/whatsapp_api/static
+    <Directory {{whatsapp_app_webroot_path}}/whatsapp-api/static/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/whatsapp_error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/whatsapp_access.log combined
+</VirtualHost>

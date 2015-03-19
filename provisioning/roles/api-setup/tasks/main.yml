@@ -1,0 +1,52 @@
+---
+- name: Confirm Api app directory
+  stat: path={{api_app_path_dir}}
+  register: api_path
+
+- debug: msg="Path exists and is a directory"
+  when: api_path.stat.isdir is defined and api_path.stat.isdir
+
+- name: Exit play because of non-existent Api Path
+  fail: msg="Please checkout the Api app from the Inventure Github Repo"
+  when:  api_path.stat.isdir is not defined or not api_path.stat.isdir
+
+- name: Create webroot directory for Api app
+  file: path=/var/www/{{api_server_name}} src={{api_app_path_dir}} state=link owner={{apache_user}}
+
+- name: Create vhost for Api app
+  template: src=apinew.lh.vhost.j2 dest=/etc/apache2/sites-available/{{api_server_name}}
+
+- name: Create db include file for use in apache
+  template: src=db.include.j2 dest={{db_include_file_path}}
+
+- name: Enable virtual host for Api app
+  command: a2ensite {{api_server_name}}
+  sudo: yes
+  notify:
+    - restart apache
+
+- name: create Api app db user
+  mysql_user: name={{api_db_user}} host={{ item }} password={{api_db_pass}} priv={{api_db_name}}.*:ALL state=present
+  with_items:
+    - '{{ansible_hostname}}'
+    - '192.168.%.%'
+    - 127.0.0.1
+    - localhost
+    - ::1
+  tags:
+    - app-db
+
+- name: Copy db schema to server
+  copy: src={{api_db_file_name}} dest=/tmp/
+  tags:
+    - app-db
+
+- name: Ensure db exists
+  mysql_db: name={{api_db_name}} state=present
+  tags:
+    - app-db
+
+- name: Import db
+  mysql_db: name={{api_db_name}} state=import target=/tmp/{{api_db_file_name}}
+  tags:
+    - app-db

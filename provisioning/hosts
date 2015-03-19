@@ -1,0 +1,5 @@
+[dev]
+local.inventure.com ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/local.inventure.com/virtualbox/private_key
+
+[production]
+inventure-server ansible_ssh_host=54.68.252.83 ansible_ssh_port=22 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/Users/muya/.ssh/vpn_inventure.pem

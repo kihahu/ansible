@@ -1,0 +1,75 @@
+---
+- name: Check that the application directory is available
+  stat: path={{whatsapp_app_application_dir}}
+  register: p
+
+- name: Application path exists and is a directory
+  debug: msg="Application path is ok!"
+  when: p.stat.isdir is defined and p.stat.isdir
+
+- name: Application path does not exists
+  fail: msg="Application path does not exists or is not directory"
+  when: p.stat.isdir is not defined or not p.stat.isdir
+
+- name: Create users groups for the whatsapp applications
+  group: name={{whatsapp_app_sys_user_group}} state=present
+
+- name: Create users for whatsapp applications
+  user: name={{whatsapp_app_sys_user_name}} groups="{{whatsapp_app_sys_user_group}},www-data" append=yes
+
+- name: Make sure config dir exists
+  file: path={{whatsapp_app_config_path}} state=directory
+
+- name: Set up Config file
+  template: src=base_config.json.j2 dest={{whatsapp_app_config_path}}/{{whatsapp_app_config_file}} owner={{whatsapp_app_sys_user_name}}
+
+- name: Create application log path
+  file: path={{whatsapp_app_base_log_path}} state=directory
+
+- name: Check/create application log files
+  file: path={{whatsapp_app_base_log_path}}{{whatsapp_app_base_log_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch
+
+- name: Create application debug files
+  file: path={{whatsapp_app_base_log_path}}/{{whatsapp_app_debug_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch
+
+- name: Set up virtual env
+  pip: virtualenv={{whatsapp_app_application_dir}}/whatsapp/{{whatsapp_app_virtual_env}} requirements={{whatsapp_app_application_dir}}/requirements.txt
+  tags:
+    - pip-install
+
+- name: Flask application - Create webroot directory
+  file: path={{whatsapp_app_webroot_path}} state=directory
+
+- name: Flask application - Create symlink to application
+  file: path={{whatsapp_app_webroot_path}}/whatsapp_api src={{whatsapp_app_application_dir}}/whatsapp state=link
+
+- name: Flask application - Configure virtual host
+  template: src=whatsapp_vhost.conf.j2 dest={{whatsapp_app_vhost}} owner={{whatsapp_app_sys_user_name}}
+
+- name: Flask application - Create wsgi file
+  template: src=whatsapp_api.wsgi.j2 dest={{whatsapp_app_vhost_wsgi_file}} owner={{whatsapp_app_sys_user_name}}
+
+- name: Flask application - Enable vhost
+  command: a2ensite {{whatsapp_app_api_name}}.conf
+  # notify:
+  #   - restart apache
+
+- name: Flask application - Create sqlite db directory
+  file: path={{whatsapp_app_db_dir_path}} state=directory owner={{whatsapp_app_apache_user}} group={{whatsapp_app_apache_group}}
+
+- name: Flask application - Init sqlite db
+  shell: sqlite3 {{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}} < {{whatsapp_app_db_schema}}
+
+- name: Flask application - Change ownership of sqlite db
+  file: path={{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}} owner={{whatsapp_app_apache_user}} mode=ug+rw group={{whatsapp_app_apache_group}} state=touch
+
+- name: WhatsApp process - Create lock file directory
+  file: path={{whatsapp_app_proc_lock_dir}} state=directory
+
+- name: WhatsApp process - Make environment activation script executable
+  file: path={{whatsapp_app_application_dir}}/.env state=file mode=a+x
+
+- name: WhatsApp process - Copy process manipulation script to init.d
+  template: src=iv_whatsapp_proc.sh.j2 dest={{whatsapp_app_init_d_file}} mode=u+x
+  tags:
+    - temp-wa-changes

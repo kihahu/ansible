@@ -1,0 +1,20 @@
+---
+- name: Create Yii folder
+  file: path={{yii_files_dir_path}} state=directory
+  sudo: yes
+  sudo_user: vagrant
+  tags:
+   - yii-setup
+
+- name: Download Yii
+  git:
+    repo: https://github.com/yiisoft/yii.git
+    dest: '{{ yii_files_dir_path }}'
+    force: yes # change to clone: yes after upgrade to ansible >= 1.9
+    version: '{{ yii_version }}'
+  tags:
+   - yii-setup
+   - download-yii
+
+- name: Symlink yii framework folder
+  file: path={{ yii_sym_link_path }} src={{yii_files_dir_path}}/framework state=link

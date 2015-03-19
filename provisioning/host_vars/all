@@ -1,0 +1,7 @@
+---
+apache_fqdn_path: "/etc/apache2/conf.d/fqdn"
+root_db_password: c0d3#Mt@an1
+db_user_name: muya
+db_user_pass: "!CaputDraconis789#"
+vagrant_bashrc_file: /home/vagrant/.bashrc
+root_bashrc_file: /root/.bashrc

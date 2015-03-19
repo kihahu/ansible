@@ -1,0 +1,16 @@
+---
+- hosts: dev
+  sudo: yes
+  sudo_user: root
+  remote_user: vagrant
+  roles:
+    - { role: yii-setup, tags: ['development', 'yii-setup']}
+    - { role: api-setup, tags: ['development', 'api-setup'] }
+    - { role: whatsapp-setup, tags: ['whatsapp-setup']}
+
+- hosts: production
+  sudo: yes
+  sudo_user: root
+  remote_user: ubuntu
+  roles:
+    - { role: whatsapp-setup, tags: ['whatsapp-setup']}

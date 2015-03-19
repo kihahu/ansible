@@ -1,0 +1,13 @@
+---
+- hosts: dev
+  sudo: yes
+  sudo_user: root
+  remote_user: vagrant
+  roles:
+    - { role: server_setup, tags: [ 'development' ] }
+
+- hosts: production
+  sudo: yes
+  remote_user: ubuntu
+  roles:
+    - { role: server_setup, tags: [ 'production' ] }
