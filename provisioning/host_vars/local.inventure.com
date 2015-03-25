@@ -49,3 +49,9 @@ whatsapp_app_apache_group: www-data
 whatsapp_app_proc_lock_dir: /var/lock/whatsapp/
 whatsapp_app_proc_lock_file: whatsapp-proc.lock
 whatsapp_app_init_d_file: /etc/init.d/whatsapp_proc
+inventure_api_people_endpoint: http://apinew.lh/api/People
+inventure_api_people_additional_data_endpoint: http://apinew.lh/api/PeopleAdditionalData
+zendesk_company_name: https://inventuremobile1427108962.zendesk.com
+zendesk_user: accounts@inventure.com
+zendesk_credential: imimmhDDzVB3lVCTZMWkzzYN4c8wFZOFlAIZws0k
+zendesk_use_token: "true"

@@ -15,13 +15,19 @@
 
 - name: Create vhost for Api app
   template: src=apinew.lh.vhost.j2 dest=/etc/apache2/sites-available/{{api_server_name}}
+  tags:
+    - vhost-setup
 
 - name: Create db include file for use in apache
   template: src=db.include.j2 dest={{db_include_file_path}}
+  tags:
+    - vhost-setup
 
 - name: Enable virtual host for Api app
   command: a2ensite {{api_server_name}}
   sudo: yes
+  tags:
+    - vhost-setup
   notify:
     - restart apache
 

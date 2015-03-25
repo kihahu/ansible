@@ -22,6 +22,8 @@
 
 - name: Set up Config file
   template: src=base_config.json.j2 dest={{whatsapp_app_config_path}}/{{whatsapp_app_config_file}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - base-config
 
 - name: Create application log path
   file: path={{whatsapp_app_base_log_path}} state=directory
