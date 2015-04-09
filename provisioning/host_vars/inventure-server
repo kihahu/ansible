@@ -36,3 +36,8 @@ zendesk_company_name: https://inventuremobile.zendesk.com
 zendesk_user: accounts@inventure.com
 zendesk_credential: i6PM5zWH5c6EMhIcdryYUU1OcPiaTNWzXGryU6ao
 zendesk_use_token: "true"
+zendesk_msg_source_custom_field_id: 24162569
+incoming_messages_proc_app_proc_lock_dir: /var/lock/incoming-messages-proc/
+incoming_messages_proc_app_proc_lock_file: im-proc.lock
+incoming_messages_app_base_log_path: "/var/log/applications/incoming-msg-proc/"
+incoming_messages_init_d_file: /etc/init.d/im_proc

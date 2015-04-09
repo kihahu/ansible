@@ -1,28 +1,29 @@
 #!/bin/bash
 
-# handles start, stop and restart of python whatsapp background process
+# handles start, stop and restart of python incoming messages processor
+# background process
 
-LOCK_FILE="{{whatsapp_app_proc_lock_dir}}{{whatsapp_app_proc_lock_file}}"
-LOCK_FILE_DIR="{{whatsapp_app_proc_lock_dir}}"
+LOCK_FILE="{{incoming_messages_proc_app_proc_lock_dir}}{{incoming_messages_proc_app_proc_lock_file}}"
+LOCK_FILE_DIR="{{incoming_messages_proc_app_proc_lock_dir}}"
 APP_DIRECTORY="{{whatsapp_app_application_dir}}"
 VENV_ACTIVATION_SCRIPT=$APP_DIRECTORY"/.env"
-PROCESS_LOG="{{whatsapp_app_base_log_path}}iv_whatsapp_proc.log"
+PROCESS_LOG="{{incoming_messages_app_base_log_path}}im_proc.log"
 
 echo "Creating/checking LOCK DIRECTORY: $LOCK_FILE_DIR..."
 mkdir -pv $LOCK_FILE_DIR
 
 # starts the process
 start() {
-    echo "Starting whatsapp process at `date`" >> $PROCESS_LOG
+    echo "Starting incoming messages process at `date`" >> $PROCESS_LOG
     # check if lock file exists
     if [ -f $LOCK_FILE ] ; then
         # if lock file exists, process is running
-        echo "WhatsApp App seems to be already running..."
+        echo "Incoming Messages Process seems to be already running..."
         echo "Run '$0 status' to view more details"
         echo "If you are sure this is not the case, remove this file: "$LOCK_FILE" and try again"
         exit 0
     else
-        echo "Starting WhatsApp App process..."
+        echo "Starting Incoming Messages process..."
         echo "Creating lock file..."
         touch $LOCK_FILE
         # ensure lock file was created
@@ -39,7 +40,7 @@ start() {
         echo "virtualenv activated..."
         echo "Starting process..."
         cd whatsapp
-        RVAL=`whatsapp_venv/bin/python stack.py &>>$PROCESS_LOG &`
+        RVAL=`whatsapp_venv/bin/python incoming_messages.py &>>$PROCESS_LOG &`
 
         # sleep for 2 seconds... in case process exits
         sleep 2
@@ -51,17 +52,16 @@ start() {
             echo "Restoring system state..."
             stop
         else
-            echo "WhatsApp Process started successfully! (PID: $CPID)"
+            echo "Incoming Messages Process started successfully! (PID: $CPID)"
         fi
         CPID=
-        echo "You can ignore the distribute warning above (if it is there)"
      fi
 }
 
 # stops the process
 stop() {
-    echo "Stopping whatsapp process at `date`" >> $PROCESS_LOG
-    echo "Stopping WhatsApp process..."
+    echo "Stopping incoming messages process at `date`" >> $PROCESS_LOG
+    echo "Stopping incoming messages process..."
     # get PID of process
     local PID=$(status)
     echo "Will stop process with PID: $PID"
@@ -70,12 +70,12 @@ stop() {
     # remove lock file
     rm -fv $LOCK_FILE
 
-    echo "WhatsApp process stopped successfully"
+    echo "incoming messages process stopped successfully"
 }
 
 status(){
-    echo "Checking whatsapp process status at `date`" >> $PROCESS_LOG
-    local PID=`ps -ef|grep stack.py|grep python|head -n1|awk '{print $2}'`
+    echo "Checking incoming messages process status at `date`" >> $PROCESS_LOG
+    local PID=`ps -ef|grep incoming_messages.py|grep python|head -n1|awk '{print $2}'`
     echo $PID
 }
 
@@ -90,22 +90,22 @@ case "$1" in
     status)
         CURR_PID=$(status)
         if  [ -z "$CURR_PID" ]; then
-            echo "WhatsApp App process is not running"
+            echo "incoming messages process is not running"
         else
-            echo "WhatsApp App process is running - PID: $CURR_PID"
+            echo "incoming messages process is running - PID: $CURR_PID"
         fi
         # unset
         CURR_PID=
         ;;
     restart)
-        echo "Restarting whatsapp process status at `date`" >> $PROCESS_LOG
-        echo "Restarting WhatsApp process..."
+        echo "Restarting incoming messages process status at `date`" >> $PROCESS_LOG
+        echo "Restarting incoming messages process..."
         echo ""
         stop
         echo "----"
         start
         echo ""
-        echo "WhatsApp process restarted successfully!"
+        echo "incoming messages process restarted successfully!"
         ;;
     *)
     echo $"Usage: $0 {start|stop|restart|status}"

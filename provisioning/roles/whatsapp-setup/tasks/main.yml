@@ -25,7 +25,7 @@
   tags:
     - base-config
 
-- name: Create application log path
+- name: Create whatsapp app application log path
   file: path={{whatsapp_app_base_log_path}} state=directory
 
 - name: Check/create application log files
@@ -67,11 +67,31 @@
 
 - name: WhatsApp process - Create lock file directory
   file: path={{whatsapp_app_proc_lock_dir}} state=directory
+  tags:
+    - whatsapp-proc
 
 - name: WhatsApp process - Make environment activation script executable
   file: path={{whatsapp_app_application_dir}}/.env state=file mode=a+x
+  tags:
+    - whatsapp-proc
+    - im-proc
+
+- name: Create incoming messages process application log path
+  file: path={{incoming_messages_app_base_log_path}} state=directory
+  tags:
+    - im-proc
 
 - name: WhatsApp process - Copy process manipulation script to init.d
   template: src=iv_whatsapp_proc.sh.j2 dest={{whatsapp_app_init_d_file}} mode=u+x
   tags:
-    - temp-wa-changes
+    - whatsapp-proc
+
+- name: Incoming Messages process - Create lock file directory
+  file: path={{incoming_messages_proc_app_proc_lock_dir}} state=directory
+  tags:
+    - im-proc
+
+- name: Incoming Messages process - Copy process manipulation script to init.d
+  template: src=im_proc.sh.j2 dest={{incoming_messages_init_d_file}} mode=u+x
+  tags:
+    - im-proc
