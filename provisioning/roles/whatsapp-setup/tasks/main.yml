@@ -1,4 +1,7 @@
 ---
+- name: set timestamp
+  set_fact: timestamp={{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}
+
 - name: Check that the application directory is available
   stat: path={{whatsapp_app_application_dir}}
   register: p
@@ -18,12 +21,50 @@
   user: name={{whatsapp_app_sys_user_name}} groups="{{whatsapp_app_sys_user_group}},www-data" append=yes
 
 - name: Make sure config dir exists
-  file: path={{whatsapp_app_config_path}} state=directory
-
-- name: Set up Config file
-  template: src=base_config.json.j2 dest={{whatsapp_app_config_path}}/{{whatsapp_app_config_file}} owner={{whatsapp_app_sys_user_name}}
+  file: path={{inventure_config_path}} state=directory
   tags:
     - base-config
+
+- name: Install memcached
+  apt: name=memcached
+  tags:
+    - memcached
+
+- name: Install python memcached
+  apt: name=python-memcache
+  tags:
+    - memcached
+
+- name: Set up Config file
+  template: src=base_config.json.j2 dest={{inventure_config_path}}/{{whatsapp_app_config_file}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - base-config
+
+- name: Make sure zendesk sync config dir exists
+  file: path={{inventure_config_path}} state=directory
+  tags:
+    - zd-sync
+
+- name: Set up Zendesk Sync Config file
+  template: src=zendesk-sync-config.json.j2 dest={{inventure_config_path}}/{{zd_sync_conf_file}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - zd-sync
+    - zd-sync-config
+
+- name: Create zendesk sync app application log path
+  file: path={{zd_sync_app_base_log_path}} state=directory
+  tags:
+    - zd-sync
+
+- name: Check/create zendesk sync application log files
+  file: path={{zd_sync_app_base_log_path}}{{zd_sync_base_log_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch
+  tags:
+    - zd-sync
+
+- name: Create zendesk sync application debug files
+  file: path={{zd_sync_app_base_log_path}}/{{zd_sync_debug_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch
+  tags:
+    - zd-sync
 
 - name: Create whatsapp app application log path
   file: path={{whatsapp_app_base_log_path}} state=directory
@@ -33,6 +74,11 @@
 
 - name: Create application debug files
   file: path={{whatsapp_app_base_log_path}}/{{whatsapp_app_debug_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch
+
+- name: Set up logrotate
+  template: src=whatsapp-app-logrotate.j2 dest={{whatsapp_app_logrotate_file}}
+  tags:
+    - log-rotate
 
 - name: Set up virtual env
   pip: virtualenv={{whatsapp_app_application_dir}}/whatsapp/{{whatsapp_app_virtual_env}} requirements={{whatsapp_app_application_dir}}/requirements.txt
@@ -47,6 +93,8 @@
 
 - name: Flask application - Configure virtual host
   template: src=whatsapp_vhost.conf.j2 dest={{whatsapp_app_vhost}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - conf-vhost
 
 - name: Flask application - Create wsgi file
   template: src=whatsapp_api.wsgi.j2 dest={{whatsapp_app_vhost_wsgi_file}} owner={{whatsapp_app_sys_user_name}}
@@ -58,6 +106,14 @@
 
 - name: Flask application - Create sqlite db directory
   file: path={{whatsapp_app_db_dir_path}} state=directory owner={{whatsapp_app_apache_user}} group={{whatsapp_app_apache_group}}
+
+- name: Check if sqlite db already exists
+  stat: path={{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}}
+  register: sqlite_db
+
+- name: Back up existing sqlite db
+  command: mv {{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}} '{{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}}.backup_{{timestamp}}'
+  when: sqlite_db.stat.exists
 
 - name: Flask application - Init sqlite db
   shell: sqlite3 {{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}} < {{whatsapp_app_db_schema}}
@@ -95,3 +151,14 @@
   template: src=im_proc.sh.j2 dest={{incoming_messages_init_d_file}} mode=u+x
   tags:
     - im-proc
+
+- name: Sync zendesk last message status - Create lock file directory
+  file: path={{sync_zd_last_msg_status_proc_app_lock_dir}} state=directory
+  tags:
+    - zd-sync
+
+- name: Sync zendesk last message status - Copy process manipulation script to init.d
+  template: src=sync_last_msg_status.sh.j2 dest={{sync_zd_last_msg_status_init_d_file}} mode=u+x
+  tags:
+    - zd-sync
+

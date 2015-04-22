@@ -31,7 +31,6 @@ whatsapp_app_debug_file_name: "whatsapp-debug.log"
 whatsapp_app_db_dir_path: "/data/whatsapp/"
 whatsapp_app_db_file_name: "iv_whatsapp.db"
 whatsapp_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_whatsapp_schema_no_drop.sql
-whatsapp_app_config_path: /etc/whatsapp
 whatsapp_app_config_file: whatsapp-config.json
 whatsapp_app_sys_user_group: whatsapp
 whatsapp_app_sys_user_name: whatsapp
@@ -49,6 +48,7 @@ whatsapp_app_apache_group: www-data
 whatsapp_app_proc_lock_dir: /var/lock/whatsapp/
 whatsapp_app_proc_lock_file: whatsapp-proc.lock
 whatsapp_app_init_d_file: /etc/init.d/whatsapp_proc
+whatsapp_app_logrotate_file: /etc/logrotate.d/whatsapp-app
 inventure_api_people_endpoint: http://apinew.lh/api/People
 inventure_api_people_additional_data_endpoint: http://apinew.lh/api/PeopleAdditionalData
 zendesk_company_name: https://inventuremobile1427108962.zendesk.com
@@ -56,7 +56,20 @@ zendesk_user: accounts@inventure.com
 zendesk_credential: imimmhDDzVB3lVCTZMWkzzYN4c8wFZOFlAIZws0k
 zendesk_use_token: "true"
 zendesk_msg_source_custom_field_id: 24218325
+zendesk_last_msg_delivered_custom_field_id: 24329225
+zendesk_last_msg_read_custom_field_id: 24329235
 incoming_messages_proc_app_proc_lock_dir: /var/lock/incoming-messages-proc/
 incoming_messages_proc_app_proc_lock_file: im-proc.lock
 incoming_messages_app_base_log_path: "/var/log/applications/incoming-msg-proc/"
 incoming_messages_init_d_file: /etc/init.d/im_proc
+inventure_config_path: /etc/inventure
+zd_sync_conf_file: zendesk-sync-config.json
+zd_sync_app_debug: "true"
+zd_sync_app_base_log_path: "/var/log/applications/zd-sync/"
+zd_sync_base_log_file_name: "zd-sync.log"
+zd_sync_debug_file_name: "zd-sync-debug.log"
+memcache_server: "127.0.0.1"
+memcache_port: "11211"
+sync_zd_last_msg_status_proc_app_lock_dir: /var/lock/zd-sync-last-msg-proc/
+sync_zd_last_msg_status_proc_app_lock_file: zd-sync-last-msg.lock
+sync_zd_last_msg_status_init_d_file: /etc/init.d/zd_sync_msg_status

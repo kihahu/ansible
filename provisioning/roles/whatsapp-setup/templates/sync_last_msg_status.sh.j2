@@ -1,0 +1,115 @@
+#!/bin/bash
+
+# handles start, stop and restart of python sync zendesk last message processor
+# background process
+
+LOCK_FILE="{{sync_zd_last_msg_status_proc_app_lock_dir}}{{sync_zd_last_msg_status_proc_app_lock_file}}"
+LOCK_FILE_DIR="{{sync_zd_last_msg_status_proc_app_lock_dir}}"
+APP_DIRECTORY="{{whatsapp_app_application_dir}}"
+VENV_ACTIVATION_SCRIPT=$APP_DIRECTORY"/.env"
+PROCESS_LOG="{{zd_sync_app_base_log_path}}zd_sync_last_msg_status.log"
+
+echo "Creating/checking LOCK DIRECTORY: $LOCK_FILE_DIR..."
+mkdir -pv $LOCK_FILE_DIR
+
+# starts the process
+start() {
+    echo "Starting sync zendesk msg status process at `date`" >> $PROCESS_LOG
+    # check if lock file exists
+    if [ -f $LOCK_FILE ] ; then
+        # if lock file exists, process is running
+        echo "sync zendesk msg status Process seems to be already running..."
+        echo "Run '$0 status' to view more details"
+        echo "If you are sure this is not the case, remove this file: "$LOCK_FILE" and try again"
+        exit 0
+    else
+        echo "Starting sync zendesk msg status process..."
+        echo "Creating lock file..."
+        touch $LOCK_FILE
+        # ensure lock file was created
+        if [ ! -f $LOCK_FILE ]; then
+            echo " "
+            echo "Unable to create lock file at: $LOCK_FILE. Please check error(s) above and try again"
+            echo "Restoring system state..."
+            stop
+            exit 1
+        fi
+        echo "Activating python virtual env..."
+        cd $APP_DIRECTORY
+        ACTIVATE_ENV_RVAL=`$VENV_ACTIVATION_SCRIPT`
+        echo "virtualenv activated..."
+        echo "Starting process..."
+        cd zendesk_sync
+        RVAL=`../whatsapp/whatsapp_venv/bin/python sync_last_msg_status.py &>>$PROCESS_LOG &`
+
+        # sleep for 2 seconds... in case process exits
+        sleep 2
+        # check if we are good to go
+        local CPID=$(status)
+        echo "PID obtained: $CPID"
+        if  [ -z "$CPID" ]; then
+            echo "Something went wrong while starting the app. Check for more details info here: $PROCESS_LOG"
+            echo "Restoring system state..."
+            stop
+        else
+            echo "sync zendesk msg  Process started successfully! (PID: $CPID)"
+        fi
+        CPID=
+     fi
+}
+
+# stops the process
+stop() {
+    echo "Stopping sync zendesk msg process at `date`" >> $PROCESS_LOG
+    echo "Stopping sync zendesk msg process..."
+    # get PID of process
+    local PID=$(status)
+    echo "Will stop process with PID: $PID"
+    KILL_PROC_RVAL=`kill $PID &>/dev/null &`
+
+    # remove lock file
+    rm -fv $LOCK_FILE
+
+    echo "sync zendesk msg process stopped successfully"
+}
+
+status(){
+    echo "Checking sync zendesk msg process status at `date`" >> $PROCESS_LOG
+    local PID=`ps -ef|grep sync_last_msg_status.py|grep python|head -n1|awk '{print $2}'`
+    echo $PID
+}
+
+# Handle process calls
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        CURR_PID=$(status)
+        if  [ -z "$CURR_PID" ]; then
+            echo "sync zendesk msg process is not running"
+        else
+            echo "sync zendesk msg process is running - PID: $CURR_PID"
+        fi
+        # unset
+        CURR_PID=
+        ;;
+    restart)
+        echo "Restarting sync zendesk msg process status at `date`" >> $PROCESS_LOG
+        echo "Restarting sync zendesk msg process..."
+        echo ""
+        stop
+        echo "----"
+        start
+        echo ""
+        echo "sync zendesk msg process restart complete!"
+        ;;
+    *)
+    echo $"Usage: $0 {start|stop|restart|status}"
+    RVAL=1
+esac
+
+exit $RVAL
