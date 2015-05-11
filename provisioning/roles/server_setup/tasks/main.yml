@@ -88,6 +88,8 @@
   apt: name=ntp state=latest
   notify:
     - restart ntpd
+  tags:
+    - ntp
 
 - name: Installs cachefilesd to improve performance over NFS
   apt: name=cachefilesd state=latest
@@ -111,9 +113,17 @@
 
 - name: push fdqn file
   copy: content='ServerName {{inventory_hostname}}' dest={{apache_fqdn_path}}
+  ignore_errors: True
+  register: push_fdqn_file
+
+- name: push fdqn file on Ubuntu 13.04+
+  copy: content='ServerName {{inventory_hostname}}' dest={{apache_conf_path}}/fdqn.conf
+  when: push_fdqn_file|failed
 
 - name: add apache user to vagrant group
   user: name={{apache_user}} groups='vagrant,dialout'
+  tags:
+    - vagrant
 
 - name: enable mod_rewrite
   command: a2enmod rewrite
@@ -137,25 +147,35 @@
   notify:
     - restart mysql
   ignore_errors: True
+  tags:
+    - mysql
 
 - name: set up mysql - install python-mysqldb
   apt: name=python-mysqldb state=latest
   when: mysql_install_result|success
   register: py_mysqldb_install_result
   ignore_errors: True
-
-- name: set up mysql - update mysql root password for all root accounts
-  mysql_user: name=root host=localhost password={{ root_db_password }}
+  tags:
+    - mysql
 
 - name: set up mysql - copy .my.cnf file with root password credentials
   template: src=root/.my.cnf dest=/root/.my.cnf owner=root mode=0600
   notify:
     - restart mysql
+  tags:
+    - mysql
+
+- name: set up mysql - update mysql root password for all root accounts
+  mysql_user: name=root host=localhost password={{ root_db_password }}
+  tags:
+    - mysql
 
 - name: update bind address settings in mysql
   command: sed -i "s/bind-address.*/bind-address = {{mysql_bind_address}}/" /etc/mysql/my.cnf
   notify:
     - restart mysql
+  tags:
+    - mysql
 
 - name: set up mysql - update mysql root password for all root accounts
   mysql_user: name=root host={{ item }} password={{ root_db_password }}
@@ -164,12 +184,16 @@
     - '{{inventory_hostname}}'
     - 127.0.0.1
     - ::1
+  tags:
+    - mysql
 
 - name: set up mysql - ensure anonymous users are not in the database
   mysql_user: name='' host={{ item }} state=absent
   with_items:
     - localhost
     - $inventory_hostname
+  tags:
+    - mysql
 
 - name: set up mysql - create non-root user
   mysql_user: name={{db_user_name}} host={{ item }} password={{db_user_pass}} priv=*.*:ALL state=present
@@ -180,6 +204,8 @@
     - 127.0.0.1
     - localhost
     - ::1
+  tags:
+    - mysql
 
 - name: Install Python dev package
   apt: name=python-dev

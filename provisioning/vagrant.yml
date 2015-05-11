@@ -11,3 +11,9 @@
   remote_user: ubuntu
   roles:
     - { role: server_setup, tags: [ 'production' ] }
+
+- hosts: staging
+  sudo: yes
+  remote_user: ubuntu
+  roles:
+    - { role: server_setup }

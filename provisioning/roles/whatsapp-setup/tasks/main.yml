@@ -33,7 +33,16 @@
 - name: Install python memcached
   apt: name=python-memcache
   tags:
-    - memcached
+    - memcached #python-dev libffi-dev libssl-dev
+
+- name: Install Python libraries required
+  apt: name={{item}}
+  with_items:
+    - python-dev
+    - libffi-dev
+    - libssl-dev
+  tags:
+    - python-ssl
 
 - name: Set up Config file
   template: src=base_config.json.j2 dest={{inventure_config_path}}/{{whatsapp_app_config_file}} owner={{whatsapp_app_sys_user_name}}
@@ -79,6 +88,21 @@
   template: src=whatsapp-app-logrotate.j2 dest={{whatsapp_app_logrotate_file}}
   tags:
     - log-rotate
+
+- name: Copy log files organizer
+  copy: src={{ item.from }} dest={{ item.to }} mode=uog+x
+  with_items:
+    - { from: 'organize-logs.sh', to: '{{ whatsapp_app_base_log_path }}' }
+    - { from: 'organize-logs.sh', to: '{{ zd_sync_app_base_log_path }}' }
+    - { from: 'organize-logs.sh', to: '{{ incoming_messages_app_base_log_path }}' }
+  tags:
+    - organize-logs
+
+- name: Set up logrotate for Zendesk Sync
+  template: src=zd-sync-app-logrotate.j2 dest={{sync_zd_app_logrotate_file}}
+  tags:
+    - log-rotate
+    - zd-sync
 
 - name: Set up virtual env
   pip: virtualenv={{whatsapp_app_application_dir}}/whatsapp/{{whatsapp_app_virtual_env}} requirements={{whatsapp_app_application_dir}}/requirements.txt
