@@ -7,6 +7,15 @@
     - { role: yii-setup, tags: ['development', 'yii-setup']}
     - { role: api-setup, tags: ['development', 'api-setup'] }
     - { role: whatsapp-setup, tags: ['whatsapp-setup']}
+    - { role: payments-setup, tags: ['payments-setup'] }
+
+- hosts: staging
+  sudo: yes
+  sudo_user: root
+  remote_user: ubuntu
+  roles:
+    - { role: whatsapp-setup, tags: ['whatsapp-setup']}
+    - { role: payments-setup, tags: ['payments-setup']}
 
 - hosts: production
   sudo: yes

@@ -1,0 +1,92 @@
+---
+- name: Check that the application directory is available
+  stat: path={{payments_app_application_dir}}
+  register: p
+  tags:
+    - payments-app
+
+- name: Application path exists and is a directory
+  debug: msg="Application path is ok!"
+  when: p.stat.isdir is defined and p.stat.isdir
+  tags:
+    - payments-app
+
+- name: Application path does not exist
+  fail: msg="Application path does not exist or is not directory"
+  when: p.stat.isdir is not defined or not p.stat.isdir
+  tags:
+    - payments-app
+
+- name: Install PHP dependencies
+  include: php_dependencies.yml
+  notify:
+    - restart apache
+  tags:
+    - payments-app
+
+- name: Install Composer
+  include: composer.yml
+  tags:
+    - payments-app
+    - composer
+
+- name: Configure Laravel Application [Composer Install]
+  composer: command=install working_dir={{payments_app_application_dir}}
+  tags:
+    - payments-app
+    - composer
+
+- name: Configure Laravel Application [Composer Update]
+  composer: command=update working_dir={{payments_app_application_dir}}
+  tags:
+    - payments-app
+    - composer
+
+- name: Create symlink to payments app
+  file: src={{payments_app_application_dir}}/public dest={{payments_app_webroot_path}} state=link owner={{apache_user}}
+  tags:
+    - payments-app
+
+- name: Set up Payments vhost
+  template: src=payments_vhost.conf.j2 dest={{payments_app_vhost}} owner={{apache_user}}
+  tags:
+    - payments-app
+    - payments-vhost
+
+- name: Enable Payments vhost
+  command: a2ensite payments.conf
+  notify:
+    - restart apache
+  tags:
+    - payments-app
+    - payments-vhost
+
+- name: Create MySQL users for the payments app
+  mysql_user: host={{ item }} name={{ payments_app_db_user }} password={{payments_app_db_pass}} priv="payments_dev.*:INSERT,UPDATE,SELECT,DELETE"
+  with_items:
+    - 'localhost'
+    - '{{inventory_hostname}}'
+    - 127.0.0.1
+    - ::1
+  when: inventory_hostname == "local.inventure.com"
+  tags:
+    - payments-app-mysql
+    - payments-app
+
+- name: Set up Log directory for payments app
+  include: logging.yml
+  tags:
+    - payments-app
+    - payments-app-logging
+
+- name: Set up Config
+  template: src=env.j2 dest={{payments_app_application_dir}}/.env
+  tags:
+    - payments-app-config
+    - payments-app
+
+- name: Set up Test environment Config
+  template: src=payments_phpunit.xml.j2 dest={{payments_app_application_dir}}/phpunit.xml
+  tags:
+    - payments-app-test-config
+    - payments-app

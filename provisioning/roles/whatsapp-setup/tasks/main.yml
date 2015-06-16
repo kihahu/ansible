@@ -1,6 +1,8 @@
 ---
 - name: set timestamp
   set_fact: timestamp={{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}
+  tags:
+    - iv-db-setup
 
 - name: Check that the application directory is available
   stat: path={{whatsapp_app_application_dir}}
@@ -20,10 +22,8 @@
 - name: Create users for whatsapp applications
   user: name={{whatsapp_app_sys_user_name}} groups="{{whatsapp_app_sys_user_group}},www-data" append=yes
 
-- name: Make sure config dir exists
-  file: path={{inventure_config_path}} state=directory
-  tags:
-    - base-config
+- name: Add apache user to process user group
+  user: name={{apache_user}} groups="{{whatsapp_app_sys_user_group}}" append=yes
 
 - name: Install memcached
   apt: name=memcached
@@ -44,36 +44,45 @@
   tags:
     - python-ssl
 
+- name: Make sure inventure config dir exists
+  file: path={{inventure_config_path}} state=directory
+  tags:
+    - base-config
+    - zd-ticket-proc-config
+    - zd-sync-config
+
 - name: Set up Config file
   template: src=base_config.json.j2 dest={{inventure_config_path}}/{{whatsapp_app_config_file}} owner={{whatsapp_app_sys_user_name}}
   tags:
     - base-config
 
-- name: Make sure zendesk sync config dir exists
-  file: path={{inventure_config_path}} state=directory
+- name: Set up Zendesk Ticket Proc Config file
+  template: src=zendesk-ticket-proc-config.json.j2 dest={{inventure_config_path}}/{{zd_ticket_proc_conf_file}} owner={{whatsapp_app_sys_user_name}}
   tags:
-    - zd-sync
+    - zd-ticket-proc
+    - zd-ticket-proc-config
 
-- name: Set up Zendesk Sync Config file
-  template: src=zendesk-sync-config.json.j2 dest={{inventure_config_path}}/{{zd_sync_conf_file}} owner={{whatsapp_app_sys_user_name}}
+- name: Create zendesk ticket proc app application log path
+  file: path={{zd_ticket_proc_app_base_log_path}} state=directory
   tags:
-    - zd-sync
-    - zd-sync-config
+    - zd-ticket-proc
 
-- name: Create zendesk sync app application log path
-  file: path={{zd_sync_app_base_log_path}} state=directory
+- name: Check/create zendesk ticket proc application log files
+  file: path={{zd_ticket_proc_app_base_log_path}}{{zd_ticket_proc_base_log_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch mode=ugo+rw
   tags:
-    - zd-sync
+    - zd-ticket-proc
 
-- name: Check/create zendesk sync application log files
-  file: path={{zd_sync_app_base_log_path}}{{zd_sync_base_log_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch
+- name: Create zendesk ticket proc application debug files
+  file: path={{zd_ticket_proc_app_base_log_path}}/{{zd_ticket_proc_debug_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch mode=ugo+rw
   tags:
-    - zd-sync
+    - zd-ticket-proc
 
-- name: Create zendesk sync application debug files
-  file: path={{zd_sync_app_base_log_path}}/{{zd_sync_debug_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch
+- name: Set up logrotate for zendesk ticket proc application
+  template: src=zd-ticket-proc-app-logrotate.j2 dest={{zd_ticket_proc_app_logrotate_file}}
   tags:
-    - zd-sync
+    - log-rotate
+    - zd-ticket-proc-log-rotate
+    - zd-ticket-proc
 
 - name: Create whatsapp app application log path
   file: path={{whatsapp_app_base_log_path}} state=directory
@@ -98,16 +107,42 @@
   tags:
     - organize-logs
 
-- name: Set up logrotate for Zendesk Sync
-  template: src=zd-sync-app-logrotate.j2 dest={{sync_zd_app_logrotate_file}}
-  tags:
-    - log-rotate
-    - zd-sync
-
 - name: Set up virtual env
   pip: virtualenv={{whatsapp_app_application_dir}}/whatsapp/{{whatsapp_app_virtual_env}} requirements={{whatsapp_app_application_dir}}/requirements.txt
   tags:
     - pip-install
+
+- name: Zendesk Ticket Proc Flask application - Create webroot directory
+  file: path={{zd_ticket_proc_app_webroot_path}} state=directory
+  tags:
+    - zd-ticket-proc
+    - zd-ticket-proc-web-app
+
+- name: Zendesk Ticket Proc Flask application - Create symlink to application
+  file: path={{zd_ticket_proc_app_webroot_path}}/zd_ticket_proc src={{whatsapp_app_application_dir}}/zendesk_ticket_proc state=link
+  tags:
+    - zd-ticket-proc
+    - zd-ticket-proc-web-app
+
+- name: Zendesk Ticket Proc Flask application - Configure virtual host
+  template: src=zd_ticket_proc_vhost.conf.j2 dest={{zd_ticket_proc_app_vhost}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - zd-ticket-proc
+    - zd-ticket-proc-web-app
+
+- name: Zendesk Ticket Proc Flask application - Create wsgi file
+  template: src=zd_ticket_proc_api.wsgi.j2 dest={{zd_ticket_proc_app_vhost_wsgi_file}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - zd-ticket-proc
+    - zd-ticket-proc-web-app
+
+- name: Zendesk Ticket Proc Flask application - Enable vhost
+  command: a2ensite {{zd_ticket_proc_api_name}}.conf
+  notify:
+    - restart apache
+  tags:
+    - zd-ticket-proc
+    - zd-ticket-proc-web-app
 
 - name: Flask application - Create webroot directory
   file: path={{whatsapp_app_webroot_path}} state=directory
@@ -128,22 +163,10 @@
   # notify:
   #   - restart apache
 
-- name: Flask application - Create sqlite db directory
-  file: path={{whatsapp_app_db_dir_path}} state=directory owner={{whatsapp_app_apache_user}} group={{whatsapp_app_apache_group}}
-
-- name: Check if sqlite db already exists
-  stat: path={{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}}
-  register: sqlite_db
-
-- name: Back up existing sqlite db
-  command: mv {{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}} '{{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}}.backup_{{timestamp}}'
-  when: sqlite_db.stat.exists
-
-- name: Flask application - Init sqlite db
-  shell: sqlite3 {{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}} < {{whatsapp_app_db_schema}}
-
-- name: Flask application - Change ownership of sqlite db
-  file: path={{whatsapp_app_db_dir_path}}{{whatsapp_app_db_file_name}} owner={{whatsapp_app_apache_user}} mode=ug+rw group={{whatsapp_app_apache_group}} state=touch
+- name: Set up SQLite databases
+  include: inventure_app_db.yml
+  tags:
+    - iv-db-setup
 
 - name: WhatsApp process - Create lock file directory
   file: path={{whatsapp_app_proc_lock_dir}} state=directory
@@ -176,13 +199,7 @@
   tags:
     - im-proc
 
-- name: Sync zendesk last message status - Create lock file directory
-  file: path={{sync_zd_last_msg_status_proc_app_lock_dir}} state=directory
+- name: Set Up Zendesk Sync Application
+  include: zd_sync_app.yml
   tags:
     - zd-sync
-
-- name: Sync zendesk last message status - Copy process manipulation script to init.d
-  template: src=sync_last_msg_status.sh.j2 dest={{sync_zd_last_msg_status_init_d_file}} mode=u+x
-  tags:
-    - zd-sync
-

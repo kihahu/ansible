@@ -1,0 +1,18 @@
+<VirtualHost *:{{zd_ticket_proc_app_vhost_port}}>
+    ServerName {{zd_ticket_proc_app_vhost_server_name}}
+    ServerAdmin admin@{{zd_ticket_proc_app_vhost_server_name}}
+    WSGIDaemonProcess zd_ticket_proc_api user={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} threads=1
+    WSGIScriptAlias / {{zd_ticket_proc_app_vhost_wsgi_file}}
+    <Directory {{zd_ticket_proc_app_webroot_path}}/zd_ticket_proc/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    Alias /static {{zd_ticket_proc_app_webroot_path}}/zd_ticket_proc/static
+    <Directory {{zd_ticket_proc_app_webroot_path}}/zd_ticket_proc/static/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/zd_ticket_proc_app_error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/zd_ticket_proc_app_access.log combined
+</VirtualHost>

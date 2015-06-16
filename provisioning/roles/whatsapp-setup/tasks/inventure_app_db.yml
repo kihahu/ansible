@@ -1,0 +1,33 @@
+---
+- name: Flask application - Create sqlite db directory
+  file: path={{item}} state=directory owner={{whatsapp_app_apache_user}} group={{whatsapp_app_apache_group}}
+  with_items:
+    - '{{whatsapp_app_db_dir_path}}'
+    - '{{zd_app_db_dir_path}}'
+  tags:
+    - iv-db-setup
+
+- name: Back up existing sqlite db(s)
+  command: cp {{item.db_name}} '{{item.db_name}}.backup_{{timestamp}}'
+  ignore_errors: True
+  with_items:
+    - { db_name: '{{whatsapp_app_db_dir_path}}/{{whatsapp_app_db_file_name}}', app_name: 'whatsapp' }
+    - { db_name: '{{zd_app_db_dir_path}}/{{zd_app_db_file_name}}', app_name: 'zendesk' }
+  tags:
+    - iv-db-setup
+
+- name: Flask application - Init sqlite db(s)
+  shell: sqlite3 {{item.db_name}} < {{item.schema_name}}
+  with_items:
+    - { db_name: '{{whatsapp_app_db_dir_path}}/{{whatsapp_app_db_file_name}}', app_name: 'whatsapp', schema_name: '{{whatsapp_app_db_schema}}'}
+    - { db_name: '{{zd_app_db_dir_path}}/{{zd_app_db_file_name}}', app_name: 'zendesk', schema_name: '{{zd_app_db_schema}}'}
+  tags:
+    - iv-db-setup
+
+- name: Flask application - Change ownership of sqlite db(s)
+  file: path={{item.db_name}} owner={{whatsapp_app_apache_user}} mode=ug+rw group={{whatsapp_app_apache_group}} state=touch
+  with_items:
+    - { db_name: '{{whatsapp_app_db_dir_path}}/{{whatsapp_app_db_file_name}}', app_name: 'whatsapp' }
+    - { db_name: '{{zd_app_db_dir_path}}/{{zd_app_db_file_name}}', app_name: 'zendesk' }
+  tags:
+    - iv-db-setup

@@ -3,3 +3,10 @@ apache_fqdn_path: "/etc/apache2/conf.d/fqdn"
 apache_conf_path: "/etc/apache2/conf-available/"
 vagrant_bashrc_file: /home/vagrant/.bashrc
 root_bashrc_file: /root/.bashrc
+
+# slack
+slack_incoming_webhook_endpoint: https://hooks.slack.com/services/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
+
+# memcache
+memcache_server: "127.0.0.1"
+memcache_port: "11211"

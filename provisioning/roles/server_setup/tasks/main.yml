@@ -122,6 +122,7 @@
 
 - name: add apache user to vagrant group
   user: name={{apache_user}} groups='vagrant,dialout'
+  ignore_errors: True
   tags:
     - vagrant
 
@@ -165,8 +166,16 @@
   tags:
     - mysql
 
+- name: First time set mysql password
+  mysql_user: name=root host=localhost password={{ root_db_password }} login_password="" login_user=root
+  register: set_mysql_root_password
+  ignore_errors: True
+  tags:
+    - mysql
+
 - name: set up mysql - update mysql root password for all root accounts
   mysql_user: name=root host=localhost password={{ root_db_password }}
+  when: set_mysql_root_password|failed
   tags:
     - mysql
 
@@ -212,4 +221,3 @@
 
 - name: Install n curses
   apt: name=ncurses-dev
-

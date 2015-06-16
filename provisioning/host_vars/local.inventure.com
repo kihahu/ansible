@@ -70,15 +70,74 @@ incoming_messages_proc_app_proc_lock_file: im-proc.lock
 incoming_messages_app_base_log_path: "/var/log/applications/incoming-msg-proc/"
 incoming_messages_init_d_file: /etc/init.d/im_proc
 inventure_config_path: /etc/inventure
+zd_app_db_dir_path: "/data/inventure/zendesk"
+zd_app_db_file_name: zendesk_data.db
+zd_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_zd_schema_no_drop.sql
+
+# slack
+slack_incoming_webhook_endpoint: https://hooks.slack.com/services/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
+
+# memcache
+memcache_server: "127.0.0.1"
+memcache_port: "11211"
+
+# zd-sync-app
 zd_sync_conf_file: zendesk-sync-config.json
 zd_sync_app_debug: "true"
 zd_sync_app_base_log_path: "/var/log/applications/zd-sync/"
-zd_sync_base_log_file_name: "zd-sync.log"
-zd_sync_debug_file_name: "zd-sync-debug.log"
-memcache_server: "127.0.0.1"
-memcache_port: "11211"
+zd_sync_base_log_file_name: "zd_sync.log"
+zd_sync_debug_file_name: "zd_sync_debug.log"
+zd_sync_app_server_host: "192.168.33.10"
+zd_sync_app_webroot_path: /var/www/zd_sync
+zd_sync_app_vhost_port: 5003
+zd_sync_app_vhost_server_name: local.inventure.com
+zd_sync_app_vhost_wsgi_file: /var/www/zd_sync/zd_sync_api.wsgi
+zd_sync_api_name: zd_sync_api
+zd_sync_app_vhost: /etc/apache2/sites-available/zd_sync_api.conf
 sync_zd_last_msg_status_proc_app_lock_dir: /var/lock/zd-sync-last-msg-proc/
 sync_zd_last_msg_status_proc_app_lock_file: zd-sync-last-msg.lock
 sync_zd_last_msg_status_init_d_file: /etc/init.d/zd_sync_msg_status
 sync_zd_app_logrotate_file: /etc/logrotate.d/zd-sync-app
-slack_incoming_webhook_endpoint: https://hooks.slack.com/services/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
+
+# zd-ticket-proc app
+zd_ticket_proc_app_debug: "true"
+zd_ticket_proc_app_base_log_path: "/var/log/applications/zd-ticket-proc/"
+zd_ticket_proc_base_log_file_name: "zd-ticket-proc.log"
+zd_ticket_proc_debug_file_name: "zd-ticket-proc-debug.log"
+zd_ticket_proc_conf_file: zendesk-ticket-proc-config.json
+zd_ticket_proc_app_server_host: "192.168.33.10"
+zd_ticket_proc_app_webroot_path: /var/www/zd_ticket_proc
+zd_ticket_proc_app_vhost_port: 5002
+zd_ticket_proc_app_vhost_server_name: local.inventure.com
+zd_ticket_proc_app_vhost_wsgi_file: /var/www/zd_ticket_proc/zd_ticket_proc_api.wsgi
+zd_ticket_proc_app_vhost: /etc/apache2/sites-available/zd_ticket_proc_api.conf
+zd_ticket_proc_api_name: zd_ticket_proc_api
+zd_ticket_proc_app_logrotate_file: /etc/logrotate.d/zd-ticket-proc-app
+
+# payments app
+payments_app_application_dir: /srv/applications/payments
+payments_app_webroot_path: /var/www/payments
+payments_app_vhost: /etc/apache2/sites-available/payments.conf
+payments_server_port: 80
+payments_server_host_name: payments.local.inventure.com
+payments_app_debug: true
+payments_app_key: HA6Ly9hcGktdjEuZ2VuLm1tLnZvZGFmb
+payments_app_db_user: payments_app
+payments_app_db_pass: W1ldGVyPjxLZXkgeG1sbnM9Imh0dHA6Ly9hc
+payments_app_db_host: localhost
+payments_app_db_name: payments_dev
+payments_app_base_log_path: "/var/log/applications/payments/"
+payments_app_base_log_file_name: "payments.log"
+payments_app_test_base_log_file_name: "payments_test.log"
+payments_app_logrotate_file: /etc/logrotate.d/payments-app
+payments_app_default_log_level: DEBUG
+
+# payments service specific config
+# tigo tz
+payments_app_tz_tigo_b2c_trx_type: REQMFICI
+payments_app_tz_tigo_b2c_partner_msisdn: 0715667883
+payments_app_tz_tigo_b2c_partner_key: 1234
+payments_app_tz_tigo_b2c_partner_lang: en
+payments_app_tz_tigo_c2b_trx_type: SYNC_BILLPAY_RESPONSE
+payments_app_tz_tigo_c2b_customer_msg_template: "Your payment of %.2f TSh to Mkopo Rahisi for account %s has been received. Thank you for your payment."
+payments_app_tz_tigo_b2c_api_endpoint: http://payments.local.inventure.com/api/v1/incoming-tigo-tz-b2c
