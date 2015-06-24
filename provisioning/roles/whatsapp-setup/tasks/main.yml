@@ -203,3 +203,8 @@
   include: zd_sync_app.yml
   tags:
     - zd-sync
+
+- name: Set up Messaging Application
+  include: messaging_app.yml
+  tags:
+    - messaging

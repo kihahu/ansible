@@ -11,13 +11,12 @@
     - zd-sync
 
 - name: Check/create zendesk sync application log files
-  file: path={{zd_sync_app_base_log_path}}{{zd_sync_base_log_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch mode=ugo+rw
-  tags:
-    - zd-sync
-    - zd-sync-log-permissions
-
-- name: Create zendesk sync application debug files
-  file: path={{zd_sync_app_base_log_path}}/{{zd_sync_debug_file_name}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch mode=ugo+rw
+  file: path={{zd_sync_app_base_log_path}}{{item}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch mode=ugo+rw
+  with_items:
+    - '{{zd_sync_base_log_file_name}}'
+    - '{{zd_sync_debug_file_name}}'
+    - '{{zd_sync_base_log_file_name_tr}}'
+    - '{{zd_sync_debug_file_name_tr}}'
   tags:
     - zd-sync
     - zd-sync-log-permissions
@@ -64,8 +63,14 @@
 
 - name: Zendesk Sync App Flask application - Enable vhost
   command: a2ensite {{zd_sync_api_name}}.conf
-  notify:
-    - restart apache
+  # notify:
+  #   - restart apache
   tags:
     - zd-sync
     - zd-sync-web-app
+
+- name: Zendesk Sync App process - Copy Telerivet Sync process manipulation script to init.d
+  template: src=zd-sync-app/zd_telerivet_sync.sh.j2 dest={{sync_zd_telerivet_init_d_file}} mode=u+x
+  tags:
+    - zd-sync
+    - zd-telerivet-sync-proc

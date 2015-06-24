@@ -76,10 +76,29 @@ zd_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_zd_schema_no_
 
 # slack
 slack_incoming_webhook_endpoint: https://hooks.slack.com/services/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
+dev_slack_alert_handles: "@fred"
 
 # memcache
 memcache_server: "127.0.0.1"
 memcache_port: "11211"
+
+# telerivet
+telerivet_key: "PZP9RZFF7HZHDKHCQMPUGCKQT76WWM4M"
+
+# messaging-app
+messaging_conf_file: messaging-config.json
+messaging_app_debug: "true"
+messaging_app_base_log_path: "/var/log/applications/messaging/"
+messaging_base_log_file_name: "messaging.log"
+messaging_debug_file_name: "messaging_debug.log"
+messaging_app_logrotate_file: /etc/logrotate.d/messaging-app
+messaging_app_server_host: "192.168.33.10"
+messaging_app_webroot_path: /var/www/inventure_messaging
+messaging_app_vhost: /etc/apache2/sites-available/inventure_messaging.conf
+messaging_app_vhost_port: 5004
+messaging_app_vhost_server_name: local.inventure.com
+messaging_app_vhost_wsgi_file: /var/www/inventure_messaging/inventure_messaging.wsgi
+messaging_api_name: inventure_messaging
 
 # zd-sync-app
 zd_sync_conf_file: zendesk-sync-config.json
@@ -87,6 +106,10 @@ zd_sync_app_debug: "true"
 zd_sync_app_base_log_path: "/var/log/applications/zd-sync/"
 zd_sync_base_log_file_name: "zd_sync.log"
 zd_sync_debug_file_name: "zd_sync_debug.log"
+zd_sync_app_debug_tr: "true"
+zd_sync_base_log_file_name_tr: "telerivet_zd_sync.log"
+zd_sync_debug_file_name_tr: "telerivet_zd_sync_debug.log"
+zd_sync_app_tr_sleep_time: 2
 zd_sync_app_server_host: "192.168.33.10"
 zd_sync_app_webroot_path: /var/www/zd_sync
 zd_sync_app_vhost_port: 5003
@@ -94,9 +117,14 @@ zd_sync_app_vhost_server_name: local.inventure.com
 zd_sync_app_vhost_wsgi_file: /var/www/zd_sync/zd_sync_api.wsgi
 zd_sync_api_name: zd_sync_api
 zd_sync_app_vhost: /etc/apache2/sites-available/zd_sync_api.conf
+zd_sync_app_db_file_name: zendesk_sync.db
+zd_sync_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_zd_sync_schema_no_drop.sql
 sync_zd_last_msg_status_proc_app_lock_dir: /var/lock/zd-sync-last-msg-proc/
 sync_zd_last_msg_status_proc_app_lock_file: zd-sync-last-msg.lock
 sync_zd_last_msg_status_init_d_file: /etc/init.d/zd_sync_msg_status
+sync_zd_telerivet_proc_app_lock_dir: /var/lock/zd-sync-telerivet-msg-proc/
+sync_zd_telerivet_proc_app_lock_file: zd-sync-telerivet-msg.lock
+sync_zd_telerivet_init_d_file: /etc/init.d/zd_sync_telerivet
 sync_zd_app_logrotate_file: /etc/logrotate.d/zd-sync-app
 
 # zd-ticket-proc app

@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+activate_this = '{{whatsapp_app_webroot_path}}/whatsapp_api/{{whatsapp_app_virtual_env}}/bin/activate_this.py'
+execfile(activate_this, dict(__file__=activate_this))
+import subprocess
+import sys
+import logging
+import os
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0, "{{messaging_app_webroot_path}}")
+sys.path.insert(1, "{{whatsapp_app_application_dir}}")
+
+
+def application(environ, start_response):
+    from messaging import messaging_app as _application
+    return _application(environ, start_response)

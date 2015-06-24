@@ -1,0 +1,58 @@
+---
+- name: Set up Messaging Config file
+  template: src=messaging/messaging-config.json.j2 dest={{inventure_config_path}}/{{messaging_conf_file}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - messaging
+    - messaging-config
+
+- name: Create Messaging app log path
+  file: path={{messaging_app_base_log_path}} state=directory
+  tags:
+    - messaging
+
+- name: Check/create messaging application log files
+  file: path={{messaging_app_base_log_path}}{{item}} owner={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} state=touch mode=ugo+rw
+  with_items:
+    - '{{messaging_base_log_file_name}}'
+    - '{{messaging_debug_file_name}}'
+  tags:
+    - messaging
+    - messaging-log-permissions
+
+- name: Set up logrotate for Messaging app
+  template: src=messaging/messaging-app-logrotate.j2 dest={{messaging_app_logrotate_file}}
+  tags:
+    - messaging-log-rotate
+    - messaging
+
+- name: Messaging App Flask application - Create webroot directory
+  file: path={{messaging_app_webroot_path}} state=directory
+  tags:
+    - messaging
+    - messaging-web-app
+
+- name: Messaging App Flask application - Create symlink to application
+  file: path={{messaging_app_webroot_path}}/messaging src={{whatsapp_app_application_dir}}/messaging state=link
+  tags:
+    - messaging
+    - messaging-web-app
+
+- name: Messaging App Flask application - Configure virtual host
+  template: src=messaging/messaging_app_vhost.conf.j2 dest={{messaging_app_vhost}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - messaging
+    - messaging-web-app
+
+- name: Messaging App Flask application - Create wsgi file
+  template: src=messaging/messaging_api.wsgi.j2 dest={{messaging_app_vhost_wsgi_file}} owner={{whatsapp_app_sys_user_name}}
+  tags:
+    - messaging
+    - messaging-web-app
+
+- name: Messaging App Flask application - Enable vhost
+  command: a2ensite {{messaging_api_name}}.conf
+  notify:
+    - restart apache
+  tags:
+    - messaging
+    - messaging-web-app

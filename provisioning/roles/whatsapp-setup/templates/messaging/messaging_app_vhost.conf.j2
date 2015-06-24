@@ -1,0 +1,19 @@
+Listen {{messaging_app_vhost_port}}
+<VirtualHost *:{{messaging_app_vhost_port}}>
+    ServerName {{messaging_app_vhost_server_name}}
+    ServerAdmin admin@{{messaging_app_vhost_server_name}}
+    WSGIDaemonProcess inventure_messaging user={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} threads=1
+    WSGIScriptAlias / {{messaging_app_vhost_wsgi_file}}
+    <Directory {{messaging_app_webroot_path}}/messaging/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    Alias /static {{messaging_app_webroot_path}}/messaging/static
+    <Directory {{messaging_app_webroot_path}}/messaging/static/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/messaging_app_error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/messaging_app_access.log combined
+</VirtualHost>

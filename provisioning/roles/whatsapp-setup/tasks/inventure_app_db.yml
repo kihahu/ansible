@@ -13,7 +13,9 @@
   with_items:
     - { db_name: '{{whatsapp_app_db_dir_path}}/{{whatsapp_app_db_file_name}}', app_name: 'whatsapp' }
     - { db_name: '{{zd_app_db_dir_path}}/{{zd_app_db_file_name}}', app_name: 'zendesk' }
+    - { db_name: '{{zd_app_db_dir_path}}/{{zd_sync_app_db_file_name}}', app_name: 'zendesk_sync' }
   tags:
+    - iv-db-backup
     - iv-db-setup
 
 - name: Flask application - Init sqlite db(s)
@@ -21,6 +23,7 @@
   with_items:
     - { db_name: '{{whatsapp_app_db_dir_path}}/{{whatsapp_app_db_file_name}}', app_name: 'whatsapp', schema_name: '{{whatsapp_app_db_schema}}'}
     - { db_name: '{{zd_app_db_dir_path}}/{{zd_app_db_file_name}}', app_name: 'zendesk', schema_name: '{{zd_app_db_schema}}'}
+    - { db_name: '{{zd_app_db_dir_path}}/{{zd_sync_app_db_file_name}}', app_name: 'zendesk_sync', schema_name: '{{zd_sync_app_db_schema}}'}
   tags:
     - iv-db-setup
 
@@ -29,5 +32,6 @@
   with_items:
     - { db_name: '{{whatsapp_app_db_dir_path}}/{{whatsapp_app_db_file_name}}', app_name: 'whatsapp' }
     - { db_name: '{{zd_app_db_dir_path}}/{{zd_app_db_file_name}}', app_name: 'zendesk' }
+    - { db_name: '{{zd_app_db_dir_path}}/{{zd_sync_app_db_file_name}}', app_name: 'zendesk_sync' }
   tags:
     - iv-db-setup
