@@ -107,4 +107,4 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # activate autoenv
-source /usr/local/bin/activate.sh
+# source /usr/local/bin/activate.sh
