@@ -19,10 +19,11 @@
 
 - name: Install PHP dependencies
   include: php_dependencies.yml
-  notify:
-    - restart apache
+  # notify:
+  #   - restart apache
   tags:
     - payments-app
+    - php-dep
 
 - name: Install Composer
   include: composer.yml
@@ -47,8 +48,16 @@
   tags:
     - payments-app
 
-- name: Set up Payments vhost
+- name: Set up Payments vhost (Non-SSL)
   template: src=payments_vhost.conf.j2 dest={{payments_app_vhost}} owner={{apache_user}}
+  when: inventory_hostname != "inventure-production"
+  tags:
+    - payments-app
+    - payments-vhost
+
+- name: Set up Payments vhost (SSL)
+  template: src=payments_ssl_vhost.conf.j2 dest={{payments_app_vhost}} owner={{apache_user}}
+  when: inventory_hostname == "inventure-production"
   tags:
     - payments-app
     - payments-vhost
@@ -56,7 +65,7 @@
 - name: Enable Payments vhost
   command: a2ensite payments.conf
   notify:
-    - restart apache
+    - reload apache
   tags:
     - payments-app
     - payments-vhost

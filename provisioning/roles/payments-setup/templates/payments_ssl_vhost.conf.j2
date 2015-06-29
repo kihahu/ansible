@@ -1,0 +1,30 @@
+<IfModule mod_ssl.c>
+    <VirtualHost *:{{payments_server_port}} *:{{payments_app_tz_tigo_port}}>
+        DocumentRoot {{payments_app_webroot_path}}
+        ServerName {{payments_server_host_name}}
+
+        <Directory "{{payments_app_webroot_path}}">
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            allow from all
+        </Directory>
+
+        SSLEngine on
+        SSLCertificateFile {{payments_server_cert_path}}
+        SSLCertificateKeyFile {{payments_server_cert_key}}
+
+        SSLProtocol all -SSLv2 -SSLv3
+        SSLHonorCipherOrder on
+        SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS"
+
+        ErrorLog ${APACHE_LOG_DIR}/payments_error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/payments_access.log combined
+
+    </VirtualHost>
+</IfModule>

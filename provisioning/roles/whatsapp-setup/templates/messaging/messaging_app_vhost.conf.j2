@@ -1,5 +1,8 @@
+# main port
 Listen {{messaging_app_vhost_port}}
-<VirtualHost *:{{messaging_app_vhost_port}}>
+# telerivet requires a specific port
+Listen {{messaging_app_vhost_port_tr}}
+<VirtualHost *:{{messaging_app_vhost_port}} *:{{messaging_app_vhost_port_tr}}>
     ServerName {{messaging_app_vhost_server_name}}
     ServerAdmin admin@{{messaging_app_vhost_server_name}}
     WSGIDaemonProcess inventure_messaging user={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} threads=1

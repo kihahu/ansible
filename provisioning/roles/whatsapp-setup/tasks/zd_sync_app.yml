@@ -37,38 +37,6 @@
   tags:
     - zd-sync
 
-- name: Zendesk Sync App Flask application - Create webroot directory
-  file: path={{zd_sync_app_webroot_path}} state=directory
-  tags:
-    - zd-sync
-    - zd-sync-web-app
-
-- name: Zendesk Sync App Flask application - Create symlink to application
-  file: path={{zd_sync_app_webroot_path}}/zd_sync src={{whatsapp_app_application_dir}}/zendesk_sync state=link
-  tags:
-    - zd-sync
-    - zd-sync-web-app
-
-- name: Zendesk Sync App Flask application - Configure virtual host
-  template: src=zd-sync-app/zd_sync_app_vhost.conf.j2 dest={{zd_sync_app_vhost}} owner={{whatsapp_app_sys_user_name}}
-  tags:
-    - zd-sync
-    - zd-sync-web-app
-
-- name: Zendesk Sync App Flask application - Create wsgi file
-  template: src=zd-sync-app/zd_sync_api.wsgi.j2 dest={{zd_sync_app_vhost_wsgi_file}} owner={{whatsapp_app_sys_user_name}}
-  tags:
-    - zd-sync
-    - zd-sync-web-app
-
-- name: Zendesk Sync App Flask application - Enable vhost
-  command: a2ensite {{zd_sync_api_name}}.conf
-  # notify:
-  #   - restart apache
-  tags:
-    - zd-sync
-    - zd-sync-web-app
-
 - name: Zendesk Sync App process - Copy Telerivet Sync process manipulation script to init.d
   template: src=zd-sync-app/zd_telerivet_sync.sh.j2 dest={{sync_zd_telerivet_init_d_file}} mode=u+x
   tags:

@@ -71,6 +71,10 @@ memcache_port: "11211"
 
 # telerivet
 telerivet_key: "PZP9RZFF7HZHDKHCQMPUGCKQT76WWM4M"
+telerivet_api_key: "2kuZtbRlDr1dcSaG82ADk73H1zIqycn0"
+telerivet_project_id: "PJ006c5db56496f4c5fc53eb12bb960cb9"
+telerivet_sender_phone_id: "PN6c6ca9f19cf168f7"
+telerivet_notification_endpoint: "http://54.68.252.83:8000/messaging/incoming/telerivet/notify"
 
 # messaging-app
 messaging_conf_file: messaging-config.json
@@ -83,6 +87,7 @@ messaging_app_server_host: "0.0.0.0"
 messaging_app_webroot_path: /var/www/inventure_messaging
 messaging_app_vhost: /etc/apache2/sites-available/inventure_messaging.conf
 messaging_app_vhost_port: 5004
+messaging_app_vhost_port_tr: 8000
 messaging_app_vhost_server_name: 54.68.252.83
 messaging_app_vhost_wsgi_file: /var/www/inventure_messaging/inventure_messaging.wsgi
 messaging_api_name: inventure_messaging
@@ -133,12 +138,15 @@ zd_ticket_proc_app_logrotate_file: /etc/logrotate.d/zd-ticket-proc-app
 payments_app_application_dir: /srv/applications/payments
 payments_app_webroot_path: /var/www/payments
 payments_app_vhost: /etc/apache2/sites-available/payments.conf
-payments_server_port: 8400
+payments_server_port: 443
 payments_server_host_name: payments.inventureaccess.com
-payments_app_debug: true
+payments_server_cert_path: /etc/pki/tls/certs/payments/wildcard.crt
+payments_server_cert_key: /etc/pki/tls/certs/payments/wildcard.key
+payments_app_host: https://payments.inventureaccess.com
+payments_app_debug: false
 payments_app_key: bxZph8H1vr28PpQnmtBKHGeBJDAAV8BA
-payments_app_db_user: payments_app
-payments_app_db_pass: Lmdlbi5tbS52b2RhZm9uZS5jb20vbW1
+payments_app_db_user: payments
+payments_app_db_pass: dfsigkshd93hdfh3
 payments_app_db_host: insightdb.ceiehgxanvdu.us-west-2.rds.amazonaws.com
 payments_app_db_name: payments
 payments_app_base_log_path: "/var/log/applications/payments/"
@@ -149,6 +157,7 @@ payments_app_default_log_level: WARNING
 
 # payments service specific config
 # tigo tz
+payments_app_tz_tigo_port: 8400
 payments_app_tz_tigo_b2c_trx_type: REQMFICI
 payments_app_tz_tigo_b2c_partner_msisdn: 0715667883
 payments_app_tz_tigo_b2c_partner_key: 1234

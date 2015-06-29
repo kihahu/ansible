@@ -52,7 +52,7 @@
 - name: Messaging App Flask application - Enable vhost
   command: a2ensite {{messaging_api_name}}.conf
   notify:
-    - restart apache
+    - reload apache
   tags:
     - messaging
     - messaging-web-app

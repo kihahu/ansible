@@ -84,6 +84,11 @@ memcache_port: "11211"
 
 # telerivet
 telerivet_key: "PZP9RZFF7HZHDKHCQMPUGCKQT76WWM4M"
+telerivet_api_key: "2kuZtbRlDr1dcSaG82ADk73H1zIqycn0"
+telerivet_project_id: "PJ006c5db56496f4c5fc53eb12bb960cb9"
+telerivet_sender_phone_id: "PNe71f1b6fc0ae4cf5"
+telerivet_notification_endpoint: "http://iv-local-wa.vagrantshare.com/messaging/incoming/telerivet/notify"
+
 
 # messaging-app
 messaging_conf_file: messaging-config.json
@@ -96,6 +101,7 @@ messaging_app_server_host: "192.168.33.10"
 messaging_app_webroot_path: /var/www/inventure_messaging
 messaging_app_vhost: /etc/apache2/sites-available/inventure_messaging.conf
 messaging_app_vhost_port: 5004
+messaging_app_vhost_port_tr: 8000
 messaging_app_vhost_server_name: local.inventure.com
 messaging_app_vhost_wsgi_file: /var/www/inventure_messaging/inventure_messaging.wsgi
 messaging_api_name: inventure_messaging
@@ -148,6 +154,9 @@ payments_app_webroot_path: /var/www/payments
 payments_app_vhost: /etc/apache2/sites-available/payments.conf
 payments_server_port: 80
 payments_server_host_name: payments.local.inventure.com
+payments_server_cert_path: /etc/pki/tls/certs/payments/wildcard.crt
+payments_server_cert_key: /etc/pki/tls/certs/payments/wildcard.key
+payments_app_host: http://payments.local.inventure.com
 payments_app_debug: true
 payments_app_key: HA6Ly9hcGktdjEuZ2VuLm1tLnZvZGFmb
 payments_app_db_user: payments_app
@@ -162,6 +171,7 @@ payments_app_default_log_level: DEBUG
 
 # payments service specific config
 # tigo tz
+payments_app_tz_tigo_port: 8410
 payments_app_tz_tigo_b2c_trx_type: REQMFICI
 payments_app_tz_tigo_b2c_partner_msisdn: 0715667883
 payments_app_tz_tigo_b2c_partner_key: 1234
