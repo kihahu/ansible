@@ -22,6 +22,22 @@
   tags:
     - autoenv
 
+- name: Install supervisor
+  pip: name=supervisor state=latest extra_args='--pre'
+  tags:
+    - supervisor
+
+- name: Set up supervisor init script
+  copy: src=supervisord dest=/etc/init.d/supervisor
+  tags:
+    - supervisor
+
+- name: Configure supervisord main config
+  template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf backup=yes
+  tags:
+    - supervisor
+    - supervisor-conf
+
 - name: set up bashrc - back up old bashrc file
   command: cp {{ item }} '{{ item }}.old_{{timestamp}}'
   with_items:
