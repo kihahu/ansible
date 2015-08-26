@@ -13,3 +13,4 @@
   template: src=payments-app-logrotate.j2 dest={{payments_app_logrotate_file}}
   tags:
     - payments-app-logging
+    - payments-app-logrotate

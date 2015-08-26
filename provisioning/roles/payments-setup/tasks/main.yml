@@ -99,3 +99,9 @@
   tags:
     - payments-app-test-config
     - payments-app
+
+- name: Configure Airtel KE Payments Service
+  include: airtel_ke.yml
+  tags:
+    - payments-app
+    - payments-app-airtel-ke

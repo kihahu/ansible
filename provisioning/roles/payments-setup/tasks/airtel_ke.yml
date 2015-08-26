@@ -1,0 +1,10 @@
+---
+- name: Push Airtel KE SOAP Web Service WSDL - Create storage directory
+  file: path={{payments_app_application_dir}}/storage/app/ke/airtel/ state=directory mode=uog+r
+  tags:
+    - payments-app-airtel-ke
+
+- name: Push Airtel KE SOAP Web Service WSDL - add wsdl file
+  template: src=airtel_ke/ke_airtel_c2b.wsdl.j2 dest={{payments_app_application_dir}}/storage/app/ke/airtel/ke_airtel_c2b.wsdl mode=uog+r
+  tags:
+    - payments-app-airtel-ke

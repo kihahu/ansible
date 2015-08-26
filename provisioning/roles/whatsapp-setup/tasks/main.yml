@@ -35,12 +35,18 @@
   tags:
     - memcached #python-dev libffi-dev libssl-dev
 
+- name: Install MySQL libraries required for Python
+  apt: name=libmysqlclient-dev state=latest
+  tags:
+    - py-mysql
+
 - name: Install Python libraries required
   apt: name={{item}}
   with_items:
     - python-dev
     - libffi-dev
     - libssl-dev
+    - libmysqlclient-dev
   tags:
     - python-ssl
 
@@ -50,6 +56,7 @@
     - base-config
     - zd-ticket-proc-config
     - zd-sync-config
+    - messaging-config
 
 - name: Set up Config file
   template: src=base_config.json.j2 dest={{inventure_config_path}}/{{whatsapp_app_config_file}} owner={{whatsapp_app_sys_user_name}}

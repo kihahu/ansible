@@ -14,7 +14,7 @@
   file: path=/var/www/{{api_server_name}} src={{api_app_path_dir}} state=link owner={{apache_user}}
 
 - name: Create vhost for Api app
-  template: src=apinew.lh.vhost.j2 dest=/etc/apache2/sites-available/{{api_server_name}}
+  template: src=apinew.lh.vhost.j2 dest=/etc/apache2/sites-available/{{api_server_name}}.conf
   tags:
     - vhost-setup
 
