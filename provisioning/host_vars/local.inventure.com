@@ -86,6 +86,7 @@ zendesk_msg_source_custom_field_id: 24218325
 zendesk_last_msg_delivered_custom_field_id: 24329225
 zendesk_last_msg_read_custom_field_id: 24329235
 zendesk_recently_updated_tickets_view_id: 43236089
+zendesk_admin_requester_id: 686769609
 incoming_messages_proc_app_proc_lock_dir: /var/lock/incoming-messages-proc/
 incoming_messages_proc_app_proc_lock_file: im-proc.lock
 incoming_messages_app_base_log_path: "/var/log/applications/incoming-msg-proc/"
@@ -95,6 +96,7 @@ inventure_config_path: /etc/inventure
 zd_app_db_dir_path: "/data/inventure/zendesk"
 zd_app_db_file_name: zendesk_data.db
 zd_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_zd_schema_no_drop.sql
+zd_incoming_req_endpoint: http://localhost:5004/messaging/incoming/zendesk
 
 # base db configs
 iv_services_db_name: inventure_services
