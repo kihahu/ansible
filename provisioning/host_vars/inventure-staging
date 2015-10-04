@@ -190,6 +190,7 @@ payments_app_tz_tigo_b2c_partner_lang: en
 payments_app_tz_tigo_c2b_trx_type: SYNC_BILLPAY_RESPONSE
 payments_app_tz_tigo_c2b_customer_msg_template: "Your payment of %.2f TSh to Mkopo Rahisi for account %s has been received. Thank you for your payment."
 payments_app_tz_tigo_b2c_api_endpoint: http://accessgwtest.tigo.co.tz:8080/inventuretotigotest
+payments_app_tz_tigo_storage_path: "storage/app/tz"
 
 # airtel ke
 payments_app_ke_airtel_c2b_port: 8500
