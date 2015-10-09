@@ -9,16 +9,16 @@
   tags:
       - copy-gitauth
 
-- name: Clone Repo
-  git:
-      repo: https://github.com/{{organisation}}/{{website_docker_repo}}.git
-      dest: "{{website_docker_repo}}"
-      accept_hostkey: yes
-      force: yes
-      recursive: no 
-      key_file: "{{ github_key }}"
-  tags:
-      - clone-repo
+#- name: Clone Repo
+#  git:
+#      repo: https://github.com/{{organisation}}/{{website_docker_repo}}.git
+#      dest: "{{website_docker_repo}}"
+#      accept_hostkey: yes
+#      force: yes
+#      recursive: no 
+#      key_file: "{{ github_key }}"
+#  tags:
+#      - clone-repo
 
 - name: copy-template
   template: src=default-ssl.j2 dest={{website_dir}}/{{ssl_config}}
