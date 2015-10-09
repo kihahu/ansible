@@ -20,10 +20,21 @@
 #  tags:
 #      - clone-repo
 
-- name: copy-template
-  template: src=default-ssl.j2 dest={{website_dir}}/{{ssl_config}}
+#- name: copy-template
+#  template: src=default-ssl.j2 dest={{website_dir}}/{{ssl_config}}
+#  tags:
+#      - copy-files
+
+
+- name: Build Website Container
+  command: docker build -t {{website_container}} {{website_dir}}
   tags:
-      - copy-files
+      - build-website
+
+- name: Push website image to docker hub
+  command: docker push {{website_container}}:latest
+  tags:
+      - push-website-dockerhub
 
 - name: Deploy Website Container
   docker:
@@ -36,13 +47,3 @@
            - "{{ssh_port}}:{{ssh_default_port}}"
   tags:
        - run-docker-website
-
-- name: Build Website Container
-  command: docker build -t {{website_container}} {{website_dir}}
-  tags:
-      - build-website
-
-- name: Push website image to docker hub
-  command: docker push {{website_container}}:latest
-  tags:
-      - push-website-dockerhub
