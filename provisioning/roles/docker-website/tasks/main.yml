@@ -46,4 +46,19 @@
            - "{{http_port}}:{{http_default_port}}"
            - "{{ssh_port}}:{{ssh_default_port}}"
   tags:
-       - run-docker-website
+       - deploy-website
+
+- name: Copy Docker Compose yml file
+  template: src=docker-compose.j2 dest={{home_dir}}{{website_docker_compose_config}}
+  tags:
+      - copy-compose-config
+
+- name: Copy Docker Compose environment file
+  template: src=compose.j2 dest={{home_dir}}{{website_env}}
+  tags:
+      - copy-compose-env
+
+- name: Deploy via Docker Compose
+  command: docker-compose up -d
+  tags:
+      - run-website-compose
