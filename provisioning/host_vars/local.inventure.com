@@ -78,6 +78,8 @@ inventure_api_loan_application_endpoint: http://apinew.lh/api/LoanApplication
 inventure_api_loan_endpoint: http://apinew.lh/api/Loan
 inventure_api_transaction_endpoint: http://apinew.lh/api/Transaction
 inventure_api_loan_repayment_endpoint: http://apinew.lh/api/LoanRepayment
+inventure_api_people_experiment_endpoint: http://localhost:9009/api/PeopleExperiment
+inventure_api_experiment_endpoint: http://localhost:9009/api/Experiment
 zendesk_company_name: https://inventuremobile1427108962.zendesk.com
 zendesk_user: accounts@inventure.com
 zendesk_credential: imimmhDDzVB3lVCTZMWkzzYN4c8wFZOFlAIZws0k
