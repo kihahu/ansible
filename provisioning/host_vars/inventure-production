@@ -45,6 +45,7 @@ inventure_api_people_endpoint: http://api.inventureaccess.com/api/People
 inventure_api_people_additional_data_endpoint: http://api.inventureaccess.com/api/PeopleAdditionalData
 inventure_api_loan_application_endpoint: http://api.inventureaccess.com/api/LoanApplication
 inventure_api_loan_endpoint: http://api.inventureaccess.com/api/Loan
+inventure_api_loan_type_endpoint: http://api.inventureaccess.com/api/LoanType
 inventure_api_transaction_endpoint: http://api.inventureaccess.com/api/Transaction
 inventure_api_loan_repayment_endpoint: http://api.inventureaccess.com/api/LoanRepayment
 inventure_api_people_experiment_endpoint: http://api.inventureaccess.com/api/PeopleExperiment
@@ -72,8 +73,8 @@ zd_incoming_req_endpoint: http://localhost:5004/messaging/incoming/zendesk
 # base db configs
 iv_services_db_name: inventure_services
 iv_services_db_host: insightdb.ceiehgxanvdu.us-west-2.rds.amazonaws.com
-iv_services_db_user: fred
-iv_services_db_pass: orange00750
+iv_services_db_user: services
+iv_services_db_pass: rh8473oe392hf0hh
 
 # slack
 slack_incoming_webhook_endpoint: https://hooks.slack.com/services/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

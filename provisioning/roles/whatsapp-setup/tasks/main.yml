@@ -142,6 +142,7 @@
   tags:
     - zd-ticket-proc
     - zd-ticket-proc-web-app
+    - zd-ticket-proc-web-app-wsgi
 
 - name: Zendesk Ticket Proc Flask application - Enable vhost
   command: a2ensite {{zd_ticket_proc_api_name}}.conf

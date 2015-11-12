@@ -76,6 +76,7 @@ inventure_api_people_endpoint: http://apinew.lh/api/People
 inventure_api_people_additional_data_endpoint: http://apinew.lh/api/PeopleAdditionalData
 inventure_api_loan_application_endpoint: http://apinew.lh/api/LoanApplication
 inventure_api_loan_endpoint: http://apinew.lh/api/Loan
+inventure_api_loan_type_endpoint: http://apinew.lh/api/LoanType
 inventure_api_transaction_endpoint: http://apinew.lh/api/Transaction
 inventure_api_loan_repayment_endpoint: http://apinew.lh/api/LoanRepayment
 inventure_api_people_experiment_endpoint: http://localhost:9009/api/PeopleExperiment
