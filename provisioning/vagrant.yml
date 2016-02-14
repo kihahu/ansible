@@ -4,16 +4,16 @@
   sudo_user: root
   remote_user: vagrant
   roles:
-    - { role: server_setup, tags: [ 'development' ] }
+    - { role: server-setup, tags: [ 'development' ] }
 
 - hosts: production
   sudo: yes
   remote_user: ubuntu
   roles:
-    - { role: server_setup, tags: [ 'production' ] }
+    - { role: server-setup, tags: [ 'production' ] }
 
 - hosts: staging
   sudo: yes
   remote_user: ubuntu
   roles:
-    - { role: server_setup }
+    - { role: server-setup }

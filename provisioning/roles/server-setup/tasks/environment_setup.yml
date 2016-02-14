@@ -1,0 +1,9 @@
+---
+- name: Environment Setup - set up bashrc - copy new bashrc files
+  copy: src={{ item.from }} dest={{ item.to }} backup=yes
+  with_items:
+    - { from: 'env_setup/.bashrc', to: '{{ user_bashrc_file }}' }
+    - { from: 'env_setup/.root_bashrc', to: '{{ root_bashrc_file }}' }
+  tags:
+    - bash
+    - env-setup

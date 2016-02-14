@@ -1,0 +1,42 @@
+---
+- name: Apache Setup - Install Apache
+  apt: name=apache2 state=latest
+  notify:
+    - restart apache
+  tags:
+    - apache-setup
+
+- name: Apache Setup - Install mod wsgi
+  apt: name=libapache2-mod-wsgi state=latest
+  notify:
+    - restart apache
+  tags:
+    - mod_wsgi
+    - apache-setup
+  tags:
+    - apache-setup
+
+- name: Apache Setup - push fdqn file
+  copy: content="ServerName "{{ inventory_hostname }} dest={{ apache_fqdn_path }}
+  ignore_errors: True
+  register: push_fdqn_file
+
+- name: Apache Setup - push fdqn file on Ubuntu 13.04+
+  copy: content="ServerName "{{ inventory_hostname }} dest={{ apache_conf_path }}"fdqn.conf"
+  when: push_fdqn_file|failed
+
+- name: Apache Setup - enable mod_rewrite
+  command: a2enmod rewrite
+  sudo: yes
+  notify:
+    - restart apache
+  tags:
+    - mod_rewrite
+    - apache-setup
+
+- name: Apache Setup - add apache user to vagrant group
+  user: name={{apache_user}} groups="vagrant,dialout"
+  when: "'local' in inventory_hostname"
+  ignore_errors: True
+  tags:
+    - apache-setup

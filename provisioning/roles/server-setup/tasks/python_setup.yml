@@ -1,0 +1,10 @@
+---
+- name: Install Python Pip
+  apt: name=python-pip state=latest
+  tags:
+    - pip
+
+- name: Install Python virtualenv
+  apt: name=python-virtualenv state=latest
+  tags:
+    - virtualenv

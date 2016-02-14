@@ -1,0 +1,41 @@
+---
+- name: install python software properties
+  apt: name=python-software-properties state=latest
+  tags:
+    - php-setup
+
+- name: add stable php repo
+  apt_repository: repo='ppa:ondrej/php5-5.6' state=present
+  tags:
+    - php-setup
+
+- name: Install PHP 5
+  apt: name=php5
+  tags:
+    - php-setup
+
+- name: Install PHP JSON
+  apt: name=php5-json state=latest
+  tags:
+    - php-json
+    - php-setup
+
+- name: Install MCrypt
+  apt: name=mcrypt state=latest
+  tags:
+    - php-setup
+
+- name: Install php mcrypt
+  apt: name=php5-mcrypt
+  tags:
+    - php-setup
+
+- name: Enable php mcrypt
+  command: php5enmod mcrypt
+  tags:
+    - php-setup
+
+- name: Install php 5 curl
+  apt: name=php5-curl state=latest
+  tags:
+    - php-setup
