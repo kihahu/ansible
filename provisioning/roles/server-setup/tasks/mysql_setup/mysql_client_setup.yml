@@ -1,10 +1,8 @@
 ---
-- name: Install Latest MySQL Client
-  apt: name=mysql state=Latest
+- name: MySQL Client Setup - Install Latest MySQL Client
+  apt: name=mysql-client state=latest
   register: mysql_client_install_result
   register: mysql_install_result
-  notify:
-    - restart mysql
   ignore_errors: True
   tags:
-    - mysql-client
+    - mysql-client-setup

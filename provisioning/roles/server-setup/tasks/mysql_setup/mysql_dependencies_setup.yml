@@ -4,15 +4,12 @@
   with_items:
     - libapache2-mod-auth-mysql
     - php5-mysql
-  notify:
-    - restart mysql
   ignore_errors: True
   tags:
     - mysql-deps
 
 - name: set up mysql - install python-mysqldb
   apt: name=python-mysqldb state=latest
-  when: mysql_install_result|success
   ignore_errors: True
   tags:
     - mysql-deps
