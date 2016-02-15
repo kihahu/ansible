@@ -17,13 +17,17 @@
     - apache-setup
 
 - name: Apache Setup - push fdqn file
-  copy: content="ServerName "{{ inventory_hostname }} dest={{ apache_fqdn_path }}
+  copy: content='ServerName {{ inventory_hostname }}' dest='{{ apache_fqdn_path }}'
   ignore_errors: True
   register: push_fdqn_file
+  tags:
+    - configure-apache-fdqn
 
 - name: Apache Setup - push fdqn file on Ubuntu 13.04+
-  copy: content="ServerName "{{ inventory_hostname }} dest={{ apache_conf_path }}"fdqn.conf"
+  copy: content='ServerName {{ inventory_hostname }}' dest='{{ apache_conf_path }}fdqn.conf'
   when: push_fdqn_file|failed
+  tags:
+    - configure-apache-fdqn
 
 - name: Apache Setup - enable mod_rewrite
   command: a2enmod rewrite
