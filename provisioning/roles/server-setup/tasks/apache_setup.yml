@@ -16,6 +16,15 @@
   tags:
     - apache-setup
 
+- name: Apache Setup - Enable sslmod
+  command: a2enmod ssl
+  sudo: yes
+  notify:
+    - restart apache
+  tags:
+    - ssl_mod
+    - apache-setup
+
 - name: Apache Setup - push fdqn file
   copy: content='ServerName {{ inventory_hostname }}' dest='{{ apache_fqdn_path }}'
   ignore_errors: True
