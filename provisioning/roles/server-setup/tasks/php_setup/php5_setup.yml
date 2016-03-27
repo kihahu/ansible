@@ -1,0 +1,36 @@
+---
+- name: add stable PHP 5 repo
+  apt_repository: repo='ppa:ondrej/php5-5.6' state=present
+  tags:
+    - php-5-setup
+
+- name: Install PHP 5
+  apt: name=php5
+  tags:
+    - php-5-setup
+
+- name: Install PHP 5 JSON
+  apt: name=php5-json state=latest
+  tags:
+    - php-5-json
+    - php-5-setup
+
+- name: Install MCrypt
+  apt: name=mcrypt state=latest
+  tags:
+    - php-5-setup
+
+- name: Install PHP 5 mcrypt
+  apt: name=php5-mcrypt
+  tags:
+    - php-5-setup
+
+- name: Enable PHP 5 mcrypt
+  command: php5enmod mcrypt
+  tags:
+    - php-5-setup
+
+- name: Install PHP 5 5 curl
+  apt: name=php5-curl state=latest
+  tags:
+    - php-5-setup

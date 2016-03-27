@@ -35,9 +35,11 @@
     - apache-setup
 
 - name: PHP Setup
-  include: php_setup.yml
+  include: php_setup/php_setup.yml
   tags:
     - php-setup
+  notify:
+    - restart apache
 
 - name: MySQL Server Setup
   include: mysql_setup/mysql_server_setup.yml

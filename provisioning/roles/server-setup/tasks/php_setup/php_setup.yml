@@ -1,0 +1,24 @@
+---
+- name: install python software properties
+  apt: name=python-software-properties state=latest
+  tags:
+    - php-setup
+    - php-5-setup
+    - php-7-setup
+
+- name: Install global language pack base
+  apt: name=language-pack-en-base
+  tags:
+    - php-setup
+    - php-5-setup
+    - php-7-setup
+
+- name: Install PHP 5
+  include: php5_setup.yml
+  tags:
+    - php-5-setup
+
+- name: Install PHP 7
+  include: php7_setup.yml
+  tags:
+    - php-7-setup

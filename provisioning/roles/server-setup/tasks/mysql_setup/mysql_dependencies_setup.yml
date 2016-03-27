@@ -4,6 +4,7 @@
   with_items:
     - libapache2-mod-auth-mysql
     - php5-mysql
+    - php7.0-mysql
   ignore_errors: True
   tags:
     - mysql-deps
