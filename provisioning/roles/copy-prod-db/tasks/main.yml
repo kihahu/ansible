@@ -1,0 +1,39 @@
+---
+- include_vars: mysql_secret.yml
+
+- name: Create the temp sync folder to dump schemas
+  file: path={{destination_folder}} state=directory
+  tags:
+     - setup
+
+- name: Copy .my.cnf
+  template: src=.my.cnf.j2 dest=/root/.my.cnf
+  tags:
+     - setup
+
+- name: Create databases loans_qa,loans_qa2,loans_staging
+  mysql_db: name={{item}} state=present login_host={{hostname1}} login_user={{username}} login_password={{password1}}
+  with_items:
+      - "loans_qa"
+      - "loans_qa2"
+      - "loans_staging"
+  tags:
+    - create-dbs
+
+- copy: src=tables dest={{destination_folder}}/tables
+  tags:
+    - copy-tables
+
+# Execute the script to dump and restore specific tables
+- template: src=sync_prod_db.j2 dest={{destination_folder}}/sync_prod_db.sh
+  tags:
+    - execute
+
+- name: execute sync script
+  command: sh {{destination_folder}}/sync_prod_db.sh
+    - execute
+
+- name: clean up the tmp directory
+  file: path={{destination_folder}} state=absent
+  tags:
+    - cleanup
