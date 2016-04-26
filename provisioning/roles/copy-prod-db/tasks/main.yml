@@ -14,6 +14,7 @@
 - name: Create databases loans_qa,loans_qa2,loans_staging
   mysql_db: name={{item}} state=present login_host={{hostname1}} login_user={{username}} login_password={{password1}}
   with_items:
+      - "loans_dev"
       - "loans_qa"
       - "loans_qa2"
       - "loans_staging"
