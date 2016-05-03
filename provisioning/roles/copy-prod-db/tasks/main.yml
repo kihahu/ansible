@@ -18,6 +18,7 @@
       - "loans_qa"
       - "loans_qa2"
       - "loans_staging"
+      - "loans_demo"
   tags:
     - create-dbs
 
