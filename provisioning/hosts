@@ -13,3 +13,6 @@ services-prod-1 ansible_ssh_host=172.31.8.240 ansible_ssh_port=22 ansible_ssh_us
 
 [internal_database]
 internaldb ansible_ssh_host=172.31.9.88 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+
+[sumologic]
+devops_1 ansible_ssh_host=172.31.4.189 ansible_ssh_port=22 ansible_ssh_user=ubuntu
