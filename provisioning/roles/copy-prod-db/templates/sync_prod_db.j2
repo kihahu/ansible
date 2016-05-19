@@ -1,22 +1,22 @@
 #!/bin/bash
 
-#Dump the whole db with no data
+# Dump the whole db with no data
 mysqldump --single-transaction --no-data -u {{username}} -p"{{password}}" -h {{hostname}} {{database}} > {{destination_folder}}/{{database}}.sql
 
-#Import the emtpy schema into the internal dbs loans_qa,qa2,staging
-for i in  {{database_qa}} {{database_qa2}} {{database_staging}} {{database_dev}}
-do 
+# Import the emtpy schema into the internal dbs loans_qa,qa2,staging
+for i in  {{ destination_databases }}
+do
 	mysql $i < {{destination_folder}}/{{database}}.sql
 done
 
-#dump the tables with data
+# dump the tables with data
 for i in $(cat {{destination_folder}}/{{tables}})
-do 
+do
 	mysqldump --single-transaction -u {{username}} -p"{{password}}" -h {{hostname}} {{database}} $i > {{destination_folder}}/{{database}}_$i.sql
 done
 
-#Import the dumped tables into the internal mysql server
-for j in {{database_qa}} {{database_qa2}} {{database_staging}} {{database_dev}}
+# Import the dumped tables into the internal mysql server
+for j in {{ destination_databases }}
 do
 	for i in $(cat {{destination_folder}}/{{tables}})
 	do
