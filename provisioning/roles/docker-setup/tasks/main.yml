@@ -1,0 +1,9 @@
+---
+- name: Upgrade apt packages
+  include: package_update.yml
+  tags:
+    - package-update
+
+- name: Install docker
+  include: docker_setup.yml
+
