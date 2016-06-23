@@ -1,0 +1,56 @@
+---
+#  sumologic_collector_application_log_path:
+#    - name: "dev/api/apache/access"
+#      path: "/var/lib/docker/volumes/*/*/apache2/server_api_dev_access.log"
+#      use_multiline: false
+#      category: "dev/api/apache/access"
+#
+#    - name: "dev/api/apache/error"
+#      path: "/var/lib/docker/volumes/*/*/apache2/server_api_dev_error.log"
+#      use_multiline: false
+#      category: "dev/api/apache/access/error"
+sumologic_collector_application_log_path:
+-  - name: "APP LOG"
+-    path: "/var/log/APP.log"
+-    use_multiline: false
+-    category: "APP"
+
+destination_folder: "/tmp/syncfolder"
+database: "loans"
+database_qa: "loans_qa"
+database_qa2: "loans_qa2"
+database_staging: "loans_staging"
+database_demo: "loans_demo"
+database_dev: "loans_dev"
+internal_databases:
+  - loans_qa
+  - loans_qa2
+  - loans_dev
+  - loans_staging
+  - loans_demo
+
+files_to_copy:
+  - tables
+  - users.sql
+  - user_admin_paths.sql
+  
+source_db_host: "backup-replica.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+target_db_host: "internal-testing-db.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+tables: "tables"
+source_db_username: "{{ vault_source_db_username }}"
+target_db_username: "{{ vault_target_db_username }}"
+source_db_password: "{{ vault_source_db_password }}"
+target_db_password: "{{ vault_target_db_password }}"
+dump_tables:
+  - admin_config
+  - auth_code_status
+  - auth_code_type
+  - auth_verification_question
+  - error_message_template
+  - experiment
+  - loan_type
+  - manual_payers
+  - message_template
+  - referral_reward_type
+  - user_admin_paths
+  - users

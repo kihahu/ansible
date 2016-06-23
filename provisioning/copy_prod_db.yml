@@ -1,7 +1,7 @@
 ---
-- hosts: internal_database
-  sudo: yes
-  sudo_user: root
+- hosts: devops
+  become: yes
+  become_user: root
   remote_user: ubuntu
   gather_facts: False
   roles:

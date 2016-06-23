@@ -1,0 +1,8 @@
+---
+source_db_host: "backup-replica.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+target_db_host: "internal-testing-db.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+tables: "tables"
+source_db_username: "{{ vault_ke_source_db_username }}"
+target_db_username: "{{ vault_ke_target_db_username }}"
+source_db_password: "{{ vault_ke_source_db_password }}"
+target_db_password: "{{ vault_ke_target_db_password }}"

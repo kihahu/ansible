@@ -1,9 +1,0 @@
----
-#internal mysql configs
-destination_folder: "/tmp/syncfolder"
-database: "loans"
-destination_databases: "loans_qa loans_dev loans_qa2 loans_staging loans_demo"
-hostname: "backup-replica.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
-hostname1: "internal-testing-db.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
-tables: "tables"
-username: insightuser

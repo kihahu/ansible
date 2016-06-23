@@ -9,4 +9,12 @@ manual_payers
 message_template
 referral_reward_type
 user_admin_paths
+do_not_disturb
+error_message_template
+experiment
+loan_type
+manual_payers
+message_template
+referral_reward_type
+user_admin_paths
 users

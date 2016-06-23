@@ -1,0 +1,20 @@
+---
+database: "loans"
+database_qa: "loans_ph_qa"
+database_qa2: "loans_ph_qa2"
+database_staging: "loans_ph_staging"
+database_demo: "loans_ph_demo"
+database_dev: "loans_ph_dev"
+internal_databases:
+  - loans_ph_qa
+  - loans_ph_qa2
+  - loans_ph_dev
+  - loans_ph_staging
+  - loans_ph_demo
+source_db_host: "backup-replica.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+target_db_host: "internal-testing-db-aps.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
+tables: "tables"
+source_db_username: "{{ vault_ph_source_db_username }}"
+target_db_username: "{{ vault_ph_target_db_username }}"
+source_db_password: "{{ vault_ph_source_db_password }}"
+target_db_password: "{{ vault_ph_target_db_password }}"
