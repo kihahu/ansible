@@ -56,3 +56,7 @@
   tags:
     - mysql-deps
 
+- name: SSH setup
+  include: ssh_setup.yml
+
+

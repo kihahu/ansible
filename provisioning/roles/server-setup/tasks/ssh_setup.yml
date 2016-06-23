@@ -1,0 +1,5 @@
+---
+- name: Specify strong ssh ciphers
+  lineinfile: dest=/etc/ssh/sshd_config state=present backup=yes insertafter="UsePAM yes" line="Ciphers aes128-ctr,aes192-ctr,aes256-ctr\nMACs hmac-sha1,umac-64@openssh.com,hmac-ripemd160"
+  tags:
+    - secure-config
