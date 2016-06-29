@@ -58,5 +58,7 @@
 
 - name: SSH setup
   include: ssh_setup.yml
+  tags:
+    - ssh-setup
 
 

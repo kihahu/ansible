@@ -6,8 +6,33 @@
     - php-5-setup
     - php-7-setup
 
-- name: Install global language pack base
-  apt: name=language-pack-en-base
+- name: Install globally required packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - libapache2-mod-php5
+    - language-pack-en-base
+  tags:
+    - php-setup
+    - php-5-setup
+    - php-7-setup
+
+- name: Remove deprecated PHP repo
+  apt_repository: repo='ppa:ondrej/php5' state=absent
+  ignore_errors: True
+  tags:
+    - php-setup
+    - php-5-setup
+    - php-7-setup
+
+- name: add stable PHP 5 repo
+  apt_repository: repo='ppa:ondrej/php'
+  tags:
+    - php-setup
+    - php-5-setup
+    - php-7-setup
+
+- name: Update packages list
+  include: ../package_update.yml
   tags:
     - php-setup
     - php-5-setup
