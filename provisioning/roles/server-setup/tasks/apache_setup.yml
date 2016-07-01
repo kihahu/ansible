@@ -53,3 +53,11 @@
   ignore_errors: True
   tags:
     - apache-setup
+
+- name: Apache Setup - disable weak SSLv2/3
+  lineinfile: dest=/etc/apache2/mods-available/ssl.conf state=present backup=yes regexp="SSLProtocol all" line="SSLProtocol all -SSLv2 -SSLv3"
+  notify:
+    - restart apache
+  tags:
+    - apache-setup
+    - test
