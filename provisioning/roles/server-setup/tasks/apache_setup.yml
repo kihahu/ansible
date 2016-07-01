@@ -13,8 +13,6 @@
   tags:
     - mod_wsgi
     - apache-setup
-  tags:
-    - apache-setup
 
 - name: Apache Setup - Enable sslmod
   command: a2enmod ssl

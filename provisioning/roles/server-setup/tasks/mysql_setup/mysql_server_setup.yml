@@ -1,7 +1,6 @@
 ---
 - name: Install Latest MySQL Server
   apt: name=mysql-server state=latest
-  register: mysql_server_install_result
   register: mysql_install_result
   notify:
     - restart mysql
