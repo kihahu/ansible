@@ -7,4 +7,5 @@ inventure-api.sublime-project
 inventure-api.sublime-workspace
 Vagrantfile
 *.swp
+# ansible retry files
 *.retry

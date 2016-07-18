@@ -15,6 +15,7 @@
   tags:
     - mysql-server
     - mysql-server-setup
+    - mysql-server-security-setup
 
 - name: First time set mysql password
   mysql_user: name=root host=localhost password={{ root_db_password }} login_password="" login_user=root
@@ -23,6 +24,7 @@
   tags:
     - mysql-server
     - mysql-server-setup
+    - mysql-server-security-setup
 
 - name: set up mysql - update mysql root password for all root accounts
   mysql_user: name=root host=localhost password={{ root_db_password }}
@@ -30,6 +32,7 @@
   tags:
     - mysql-server
     - mysql-server-setup
+    - mysql-server-security-setup
 
 - name: update bind address settings in mysql
   command: sed -i "s/bind-address.*/bind-address = {{mysql_bind_address}}/" /etc/mysql/my.cnf
@@ -49,6 +52,7 @@
   tags:
     - mysql-server
     - mysql-server-setup
+    - mysql-server-security-setup
 
 - name: set up mysql - ensure anonymous users are not in the database
   mysql_user: name='' host={{ item }} state=absent
@@ -58,3 +62,4 @@
   tags:
     - mysql-server
     - mysql-server-setup
+    - mysql-server-security-setup
