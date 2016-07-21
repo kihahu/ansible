@@ -1,0 +1,6 @@
+---
+AWS_ENV_VARS:
+  AWS_ACCESS_KEY_ID: "{{ vault_aws_s3_access_id }}"
+  AWS_SECRET_ACCESS_KEY: "{{ vault_aws_s3_access_key }}"
+aws_mysql_archive_bucket: "mysql-archive-bucket"
+tmp_archiving_folder: /mnt/syncfolder
