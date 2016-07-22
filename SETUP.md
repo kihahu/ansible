@@ -36,7 +36,7 @@ vagrant up
 # you may be asked to put in your computer's Administrator password to allow NFS exports. This allows the virtual machine to access the files on your local computer
 
 # configure your hosts file to include your virtual machine
-# edit your /etc/hosts file, and add "inventure-local  192.168.33.10" to the end of the file (without the quotes)
+# edit your /etc/hosts file, and add "192.168.33.10 inventure-local" to the end of the file (without the quotes)
 
 # symlink the virtual machine's SSH key to a common path in ~/.ssh/
 ln -s ~/Code/env/inventure/.vagrant/machines/local.inventure.com/virtualbox/private_key ~/.ssh/inventure-local.key
