@@ -1,24 +1,27 @@
-[dev]
+[local]
 local.inventure.com ansible_ssh_host=iv-local ansible_ssh_port=22 ansible_ssh_private_key_file=.vagrant/machines/local.inventure.com/virtualbox/private_key
 
 [staging]
-# zendesk services
-ke-services-dev-1 ansible_ssh_host=172.31.16.213 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 # payments
+[ke-payments]
 ke-payments-dev-1 ansible_ssh_host=172.31.16.213 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ke-payments-prd-1 ansible_ssh_host=172.31.43.62 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+
+[ph-payments]
 ph-payments-dev-1 ansible_ssh_host=172.31.16.66 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-payments-prd-1 ansible_ssh_host=172.31.16.65 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [qa]
 
-
-[production]
-# zendesk services
+# services
+[ke-services]
+ke-services-dev-1 ansible_ssh_host=172.31.16.213 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 ke-services-prd-1 ansible_ssh_host=172.31.8.240 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
-# payments
-ke-payments-prd-1 ansible_ssh_host=172.31.43.62 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ph-payments-prd-1 ansible_ssh_host=172.31.16.65 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+[ph-services]
+ph-services-dev-1 ansible_ssh_host=172.31.18.137 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-services-prd-1 ansible_ssh_host=172.31.11.87 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [ke-devops]
 ke-devops_1 ansible_ssh_host=172.31.4.189 ansible_ssh_port=22 ansible_ssh_user=ubuntu
@@ -29,3 +32,15 @@ ph-devops_1 ansible_ssh_host=172.31.11.88 ansible_ssh_port=22 ansible_ssh_user=u
 [devops:children]
 ke-devops
 ph-devops
+
+[dev]
+ke-payments-dev-1
+ph-payments-dev-1
+ke-services-dev-1
+ph-services-dev-1
+
+[production]
+ke-payments-prd-1
+ph-payments-prd-1
+ke-services-prd-1
+ke-services-prd-1
