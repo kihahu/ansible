@@ -1,19 +1,26 @@
 ---
-- hosts: dev
-  sudo: yes
-  sudo_user: root
+- hosts: local
+  become: yes
+  become_user: root
   remote_user: vagrant
+  roles:
+    - { role: server-setup, tags: [ 'local' ] }
+
+- hosts: dev
+  become: yes
+  become_user: root
+  remote_user: ubuntu
   roles:
     - { role: server-setup, tags: [ 'development' ] }
 
 - hosts: production
-  sudo: yes
+  become: yes
   remote_user: ubuntu
   roles:
     - { role: server-setup, tags: [ 'production' ] }
 
 - hosts: staging
-  sudo: yes
+  become: yes
   remote_user: ubuntu
   roles:
     - { role: server-setup }

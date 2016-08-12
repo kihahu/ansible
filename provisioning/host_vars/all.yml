@@ -10,3 +10,4 @@ slack_incoming_webhook_endpoint: https://hooks.slack.com/services/T024F7881/B04J
 # memcache
 memcache_server: "127.0.0.1"
 memcache_port: "11211"
+mysql_bind_address: "0.0.0.0"

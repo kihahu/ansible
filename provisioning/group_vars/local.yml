@@ -20,7 +20,7 @@ supervisor_include_path: /etc/supervisor/conf.d/
 supervisor_log_dir: /var/log/supervisor
 
 # env-setup
-user_bashrc_file: /home/ubuntu/.bashrc
+user_bashrc_file: /home/vagrant/.bashrc
 root_bashrc_file: /root/.bashrc
 
 # apache-setup

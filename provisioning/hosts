@@ -1,5 +1,7 @@
 [local]
-local.inventure.com ansible_ssh_host=iv-local ansible_ssh_port=22 ansible_ssh_private_key_file=.vagrant/machines/local.inventure.com/virtualbox/private_key
+inventure-local ansible_ssh_host=inventure-local ansible_ssh_port=22 ansible_ssh_private_key_file=~/.ssh/inventure-local.key
+
+[dev]
 
 [staging]
 
