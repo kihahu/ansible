@@ -54,3 +54,4 @@ dump_tables:
   - referral_reward_type
   - user_admin_paths
   - users
+tmp_aws_alerts: /tmp/aws_alerts/
