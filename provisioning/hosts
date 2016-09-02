@@ -5,14 +5,19 @@ inventure-local ansible_ssh_host=inventure-local ansible_ssh_port=22 ansible_ssh
 
 [staging]
 
+# server api
+[ph-api]
+ph-api-prd-1 ansible_ssh_host=172.31.8.16 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-api-prd-2 ansible_ssh_host=172.31.28.180 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+
 # payments
 [ke-payments]
 ke-payments-dev-1 ansible_ssh_host=172.31.16.213 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 ke-payments-prd-1 ansible_ssh_host=172.31.43.62 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [ph-payments]
-ph-payments-dev-1 ansible_ssh_host=172.31.16.66 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ph-payments-prd-1 ansible_ssh_host=172.31.16.65 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-payments-dev-1 ansible_ssh_host=172.31.11.85 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-payments-prd-1 ansible_ssh_host=172.31.11.87 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [qa]
 
@@ -23,7 +28,7 @@ ke-services-prd-1 ansible_ssh_host=172.31.8.240 ansible_ssh_port=22 ansible_ssh_
 
 [ph-services]
 ph-services-dev-1 ansible_ssh_host=172.31.18.137 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ph-services-prd-1 ansible_ssh_host=172.31.11.87 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-services-prd-1 ansible_ssh_host=172.31.8.15 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 ph-profiling-prd-1 ansible_ssh_host=172.31.15.252 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [ke-devops]
@@ -48,3 +53,5 @@ ph-payments-prd-1
 ke-services-prd-1
 ph-services-prd-1
 ph-profiling-prd-1
+ph-api-prd-1
+ph-api-prd-2
