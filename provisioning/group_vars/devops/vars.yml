@@ -31,8 +31,6 @@ internal_databases:
 
 files_to_copy:
   - tables
-  - users.sql
-  - user_admin_paths.sql
   
 source_db_host: "backup-replica.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
 target_db_host: "internal-testing-db.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
@@ -52,8 +50,15 @@ dump_tables:
   - manual_payers
   - message_template
   - referral_reward_type
-  - user_admin_paths
+  - do_not_disturb
+  - error_message_template
+  - experiment
+  - loan_type
+  - manual_payers
+  - message_template
+  - referral_reward_type
   - users
+  - user_admin_paths
 
 newrelic_repo: "deb http://apt.newrelic.com/debian/ newrelic non-free"
 newrelic_loglevel: info

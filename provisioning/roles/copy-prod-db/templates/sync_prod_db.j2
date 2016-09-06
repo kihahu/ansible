@@ -1,32 +1,48 @@
 #!/bin/bash
-destination={{destination_folder}}
-database={{database}}
-database_qa={{database_qa}}
-database_qa2={{database_qa2}}
-database_staging={{database_staging}}
-hostname={{hostname}}
-tables={{destination_folder}}/{{tables}}
 
 #Dump the whole db with no data
-mysqldump --single-transaction --no-data -u {{ source_db_username }} -p"{{ source_db_password }}" -h {{ source_db_host }} {{ database }} > {{destination_folder}}/{{database}}.sql
+dump_loans_schema()
+{
+	loans_dump_status=$(mysqldump --single-transaction --no-data -u {{ source_db_username }} -p"{{ source_db_password }}" -h {{ source_db_host }} {{ database }} --result-file={{destination_folder}}/{{database}}.sql)
+	if [ "$?"" -eq "0" ]
+	then
+		echo "Success dumping the {{ database }} schema"
+	else
+		echo "Failed to dump the {{ database }} schema"
+	fi
+}
 
-#Import the emtpy schema into the internal dbs loans_qa,qa2,staging
-for i in  {{database_qa}} {{database_qa2}} {{database_staging}} {{database_demo}} {{database_dev}}
-do 
-	mysql $i < {{destination_folder}}/{{database}}.sql
-done
+#Import the emtpy schema into the internal dbs qa,qa2,staging,demo
+import_loans_schema()
+{
+	for i in  {{database_qa}} {{database_qa2}} {{database_staging}} {{database_demo}} {{database_dev}}
+	do 
+		mysql -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} $i < {{destination_folder}}/{{database}}.sql
+	done
+}
 
-#dump the tables with data
-for i in $(cat {{destination_folder}}/{{tables}})
-do 
-	mysqldump --single-transaction -u {{ source_username }} -p"{{ source_password }}" -h {{ source_host }} {{ database }} $i > {{destination_folder}}/{{database}}_$i.sql
-done
+#dump the base tables from internal instance qa db
+dump_base_tables()
+{
+	for i in $(cat {{destination_folder}}/{{tables}})
+	do 
+		mysqldump --single-transaction -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} {{ database_qa }} $i > {{destination_folder}}/{{database}}_$i.sql
+	done
+}
 
 #Import the dumped tables into the internal mysql server
-for j in {{database_qa}} {{database_qa2}} {{database_staging}} {{database_demo}} {{database_dev}}
-do
-	for i in $(cat {{destination_folder}}/{{tables}})
+import_base_tables()
+{
+	for j in {{ database_qa }} {{ database_qa2 }} {{ database_staging }} {{ database_demo }} {{ database_dev }}
 	do
-		mysql $j < {{destination_folder}}/{{database}}_$i.sql
+		for i in $(cat {{destination_folder}}/{{tables}})
+		do
+			mysql -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} $j < {{ destination_folder }}/{{ database }}_$i.sql
+		done
 	done
-done
+}
+
+dump_base_tables
+dump_loans_schema
+import_loans_schema
+import_base_tables

@@ -1,7 +1,12 @@
 #!/bin/bash
 
-#Import the dumped tables into the internal mysql server
-for j in {{ database_qa }} {{ database_qa2 }} {{ database_staging }} {{ database_demo }} {{ database_dev }}
-do
-	mysql -u {{ target_db_username }} -p"{{ target_db_password }}" -h {{ target_db_host }} $j < {{ destination_folder }}/{{ database }}.sql
-done
+#Import the dumped loans schema with no data into the internal mysql server
+new_country_import()
+{
+	for j in {{ database_qa }} {{ database_qa2 }} {{ database_staging }} {{ database_demo }} {{ database_dev }}
+	do
+		mysql -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} $j < {{ destination_folder }}/{{ database }}.sql
+	done
+}
+
+new_country_import

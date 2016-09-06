@@ -1,10 +1,15 @@
 #!/bin/bash
 
 #Import the dumped tables into the internal mysql server
-for j in {{ database_qa }} {{ database_qa2 }} {{ database_staging }} {{ database_demo }} {{ database_dev }}
-do
-	for i in $(cat {{ destination_folder }}/{{ tables }})
+new_country_base_tables_import()
+{
+	for j in {{ database_qa }} {{ database_qa2 }} {{ database_staging }} {{ database_demo }} {{ database_dev }}
 	do
-		mysql -u {{ target_db_username }} -p"{{ target_db_password }}" -h {{ target_db_host }} $j < {{ destination_folder }}/$i.sql
+		for i in $(cat {{ destination_folder }}/{{ tables }})
+		do
+			mysql -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} $j < {{ destination_folder }}/$i.sql
+		done
 	done
-done
+}
+
+new_country_base_tables_import

@@ -15,10 +15,7 @@
     - country-setup-pull
     - country-setup-push
 
-- name: Copy loans db base tables
-  copy: src=tables dest={{ destination_folder }}/tables
-
-- name: copy the tables file
+- name: copy the base tables file
   copy: src={{ item }} dest={{ destination_folder }}/{{ item }}
   with_items:
     - "{{ files_to_copy }}"

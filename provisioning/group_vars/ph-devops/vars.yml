@@ -2,17 +2,17 @@
 country_code: ph
 aws_region: ap-southeast-1
 database: "loans"
-database_qa: "loans_ph_qa"
-database_qa2: "loans_ph_qa2"
-database_staging: "loans_ph_staging"
-database_demo: "loans_ph_demo"
-database_dev: "loans_ph_dev"
+database_qa: "loans_qa"
+database_qa2: "loans_qa2"
+database_staging: "loans_staging"
+database_demo: "loans_demo"
+database_dev: "loans_dev"
 internal_databases:
-  - loans_ph_qa
-  - loans_ph_qa2
-  - loans_ph_dev
-  - loans_ph_staging
-  - loans_ph_demo
+  - loans_qa
+  - loans_qa2
+  - loans_dev
+  - loans_staging
+  - loans_demo
 source_db_host: "ap-singapore-replica.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
 target_db_host: "internal-testing-db-aps.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
 tables: "tables"

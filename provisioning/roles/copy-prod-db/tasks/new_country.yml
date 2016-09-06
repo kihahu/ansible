@@ -12,13 +12,13 @@
      - country-setup-pull
 
 - name: Dump functional tables seeded with data
-  command: mysqldump -u {{ source_db_username }} -h {{ source_db_host }} -p'{{ source_db_password }}' {{ database }} {{ item }} --result-file={{ destination_folder }}/{{ item }}.sql
+  command: mysqldump -u {{ target_db_username }} -h {{ target_db_host }} -p'{{ target_db_password }}' {{ database_qa }} {{ item }} --result-file={{ destination_folder }}/{{ item }}.sql
   with_items:
     - "{{ dump_tables }}"
   tags:
     - country-setup-pull
 
-- name: Pull down the db schemas
+- name: Pull down the loans schemas
   fetch: src={{ destination_folder }}/{{ database }}.sql dest={{ destination_folder }}/{{ database }}.sql flat=yes
   tags:
     - country-setup-pull

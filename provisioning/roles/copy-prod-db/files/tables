@@ -3,7 +3,6 @@ auth_code_status
 auth_code_type
 auth_verification_question
 error_message_template
-experiment
 loan_type
 manual_payers
 message_template
