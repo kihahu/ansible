@@ -54,3 +54,18 @@ dump_tables:
   - referral_reward_type
   - user_admin_paths
   - users
+
+newrelic_repo: "deb http://apt.newrelic.com/debian/ newrelic non-free"
+newrelic_loglevel: info
+newrelic_logfile: /var/log/newrelic/nrsysmond.log
+newrelic_proxy: False
+newrelic_ssl: "false"
+newrelic_ssl_ca_bundle: False
+newrelic_ssl_ca_path: False
+newrelic_pidfile: /var/run/newrelic/nrsysmond.pid
+newrelic_collector_host: collector.newrelic.com
+newrelic_timeout_seconds: 30
+newrelic_license_key: "{{ vault_newrelic_license_key }}"
+php_mods_path: "/etc/php/5.6/mods-available"
+newrelic_repo_key: "https://download.newrelic.com/548C16BF.gpg"
+newrelic_user: newrelic

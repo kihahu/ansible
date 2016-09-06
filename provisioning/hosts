@@ -32,7 +32,7 @@ ph-services-prd-1 ansible_ssh_host=172.31.8.15 ansible_ssh_port=22 ansible_ssh_u
 ph-profiling-prd-1 ansible_ssh_host=172.31.15.252 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [ke-devops]
-ke-devops_1 ansible_ssh_host=172.31.4.189 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ke-devops_1 ansible_ssh_host=172.31.3.82 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [ph-devops]
 ph-devops_1 ansible_ssh_host=172.31.11.88 ansible_ssh_port=22 ansible_ssh_user=ubuntu

@@ -1,0 +1,67 @@
+---
+- name: Set newrelic_loaded_os_family
+  set_fact:
+    newrelic_loaded_os_family: "{{ ansible_os_family }}"
+
+- name: Add New Relic repo key
+  apt_key:
+    url: "{{ newrelic_repo_key }}"
+    state: present
+  tags:
+    - add-newrelic-key
+
+- name: Add New Relic repository
+  apt_repository:
+    repo: '{{ newrelic_repo }}'
+  register: newrelic_repo
+
+- name: Install New Relic Sysmond
+  apt:
+    pkg: newrelic-sysmond
+    update_cache: yes
+    cache_valid_time: 86400
+    state: latest
+  notify:
+    - restart new relic
+
+- name: Configure New Relic Sysmond
+  template:
+    src: nrsysmod.cfg.j2
+    dest: /etc/newrelic/nrsysmond.cfg
+    group: newrelic
+    owner: root
+    mode: 0640
+  notify:
+    - restart new relic
+
+- name: Ensure New Relic Sysmond is started and enabled
+  service:
+    name: newrelic-sysmond
+    state: started
+    enabled: yes
+
+- name: Check if newrelic log is created
+  file:
+    path: "{{ newrelic_logfile }}"
+    state: file
+    owner: "{{ newrelic_user }}"
+    group: "{{ newrelic_user }}"
+  tags:
+    - check-newrelic-log
+
+- name: Install New Relic PHP Agent
+  apt:
+    pkg: newrelic-php5
+    state: latest
+  notify:
+    - php-agent
+
+- name: Configure New Relic PHP Agent
+  template:
+    src: newrelic.ini.j2
+    dest: "{{ php_mods_path }}/newrelic.ini"
+    group: root
+    owner: root
+    mode: 0640
+  notify:
+    - php-agent
