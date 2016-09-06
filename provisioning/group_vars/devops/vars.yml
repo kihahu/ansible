@@ -69,3 +69,4 @@ newrelic_license_key: "{{ vault_newrelic_license_key }}"
 php_mods_path: "/etc/php/5.6/mods-available"
 newrelic_repo_key: "https://download.newrelic.com/548C16BF.gpg"
 newrelic_user: newrelic
+tmp_aws_alerts: /tmp/aws_alerts/

@@ -127,4 +127,12 @@ Congrats! At this point, you have a fully functional Ubuntu Server running on yo
 
 To set up a specific application, please run the deploy scripts for local environment available in that project.
 
+# USING THE aws-monitor-setup ROLE
+- Ensure the aws cli application is installed and configured using your IAM credentials see:
+	- http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+	- http://docs.aws.amazon.com/cli/latest/userguide/installing.html
+- To setup monitoring on a single instance you will need to filter it by its private ip using below command
+	- ` play -i hosts aws-monitor.yml -l {{ country_code }}-devops --vault-password ~/.vault -e "private_ip={{ PRIVATE_IP_GOES_HERE" ` 
+- To setup monitoring on all the instances in a region use `*` as the private ip using below command:
+	- `play -i hosts aws-monitor.yml -l {{ country_code }}-devops --vault-password ~/.vault -e "private_ip=*"`
 Happy Coding!
