@@ -1,8 +1,13 @@
 ---
-- name: Upgrade apt packages
-  include: package_update.yml
+- name: Update all packages
+  apt: update_cache=yes
   tags:
     - package-update
+
+- name: Install docker-py
+  pip: name='docker-py' state='present'
+  tags:
+    - docker-py
 
 - name: Install docker
   include: docker_setup.yml
