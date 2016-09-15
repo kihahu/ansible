@@ -1,5 +1,4 @@
 ---
-country_code: ke
 source_db_host: "backup-replica.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
 target_db_host: "internal-testing-db.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
 tables: "tables"
@@ -30,9 +29,6 @@ archive_tables:
   - ARCHIVED_people_additional_data
   - ARCHIVED_people_experiment
   - ARCHIVED_people_referrals
-aws_region: us-west-2
 archive_db_password: "{{ vault_ke_archive_db_password }}"
 archive_db_username: "{{ vault_ke_archive_db_username }}"
 archive_db_host: "readreplica-2.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
-
-sns_arn: "arn:aws:sns:us-west-2:347023968887:Inventure-Alerts"

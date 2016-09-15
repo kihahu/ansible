@@ -1,0 +1,93 @@
+---
+- name: Send Alert when starting Archive process
+  sns: topic="{{ sns_arn_notices }}" region="{{ aws_region }}" msg="Payments logs Archiving started" subject="Archiving Role" aws_access_key="{{ AWS_S3_ACCESS_KEY_ID }}" aws_secret_key="{{ AWS_S3_SECRET_ACCESS_KEY }}"
+  tags:
+    - send-alert
+
+- name: Create the backup bucket.
+  s3: bucket="{{ s3_payments_logs_bucket }}-{{ country_code }}" mode=create aws_access_key="{{ EC2_AWS_ACCESS_KEY_ID }}" aws_secret_key="{{ AWS_S3_SECRET_ACCESS_KEY }}"
+  register: create_bucket
+  ignore_errors: True
+  tags:
+    - create-backup-bucket
+
+- name: Failure Alert
+  include: sns-alert.yml
+  vars:
+     stderror_msg: "Failed to create s3 bucket!"
+  when: create_bucket|failed
+  tags:
+    - send-alert
+
+- name: Get The List of Directories to Archive
+  find: paths="{{ payment_logs_dir }}" file_type="directory"
+  when: create_bucket|failed
+  register: folders_to_archive
+  ignore_errors: True
+  tags:
+    - get-folders-with-log-archives
+
+- name: Failure Alert
+  include: sns-alert.yml
+  vars:
+     stderror_msg: "Failed to get a list of Directories to archive"
+  when: folders_to_archive|failed
+  tags:
+    - send-alert
+
+- name: Create corresponding folders on s3
+  s3: bucket="{{ s3_payments_logs_bucket }}-{{ country_code }}" object={{ item.path }} mode=create aws_access_key="{{ AWS_S3_ACCESS_KEY_ID }}" aws_secret_key="{{ AWS_S3_SECRET_ACCESS_KEY }}"
+  when: folders_to_archive|success
+  register: create_folders
+  ignore_errors: True
+  with_items:
+    - "{{ folders_to_archive.files }}"
+  tags:
+    - create-folders-on-s3
+
+- name: Failure Alert
+  include: sns-alert.yml
+  vars:
+     stderror_msg: "Failed to create folders on s3"
+  when: create_folders|failed
+  tags:
+    - send-alert
+
+- name: Get The List of Logs to Archive
+  find: paths="{{ payment_logs_dir }}" patterns="*.gz" recurse="yes"
+  when: create_folders|success
+  register: files_to_archive
+  ignore_errors: True
+  tags:
+    - get-files-to-backup
+
+- name: Failure Alert
+  include: sns-alert.yml
+  vars:
+     stderror_msg: "Failed to to get logs to archive."
+  when: files_to_archive|failed
+  tags:
+    - send-alert
+
+- name: Upload the files to s3
+  s3: bucket="{{ s3_payments_logs_bucket }}-{{ country_code }}" object="{{ item.path }}" src="{{ item.path }}"  aws_access_key="{{ AWS_S3_ACCESS_KEY_ID }}" aws_secret_key="{{ AWS_S3_SECRET_ACCESS_KEY }}" mode=put overwrite=never
+  when: files_to_archive|success
+  register: upload_to_s3
+  ignore_errors: True
+  with_items:
+    - "{{ files_to_archive.files }}"
+
+- name: Send Alert After completing archiving
+  sns: topic="{{ sns_arn_notices }}" region="{{ aws_region }}" subject="Archiving Role" msg="Successfully archived payments logs" aws_access_key="{{ AWS_S3_ACCESS_KEY_ID }}" aws_secret_key="{{ AWS_S3_SECRET_ACCESS_KEY }}"
+  when: upload_to_s3|success
+  ignore_errors: True
+  tags:
+    - send-alert
+
+- name: Failure Alert
+  include: sns-alert.yml
+  vars:
+     stderror_msg: "Failed to upload files to s3"
+  when: upload_to_s3|failed
+  tags:
+    - send-alert

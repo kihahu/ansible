@@ -135,4 +135,13 @@ To set up a specific application, please run the deploy scripts for local enviro
 	- ` play -i hosts aws-monitor.yml -l {{ country_code }}-devops --vault-password ~/.vault -e "private_ip={{ PRIVATE_IP_GOES_HERE" ` 
 - To setup monitoring on all the instances in a region use `*` as the private ip using below command:
 	- `play -i hosts aws-monitor.yml -l {{ country_code }}-devops --vault-password ~/.vault -e "private_ip=*"`
+
+# USING THE archiving ROLE to archive
+## payments log
+- Run the ansible playbook command as shown below:
+	- `ansible-playbook -i hosts archive.yml -l payments --tags payment-logs-archive`
+## mysql archiving
+- Run the ansible playbook command as shown below:
+	- `ansible-playbook -i hosts archive.yml -l payments --tags mysql-archive`
+
 Happy Coding!

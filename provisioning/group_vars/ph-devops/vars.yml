@@ -1,6 +1,4 @@
 ---
-country_code: ph
-aws_region: ap-southeast-1
 database: "loans"
 database_qa: "loans_qa"
 database_qa2: "loans_qa2"
@@ -25,4 +23,3 @@ archive_db_password: "{{ vault_ph_archive_db_password }}"
 archive_db_username: "{{ vault_ph_archive_db_username }}"
 archive_db_host: "ap-singapore-maindb.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
 
-sns_arn: "arn:aws:sns:ap-southeast-1:347023968887:asp-singapore-alerts"

@@ -1,61 +1,15 @@
 ---
-- name: Remove destination folder
-  file: path={{ tmp_archiving_folder }} state=absent
+- name: Install boto package needed by s3 module
+  pip: name=boto
   tags:
-     - setup
-  
-- name: Create destination folder
-  file: path={{ tmp_archiving_folder }} state=directory
-  tags:
-     - setup 
+    - install-boto
 
-- name: Dump the tables to be archived
-  shell: mysqldump -u {{ archive_db_username }} -p'{{ archive_db_password }}' -h {{ archive_db_host }} --single-transaction {{ archive_database }} {{ item }} > {{ tmp_archiving_folder }}/{{ item }}-{{ ansible_date_time.date }}.sql
-  register: dump_status
-  with_items:
-    - "{{ archive_tables }}"
+- name: Mysql Archive
+  include: mysql-archive.yml
   tags:
-    - dump-tables
+    - mysql-archive
 
-- name: Fail if dump tables fails
-  fail: msg="Dump tables task failed to complete"
-  when: dump_status|failed
+- name: Payment logs Archive
+  include: payments-logs-archive.yml
   tags:
-    - dump-tables
-
-- name: Compress the dumped tables
-  command: bzip2 {{ tmp_archiving_folder }}/{{ item }}-{{ ansible_date_time.date }}.sql
-  when: dump_status|success
-  with_items:
-    - "{{ archive_tables }}"
-  tags:
-    - compress-tables
-  register: compress_status
-
-- name: Fail if compress tables fails
-  fail: msg="Compress tables task failed to complete"
-  when: compress_status|failed
-  tags:
-    - dump-tables
-
-- name: Upload files to s3
-  shell: aws s3 sync {{ tmp_archiving_folder }} s3://{{ aws_mysql_archive_bucket }}
-  environment: "{{ AWS_ENV_VARS }}"
-  register: upload_status
-  when: compress_status|success
-  tags:
-    - upload-tables
-
-- name: Fail if upload tables fails
-  fail: msg="Upload tables task failed to complete"
-  when: upload_status|failed
-  tags:
-    - dump-tables
-
-- name: Delete archived tables
-  command: mysql -u {{ archive_db_username }} -p{{ archive_db_password }} -h{{ archive_db_host }} -e "drop table {{ archive_database }}.{{ item }};"
-  when: upload_status|success
-  with_items:
-    - "{{ archive_tables }}"
-  tags:
-    - delete-tables
+    - payment-logs-archive

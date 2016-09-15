@@ -59,3 +59,14 @@ ph-services-prd-1
 ph-profiling-prd-1
 ph-api-prd-1
 ph-api-prd-2
+
+# group by country
+[ke:children]
+ke-payments
+ke-services
+ke-devops
+
+[ph:children]
+ph-payments
+ph-services
+ph-devops
