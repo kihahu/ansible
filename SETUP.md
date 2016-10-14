@@ -144,4 +144,8 @@ To set up a specific application, please run the deploy scripts for local enviro
 - Run the ansible playbook command as shown below:
 	- `ansible-playbook -i hosts archive.yml -l payments --tags mysql-archive`
 
+# USING THE jenkins-slave-setup ROLE
+## use ansible >= 2.1
+	- `ansible-playbook -i hosts jenkins.yml -l {country code}-jenkins --vault-password {{ path to vault file }}`
+
 Happy Coding!

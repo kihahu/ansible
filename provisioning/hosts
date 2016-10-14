@@ -40,6 +40,17 @@ ph-devops_1 ansible_ssh_host=172.31.11.88 ansible_ssh_port=22 ansible_ssh_user=u
 [tz-devops]
 tz-devops_1 ansible_ssh_host=192.168.1.26 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
+# jenkins
+[ke-jenkins]
+#ke-jenkins_1 ansible_ssh_host= ansible_ssh_port=22 ansible_ssh_user=ubuntu
+
+[ph-jenkins]
+#ph-jenkins_1 ansible_ssh_host= ansible_ssh_port=22 ansible_ssh_user=ubuntu
+
+[jenkins:children]
+ke-jenkins
+ph-jenkins
+
 [devops:children]
 ke-devops
 ph-devops

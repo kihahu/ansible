@@ -1,0 +1,36 @@
+---
+- name: Add sbt repository
+  apt_repository: repo="{{ jenkins_sbt_repo }}" state=present
+  tags:
+    - add-sbt-repo
+
+- name: Add sbt key
+  apt_key: keyserver={{ jenkins_sbt_keyserver }} id={{ jenkins_sbt_id }}
+  tags:
+    - add-sbt-keyserver
+
+- name: Update packages
+  apt: name={{ item }} state=present update_cache=yes allow_unauthenticated=yes
+  with_items:
+    - debian-archive-keyring
+    - python-pip
+    - default-jre
+    - python-dev
+    - python
+    - lib32stdc++6
+    - lib32z1
+    - maven
+    - git
+    - sbt
+    - libssl-dev
+    - openssl
+    - libffi-dev 
+  tags:
+    - install-dependencies
+
+- name: Install Ansible
+  pip: name={{ item }} state=present
+  with_items:
+    - ansible
+  tags:
+    - install-ansible

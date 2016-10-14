@@ -1,0 +1,16 @@
+---
+- include: install-packages.yml
+  tags:
+    - jenkins-install-packages
+
+- include: jenkins-setup.yml
+  tags:
+    - jenkins-setup
+
+- include: android-sdk-setup.yml
+  tags:
+    - jenkins-android-setup
+
+- include: run-jenkins-slave.yml
+  tags:
+    - jenkins-run
