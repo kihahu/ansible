@@ -151,6 +151,6 @@ To set up a specific application, please run the deploy scripts for local enviro
 # USING THE servers-basic-setup playbook
 ## use ansible >= 2.1
 #run the server setup role with only specific tags; upgrade, env-setup,utils-setup,python-setup,ssh-setup
-ansible-playbook -i provisioning/hosts provisioning/basic-server-setup.yml --ansible-vault-file=vault
+ansible-playbook -i provisioning/hosts provisioning/servers-basic-setup.yml --vault-password-file=vault
 
 Happy Coding!
