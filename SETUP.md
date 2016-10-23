@@ -96,6 +96,9 @@ ansible inventure-local -i provisioning/hosts -m ping
 # (note: at this time we are skipping PHP 7 setup, and MySQL security setup - this will be run separately)
 ansible-playbook -i provisioning/hosts provisioning/vagrant.yml -l inventure-local --skip-tags='php-7-setup,mysql-deps-php7,mysql-server-security-setup'
 
+#run the server setup role with only specific tags; upgrade, env-setup,utils-setup,python-setup,ssh-setup
+ansible-playbook -i provisioning/hosts provisioning/basic-server-setup.yml --ansible-vault-file=vault
+
 # set up mysql secure installation
 # go to the base directory and ssh into your virtual machine
 cd ~/Code/env/inventure
