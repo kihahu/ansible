@@ -96,9 +96,6 @@ ansible inventure-local -i provisioning/hosts -m ping
 # (note: at this time we are skipping PHP 7 setup, and MySQL security setup - this will be run separately)
 ansible-playbook -i provisioning/hosts provisioning/vagrant.yml -l inventure-local --skip-tags='php-7-setup,mysql-deps-php7,mysql-server-security-setup'
 
-#run the server setup role with only specific tags; upgrade, env-setup,utils-setup,python-setup,ssh-setup
-ansible-playbook -i provisioning/hosts provisioning/basic-server-setup.yml --ansible-vault-file=vault
-
 # set up mysql secure installation
 # go to the base directory and ssh into your virtual machine
 cd ~/Code/env/inventure
@@ -150,5 +147,10 @@ To set up a specific application, please run the deploy scripts for local enviro
 # USING THE jenkins-slave-setup ROLE
 ## use ansible >= 2.1
 	- `ansible-playbook -i hosts jenkins.yml -l {country code}-jenkins --vault-password {{ path to vault file }}`
+
+# USING THE servers-basic-setup playbook
+## use ansible >= 2.1
+#run the server setup role with only specific tags; upgrade, env-setup,utils-setup,python-setup,ssh-setup
+ansible-playbook -i provisioning/hosts provisioning/basic-server-setup.yml --ansible-vault-file=vault
 
 Happy Coding!
