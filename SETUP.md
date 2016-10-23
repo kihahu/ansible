@@ -148,4 +148,9 @@ To set up a specific application, please run the deploy scripts for local enviro
 ## use ansible >= 2.1
 	- `ansible-playbook -i hosts jenkins.yml -l {country code}-jenkins --vault-password {{ path to vault file }}`
 
+# USING THE servers-basic-setup playbook
+## use ansible >= 2.1
+#run the server setup role with only specific tags; upgrade, env-setup,utils-setup,python-setup,ssh-setup
+ansible-playbook -i provisioning/hosts provisioning/servers-basic-setup.yml --vault-password-file=vault
+
 Happy Coding!
