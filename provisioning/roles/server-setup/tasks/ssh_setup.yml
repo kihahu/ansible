@@ -3,3 +3,13 @@
   lineinfile: dest=/etc/ssh/sshd_config state=present backup=yes insertafter="UsePAM yes" line="Ciphers aes128-ctr,aes192-ctr,aes256-ctr\nMACs hmac-sha1,umac-64@openssh.com,hmac-ripemd160"
   tags:
     - secure-config
+
+- name: Add visudo directive to sudoers to allow hosts forward ssh keys
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: SSH_AUTH_SOCK
+    line: Defaults env_keep += "SSH_AUTH_SOCK"
+    become: yes
+  tags:
+    - ssh-forward
