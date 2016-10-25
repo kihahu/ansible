@@ -19,6 +19,10 @@ ke-payments-prd-1 ansible_ssh_host=172.31.43.62 ansible_ssh_port=22 ansible_ssh_
 ph-payments-dev-1 ansible_ssh_host=172.31.11.85 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 ph-payments-prd-1 ansible_ssh_host=172.31.11.87 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
+[tz-payments]
+tz-payments-dev-1 ansible_ssh_host=192.168.1.217 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+tz-payments-prd-1 ansible_ssh_host=192.168.1.80 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+
 [qa]
 
 # services
@@ -30,6 +34,10 @@ ke-services-prd-1 ansible_ssh_host=172.31.8.240 ansible_ssh_port=22 ansible_ssh_
 ph-services-dev-1 ansible_ssh_host=172.31.18.137 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 ph-services-prd-1 ansible_ssh_host=172.31.8.15 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 ph-profiling-prd-1 ansible_ssh_host=172.31.15.252 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+
+[tz-services]
+tz-services-dev-1 ansible_ssh_host=192.168.1.172 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+tz-services-prd-1 ansible_ssh_host=192.168.2.48 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 [ke-devops]
 ke-devops_1 ansible_ssh_host=172.31.3.82 ansible_ssh_port=22 ansible_ssh_user=ubuntu
@@ -61,6 +69,8 @@ ke-payments-dev-1
 ph-payments-dev-1
 ke-services-dev-1
 ph-services-dev-1
+tz-payments-dev-1
+tz-services-dev-1
 
 [production]
 ke-payments-prd-1
@@ -70,6 +80,8 @@ ph-services-prd-1
 ph-profiling-prd-1
 ph-api-prd-1
 ph-api-prd-2
+tz-services-prd-1
+tz-payments-prd-1
 
 # group by country
 [ke:children]
@@ -81,3 +93,8 @@ ke-devops
 ph-payments
 ph-services
 ph-devops
+
+[tz:children]
+tz-services
+tz-payments
+tz-devops

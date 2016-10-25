@@ -6,21 +6,39 @@
   tags:
     - apache-setup
 
-- name: Apache Setup - Install mod wsgi
-  apt: name=libapache2-mod-wsgi state=latest
+- name: Apache Setup - Install Required Packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - libapache2-mod-wsgi
+    - mcrypt
   notify:
     - restart apache
   tags:
-    - mod_wsgi
+    - apache-mods
     - apache-setup
 
-- name: Apache Setup - Enable sslmod
-  command: a2enmod ssl
+- name: Apache Setup - Disable default non-required modules
+  apache2_module: name={{ item }} state=absent
+  with_items:
+    - php5
+  sudo: yes
+  ignore_errors: True
+  notify:
+    - restart apache
+  tags:
+    - apache-mods
+    - apache-setup
+
+- name: Apache Setup - Enable required Apache modules
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - php5.6
+    - ssl
   sudo: yes
   notify:
     - restart apache
   tags:
-    - ssl_mod
+    - apache-mods
     - apache-setup
 
 - name: Apache Setup - push fdqn file

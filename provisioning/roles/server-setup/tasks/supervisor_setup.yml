@@ -5,7 +5,7 @@
     - supervisor-setup
 
 - name: Supervisor Setup - Set up supervisor init script
-  copy: src=supervisor/supervisord dest=/etc/init.d/supervisor
+  copy: src=supervisor/supervisord dest=/etc/init.d/supervisor mode=u+rwx
   tags:
     - supervisor-setup
 
