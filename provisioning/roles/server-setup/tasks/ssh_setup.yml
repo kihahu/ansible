@@ -10,6 +10,7 @@
     state: present
     regexp: SSH_AUTH_SOCK
     line: Defaults env_keep += "SSH_AUTH_SOCK"
-    become: yes
+    validate: visudo -cf %s
+  become: yes
   tags:
     - ssh-forward
