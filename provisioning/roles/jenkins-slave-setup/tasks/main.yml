@@ -14,3 +14,7 @@
 - include: run-jenkins-slave.yml
   tags:
     - jenkins-run
+
+- include: dynamodb-run.yml
+  tags:
+    - dynamodb-run

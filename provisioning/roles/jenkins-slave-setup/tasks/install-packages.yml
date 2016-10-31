@@ -24,7 +24,8 @@
     - sbt
     - libssl-dev
     - openssl
-    - libffi-dev 
+    - libffi-dev
+    - unzip
   tags:
     - install-dependencies
 
@@ -34,3 +35,18 @@
     - ansible
   tags:
     - install-ansible
+
+- name: Install pytest
+  pip: name={{ item }} state=present extra_args='-U'
+  with_items:
+    - pytest
+  tags:
+    - install-pytest
+
+- name: Install mock
+  pip: name={{ item }} state=present
+  with_items:
+    - mock
+  tags:
+    - install-mock
+
