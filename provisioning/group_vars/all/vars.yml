@@ -28,3 +28,4 @@ jenkins_port: 8080
 downloaded_android_sdk_path: /opt/android.tgz
 master_key: "{{ vault_master_key }}"
 master_key_dir: /tala/key
+android_build_tools_revision_number: 24

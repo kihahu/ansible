@@ -23,3 +23,8 @@
   shell: chdir={{ android_sdk_path }}/tools echo "y" | ./android update sdk --no-ui
   tags:
     - update-android-sdk
+
+- name: Update Android sdk - specific revision 
+  shell: chdir={{ android_sdk_path }}/tools echo "y" | ./android update sdk --no-ui --filter {{ android_build_tools_revision_number }}
+  tags:
+    - update-android-sdk-revision
