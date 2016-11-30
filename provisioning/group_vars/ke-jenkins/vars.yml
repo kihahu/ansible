@@ -1,5 +1,0 @@
----
-jenkins_master_public_key: "{{ vault_jenkins_master_public_key }}"
-jenkins_master_private_key: "{{ vault_jenkins_master_private_key }}"
-jenkins_server_ip: "172.31.39.153"
-jenkins_secret: "{{ vault_jenkins_secret }}"

@@ -1,5 +1,0 @@
-- hosts: ipaserver
-  become: yes
-  roles:
-    - role: ipaserver
-      ipamaster: us-west-2-ipa01.tala.aws

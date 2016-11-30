@@ -1,7 +1,0 @@
----
-sns_arn: "arn:aws:sns:us-west-2:347023968887:Inventure-Alerts"
-sns_arn_notices: "arn:aws:sns:us-west-2:347023968887:inventure-notices"
-s3_payments_logs_bucket: "payments-logs-backup"
-country_code: ke
-aws_region: us-west-2
-payment_logs_dir: "/var/log/applications/payments/"

@@ -1,7 +1,0 @@
----
-sns_arn: "arn:aws:sns:ap-southeast-1:347023968887:asp-singapore-alerts"
-sns_arn_notices: "arn:aws:sns:ap-southeast-1:347023968887:asp-singapore-notices"
-s3_payments_logs_bucket: "payments-logs-backup"
-country_code: ph
-aws_region: ap-southeast-1
-payment_logs_dir: "/var/log/applications/payments/"
