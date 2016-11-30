@@ -1,4 +1,0 @@
----
-- name: restart haveged
-  service: name=haveged state=restarted
-

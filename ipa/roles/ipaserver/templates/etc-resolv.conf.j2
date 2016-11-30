@@ -1,6 +1,0 @@
-search {{ ansible_domain }} {{ ansible_ec2_placement_region + '.compute.internal'}}
-nameserver {{ hostvars[ipamaster]['ansible_eth0']['ipv4']['address'] }}
-{% for ipa_replica in ipareplica %}
-nameserver {{ hostvars[ipa_replica]['ansible_eth0']['ipv4']['address'] }}
-{% endfor %}
-nameserver {{ dnsforwarder }}
