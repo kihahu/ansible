@@ -1,0 +1,4 @@
+[ipaserver]
+us-west-2-ipa01.tala.aws ansible_host=10.229.156.51
+us-west-2-ipa02.tala.aws ansible_host=10.229.157.141
+ap-southeast-1-ipa01.tala.aws ansible_host=10.229.159.66

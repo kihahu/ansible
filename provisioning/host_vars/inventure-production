@@ -1,0 +1,209 @@
+---
+app_environment: production
+apache_fqdn_path: "/etc/apache2/conf.d/fqdn"
+apache_conf_path: "/etc/apache2/conf-available/"
+apache_user: "www-data"
+root_db_password: NTguMTQ1LjIwMC4yNDU6ODANCkN
+mysql_bind_address: "0.0.0.0"
+db_user_name: inventure
+db_user_pass: "BIVFRQLzEuMQ0KQ29ud"
+vagrant_bashrc_file: /home/ubuntu/.bashrc
+root_bashrc_file: /root/.bashrc
+
+# whatsapp app
+whatsapp_app_git_branch: master
+whatsapp_app_debug: "false"
+whatsapp_app_username: "254731215208"
+whatsapp_app_pass: "/TUCAzQ5R9C0Ex4cc7FzuJkeycw="
+whatsapp_app_server_host: "0.0.0.0"
+whatsapp_app_base_log_path: "/var/log/applications/whatsapp/"
+whatsapp_app_base_log_file_name: "whatsapp.log"
+whatsapp_app_debug_file_name: "whatsapp-debug.log"
+whatsapp_app_db_dir_path: "/data/whatsapp/"
+whatsapp_app_db_file_name: "iv_whatsapp.db"
+whatsapp_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_whatsapp_schema_no_drop.sql
+whatsapp_app_config_file: whatsapp-config.json
+whatsapp_app_sys_user_group: whatsapp
+whatsapp_app_sys_user_name: whatsapp
+whatsapp_app_application_dir: /srv/applications/whatsapp-app
+whatsapp_app_git_repo_name: "git@github.com:inventure/Whatsapp.git"
+whatsapp_app_virtual_env: whatsapp_venv
+whatsapp_app_webroot_path: /var/www/whatsapp_api
+whatsapp_app_vhost: /etc/apache2/sites-available/whatsapp_api.conf
+whatsapp_app_vhost_port: 5001
+whatsapp_app_vhost_server_name: 54.68.252.83
+whatsapp_app_vhost_wsgi_file: /var/www/whatsapp_api/whatsapp_api.wsgi
+whatsapp_app_api_name: whatsapp_api
+whatsapp_app_apache_user: www-data
+whatsapp_app_apache_group: www-data
+whatsapp_app_proc_lock_dir: /var/lock/whatsapp/
+whatsapp_app_proc_lock_file: whatsapp-proc.lock
+whatsapp_app_init_d_file: /etc/init.d/whatsapp_proc
+whatsapp_app_logrotate_file: /etc/logrotate.d/whatsapp-app
+inventure_base_url: http://api.inventureaccess.com/
+inventure_api_people_endpoint: http://api.inventureaccess.com/api/People
+inventure_api_people_additional_data_endpoint: http://api.inventureaccess.com/api/PeopleAdditionalData
+inventure_api_loan_application_endpoint: http://api.inventureaccess.com/api/LoanApplication
+inventure_api_loan_endpoint: http://api.inventureaccess.com/api/Loan
+inventure_api_loan_type_endpoint: http://api.inventureaccess.com/api/LoanType
+inventure_api_transaction_endpoint: http://api.inventureaccess.com/api/Transaction
+inventure_api_loan_repayment_endpoint: http://api.inventureaccess.com/api/LoanRepayment
+inventure_api_people_experiment_endpoint: http://api.inventureaccess.com/api/PeopleExperiment
+inventure_api_experiment_endpoint: http://api.inventureaccess.com/api/Experiment
+zendesk_company_name: https://inventuremobile.zendesk.com
+zendesk_user: accounts@inventure.com
+zendesk_credential: i6PM5zWH5c6EMhIcdryYUU1OcPiaTNWzXGryU6ao
+zendesk_use_token: "true"
+zendesk_msg_source_custom_field_id: 24162569
+zendesk_last_msg_delivered_custom_field_id: 24274649
+zendesk_last_msg_read_custom_field_id: 24329245
+zendesk_recently_updated_tickets_view_id: 41553639
+zendesk_admin_requester_id: 451938309
+incoming_messages_proc_app_proc_lock_dir: /var/lock/incoming-messages-proc/
+incoming_messages_proc_app_proc_lock_file: im-proc.lock
+incoming_messages_app_base_log_path: "/var/log/applications/incoming-msg-proc/"
+incoming_messages_app_base_log_file: "im_proc.log"
+incoming_messages_init_d_file: /etc/init.d/im_proc
+inventure_config_path: /etc/inventure
+zd_app_db_dir_path: "/data/inventure/zendesk"
+zd_app_db_file_name: zendesk_data.db
+zd_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_zd_schema_no_drop.sql
+zd_incoming_req_endpoint: http://localhost:5004/messaging/incoming/zendesk
+
+# base db configs
+iv_services_db_name: inventure_services
+iv_services_db_host: insightdb.ceiehgxanvdu.us-west-2.rds.amazonaws.com
+iv_services_db_user: services
+iv_services_db_pass: rh8473oe392hf0hh
+
+# slack
+slack_incoming_webhook_endpoint: https://hooks.slack.com/services/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
+dev_slack_alert_handles: "@fred"
+
+# memcache
+memcache_server: "127.0.0.1"
+memcache_port: "11211"
+
+# telerivet
+telerivet_key: "PZP9RZFF7HZHDKHCQMPUGCKQT76WWM4M"
+telerivet_api_key: "2kuZtbRlDr1dcSaG82ADk73H1zIqycn0"
+telerivet_project_id: "PJ006c5db56496f4c5fc53eb12bb960cb9"
+telerivet_sender_phone_id: "PN6c6ca9f19cf168f7"
+telerivet_notification_endpoint: "http://54.68.252.83:8000/messaging/incoming/telerivet/notify"
+
+# messaging-app
+messaging_conf_file: messaging-config.json
+messaging_app_debug: "false"
+messaging_app_base_log_path: "/var/log/applications/messaging/"
+messaging_base_log_file_name: "messaging.log"
+messaging_debug_file_name: "messaging_debug.log"
+messaging_app_logrotate_file: /etc/logrotate.d/messaging-app
+messaging_app_server_host: "0.0.0.0"
+messaging_app_webroot_path: /var/www/inventure_messaging
+messaging_app_vhost: /etc/apache2/sites-available/inventure_messaging.conf
+messaging_app_vhost_port: 5004
+messaging_app_vhost_port_tr: 8000
+messaging_app_vhost_server_name: 54.68.252.83
+messaging_app_vhost_wsgi_file: /var/www/inventure_messaging/inventure_messaging.wsgi
+messaging_api_name: inventure_messaging
+survey_proc_app_base_log_file: survey_proc.log
+
+# zd-sync-app
+zd_sync_conf_file: zendesk-sync-config.json
+zd_sync_app_debug: "false"
+zd_sync_app_base_log_path: "/var/log/applications/zd-sync/"
+zd_sync_base_log_file_name: "zd_sync.log"
+zd_sync_debug_file_name: "zd_sync_debug.log"
+zd_sync_app_debug_tr: "false"
+zd_sync_base_log_file_name_tr: "telerivet_zd_sync.log"
+zd_sync_debug_file_name_tr: "telerivet_zd_sync_debug.log"
+zd_sync_app_debug_zd_data: "true"
+zd_sync_base_log_file_name_zd_data: "zd_data_zd_sync.log"
+zd_sync_debug_file_name_zd_data: "zd_data_zd_sync_debug.log"
+zd_sync_app_tr_sleep_time: 2
+zd_sync_app_server_host: "0.0.0.0"
+zd_sync_app_webroot_path: /var/www/zd_sync
+zd_sync_app_vhost_port: 8000
+zd_sync_app_vhost_server_name: 54.68.252.83
+zd_sync_app_vhost_wsgi_file: /var/www/zd_sync/zd_sync_api.wsgi
+zd_sync_api_name: zd_sync_api
+zd_sync_app_vhost: /etc/apache2/sites-available/zd_sync_api.conf
+zd_sync_app_db_file_name: zendesk_sync.db
+zd_sync_app_db_schema: /srv/applications/whatsapp-app/whatsapp/setup/iv_zd_sync_schema_no_drop.sql
+sync_zd_last_msg_status_proc_app_lock_dir: /var/lock/zd-sync-last-msg-proc/
+sync_zd_last_msg_status_proc_app_lock_file: zd-sync-last-msg.lock
+sync_zd_last_msg_status_init_d_file: /etc/init.d/zd_sync_msg_status
+sync_zd_telerivet_proc_app_lock_dir: /var/lock/zd-sync-telerivet-msg-proc/
+sync_zd_telerivet_proc_app_lock_file: zd-sync-telerivet-msg.lock
+sync_zd_telerivet_init_d_file: /etc/init.d/zd_sync_telerivet
+sync_zd_app_logrotate_file: /etc/logrotate.d/zd-sync-app
+
+# zendesk db configs
+zd_mysql_db_name: zendesk_data
+zd_mysql_db_host: localhost
+zd_mysql_db_user: inventure_api
+zd_mysql_db_pass: inventure_api
+
+# zd-ticket-proc app
+zd_ticket_proc_app_debug: "false"
+zd_ticket_proc_app_base_log_path: "/var/log/applications/zd-ticket-proc/"
+zd_ticket_proc_base_log_file_name: "zd-ticket-proc.log"
+zd_ticket_proc_debug_file_name: "zd-ticket-proc-debug.log"
+zd_ticket_proc_conf_file: zendesk-ticket-proc-config.json
+zd_ticket_proc_app_server_host: "0.0.0.0"
+zd_ticket_proc_app_webroot_path: /var/www/zd_ticket_proc
+zd_ticket_proc_app_vhost_port: 5002
+zd_ticket_proc_app_vhost_server_name: 54.68.252.83
+zd_ticket_proc_app_vhost_wsgi_file: /var/www/zd_ticket_proc/zd_ticket_proc_api.wsgi
+zd_ticket_proc_app_vhost: /etc/apache2/sites-available/zd_ticket_proc_api.conf
+zd_ticket_proc_api_name: zd_ticket_proc_api
+zd_ticket_proc_app_logrotate_file: /etc/logrotate.d/zd-ticket-proc-app
+
+# payments app
+payments_app_application_dir: /srv/applications/payments
+payments_app_webroot_path: /var/www/payments
+payments_app_vhost: /etc/apache2/sites-available/payments.conf
+payments_server_port: 443
+payments_server_host_name: payments.inventureaccess.com
+payments_server_cert_path: /etc/pki/tls/certs/payments/wildcard.crt
+payments_server_cert_key: /etc/pki/tls/certs/payments/wildcard.key
+payments_app_host: https://payments.inventureaccess.com
+payments_app_debug: false
+payments_app_key: bxZph8H1vr28PpQnmtBKHGeBJDAAV8BA
+payments_app_db_user: payments
+payments_app_db_pass: dfsigkshd93hdfh3
+payments_app_db_host: insightdb.ceiehgxanvdu.us-west-2.rds.amazonaws.com
+payments_app_db_name: payments
+payments_app_base_log_path: "/var/log/applications/payments/"
+payments_app_base_log_file_name: "payments.log"
+payments_app_test_base_log_file_name: "payments_test.log"
+payments_app_logrotate_file: /etc/logrotate.d/payments-app
+payments_app_default_log_level: INFO
+payments_app_inventure_c2b_endpoint: "http://api.inventureaccess.com/api/Payment/receiveC2B"
+payments_app_send_slack_alert: true
+
+# payments service specific config
+# tigo tz
+payments_app_tz_tigo_port: 8400
+payments_app_tz_tigo_b2c_trx_type: REQMFICI
+payments_app_tz_tigo_b2c_partner_msisdn: 0719997730
+payments_app_tz_tigo_b2c_partner_key: 7024
+payments_app_tz_tigo_b2c_partner_lang: en
+payments_app_tz_tigo_c2b_trx_type: SYNC_BILLPAY_RESPONSE
+payments_app_tz_tigo_c2b_customer_msg_template: "Your payment of %.2f TSh to Mkopo Rahisi for account %s has been received. Thank you for your payment."
+payments_app_tz_tigo_b2c_api_endpoint: http://accessgw.tigo.co.tz:8080/InventuretoTigolive
+payments_app_tz_tigo_storage_path: "storage/app/tz"
+payments_app_tz_tigo_acc_bal_storage_file_path: "tz/tigo_acc_bal"
+payments_app_tz_tigo_acc_bal_min_limit: 20000000
+
+# airtel ke
+payments_app_ke_airtel_c2b_port: 8500
+payments_app_ke_airtel_c2b_customer_msg_template: "Your payment of %.2f Ksh to Mkopo Rahisi for account %s has been received. Thank you for your payment."
+payments_app_ke_airtel_c2b_merchant_query_wsdl: https://41.223.56.58:44433/MerchantQueryService.asmx?wsdl
+payments_app_ke_airtel_c2b_merchant_query_user: 9031258-dummy
+payments_app_ke_airtel_c2b_merchant_query_key: INVENTURE-dummy
+payments_app_ke_airtel_b2c_payment_department: Loans
+payments_app_ke_airtel_b2c_access_key: sSd0dGNEiy92leZVRs3MFtbZf5M8kDgdth8bWXPI
+payments_app_ke_airtel_b2c_api_endpoint: https://bulk.aida.co.ke/api/v1/disburse-payments
+payments_app_ke_airtel_b2c_api_payment_status_endpoint: https://bulk.aida.co.ke/api/v1/check-payment-status/
+payments_app_ke_airtel_b2c_api_account_balance_endpoint: https://bulk.aida.co.ke/api/v1/check-balance

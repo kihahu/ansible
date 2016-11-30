@@ -1,0 +1,57 @@
+---
+- name: Utilities Setup - Install tree
+  apt: name=tree state=latest
+  ignore_errors: True
+  tags:
+    - tree
+
+- name: Utilities Setup - Install curl
+  apt: name=curl state=latest
+  ignore_errors: True
+  tags:
+    - curl
+
+- name: Utilities Setup - Install elinks
+  apt: name=elinks state=latest
+  ignore_errors: True
+  tags:
+    - elinks
+
+- name: Utilities Setup - Install sqlite3
+  apt: name=sqlite3 state=latest
+  ignore_errors: True
+  tags:
+    - sqlite
+
+- name: Utilities Setup - install latest git
+  apt: name=git state=latest
+  ignore_errors: True
+  tags:
+    - git
+
+- name: Utilities Setup - ensure ntpd is at the latest version
+  apt: name=ntp state=latest
+  notify:
+    - restart ntpd
+  tags:
+    - ntp
+
+- name: Utilities Setup - install latest vim
+  apt: name=vim state=latest
+  tags:
+    - vim
+
+- name: Utilities Setup - install latest htop
+  apt: name=htop state=latest
+  tags:
+    - htop
+
+- name: Utilities Setup - Install Python dev package
+  apt: name=python-dev
+  tags:
+    - python-dev
+
+- name: Utilities Setup - Install n curses
+  apt: name=ncurses-dev
+  tags:
+    - ncurses-dev

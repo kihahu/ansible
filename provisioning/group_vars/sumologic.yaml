@@ -1,0 +1,19 @@
+# Sample custom application config, these will change based on the host being configured specified in the sumologic hosts section.
+# It is up to the user to determine the naming and the log path names
+# e.g docker files for the server api application will be:
+
+#  sumologic_collector_application_log_path:
+#    - name: "dev/api/apache/access"
+#      path: "/var/lib/docker/volumes/*/*/apache2/server_api_dev_access.log"
+#      use_multiline: false
+#      category: "dev/api/apache/access"
+#
+#    - name: "dev/api/apache/error"
+#      path: "/var/lib/docker/volumes/*/*/apache2/server_api_dev_error.log"
+#      use_multiline: false
+#      category: "dev/api/apache/access/error"
+sumologic_collector_application_log_path:
+  - name: "APP LOG"
+    path: "/var/log/APP.log"
+    use_multiline: false
+    category: "APP"

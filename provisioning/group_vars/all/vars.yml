@@ -1,0 +1,31 @@
+---
+AWS_ENV_VARS:
+  AWS_ACCESS_KEY_ID: "{{ vault_aws_s3_access_id }}"
+  AWS_SECRET_ACCESS_KEY: "{{ vault_aws_s3_access_key }}"
+aws_mysql_archive_bucket: "mysql-archive-bucket"
+tmp_archiving_folder: /mnt/syncfolder
+EC2_AWS_ACCESS_KEY_ID: "{{ vault_aws_ec2_access_id }}"
+EC2_AWS_SECRET_ACCESS_KEY: "{{ vault_aws_ec2_access_key }}"
+tmp_aws_alerts: /tmp/aws_alerts/
+AWS_S3_ACCESS_KEY_ID: "{{ vault_aws_s3_access_id }}"
+AWS_S3_SECRET_ACCESS_KEY: "{{ vault_aws_s3_access_key }}"
+jenkins_home_dir: /home/jenkins
+jenkins_user: jenkins
+dynamo_dir: /home/jenkins/dynamo
+ssh_authorized_file: authorized_keys
+jenkins_lib_dir: /var/lib/jenkins
+jenkins_android_sdk_link: "https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz"
+environment_file: /etc/environment
+android_sdk_path: /opt/android-sdk-linux
+environment_configs: |
+  export SLACK_URL="test"
+  export COUNTRY="KE"
+  export ENV="Development"
+jenkins_sbt_repo: "deb https://dl.bintray.com/sbt/debian /"
+jenkins_sbt_keyserver: "hkp://keyserver.ubuntu.com"
+jenkins_sbt_id: "642AC823"
+jenkins_port: 8080
+downloaded_android_sdk_path: /opt/android.tgz
+master_key: "{{ vault_master_key }}"
+master_key_dir: /tala/key
+android_build_tools_revision_number: 24

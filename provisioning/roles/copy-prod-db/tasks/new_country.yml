@@ -1,0 +1,57 @@
+---
+- name: Create temp directory on local machine
+  become: no
+  local_action: file path={{ destination_folder }} state=directory
+  tags:
+     - setup
+     - country-setup-pull
+
+- name: Dump dbs schema to create new new country db
+  command: mysqldump --single-transaction --no-data -u {{ source_db_username }} -p"{{ source_db_password }}" -h "{{ source_db_host }}" {{ database }} --result-file={{ destination_folder }}/{{ database }}.sql
+  tags:
+     - country-setup-pull
+
+- name: Dump functional tables seeded with data
+  command: mysqldump -u {{ target_db_username }} -h {{ target_db_host }} -p'{{ target_db_password }}' {{ database_qa }} {{ item }} --result-file={{ destination_folder }}/{{ item }}.sql
+  with_items:
+    - "{{ dump_tables }}"
+  tags:
+    - country-setup-pull
+
+- name: Pull down the loans schemas
+  fetch: src={{ destination_folder }}/{{ database }}.sql dest={{ destination_folder }}/{{ database }}.sql flat=yes
+  tags:
+    - country-setup-pull
+
+- name: Pull down the db schemas
+  fetch: src={{ destination_folder }}/{{ item }}.sql dest={{ destination_folder }}/{{ item }}.sql flat=yes
+  with_items:
+    - "{{ dump_tables }}"
+  tags:
+    - country-setup-pull
+
+- name: Copy schema to remote host
+  synchronize: src={{ destination_folder }}/ dest={{ destination_folder }}
+  tags:
+    - country-setup-push
+
+- name: Copy restore script
+  template: src=restore_loans.sh.j2 dest={{ destination_folder }}/restore_loans.sh
+  tags:
+    - country-setup-push
+
+- name: Restore db schema to qa qa2 dev staging demo
+  command: sh restore_loans.sh chdir={{ destination_folder }}
+  tags:
+     - country-setup-push
+
+- name: Copy table restore script
+  template: src=restore_tables.sh.j2 dest={{ destination_folder }}/restore_tables.sh
+  tags:
+    - country-setup-push
+
+- name:  Restore db funictional tables schema to qa qa2 dev staging demo
+  command: sh restore_tables.sh chdir={{ destination_folder }}
+  tags:
+     - country-setup-push
+

@@ -1,0 +1,33 @@
+---
+# supervisor-setup
+supervisor_socket_file: /var/run/supervisor.sock
+supervisor_socket_file_mode: "0700"
+superviser_inet_http_server_port: 127.0.0.1:9300
+superviser_inet_http_username: iv-admin
+superviser_inet_http_password: "vL2FwaS12MS5nZW4ubW0udm9kYWZvbmUuY"
+supervisor_logfile: /var/log/supervisor/supervisord.log
+supervisor_logfile_max_bytes: 50MB
+supervisor_logfile_backups: 10
+supervisor_loglevel: info
+supervisor_pidfile: /var/run/supervisord.pid
+supervisor_nodaemon: "false"
+supervisor_minfds: 1024  # minimum no. of file descriptors
+supervisor_minprocs: 200
+supervisor_childlogdir: /var/log/supervisor
+supervisorctl_serverurl: unix:///var/run/supervisor.sock
+supervisor_include_files: /etc/supervisor/conf.d/*.conf
+supervisor_include_path: /etc/supervisor/conf.d/
+supervisor_log_dir: /var/log/supervisor
+
+# env-setup
+user_bashrc_file: /home/ubuntu/.bashrc
+root_bashrc_file: /root/.bashrc
+
+# apache-setup
+apache_fqdn_path: "/etc/apache2/conf.d/fqdn"
+apache_conf_path: "/etc/apache2/conf-available/"
+apache_user: "www-data"
+
+# mysql-setup
+root_db_password: ellVVFNSTTE5TmYyR
+mysql_bind_address: "0.0.0.0"

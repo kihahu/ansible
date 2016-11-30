@@ -1,0 +1,39 @@
+---
+- name: install python software properties
+  apt: name=python-software-properties state=latest
+  tags:
+    - php-setup
+
+- name: Install globally required packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - libapache2-mod-php5
+    - language-pack-en-base
+  tags:
+    - php-setup
+
+- name: Remove deprecated PHP repo
+  apt_repository: repo='ppa:ondrej/php5' state=absent
+  ignore_errors: True
+  tags:
+    - php-setup
+
+- name: add stable PHP 5 repo
+  apt_repository: repo='ppa:ondrej/php'
+  tags:
+    - php-setup
+
+- name: Update packages list
+  include: ../package_update.yml
+  tags:
+    - php-setup
+
+- name: Install PHP 5
+  include: php5_setup.yml
+  tags:
+    - php-5-setup
+
+- name: Install PHP 7
+  include: php7_setup.yml
+  tags:
+    - php-7-setup

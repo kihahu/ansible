@@ -1,0 +1,12 @@
+{% if sumologic_collector_email is defined %}
+email={{ sumologic_collector_email }}
+{% endif %}
+{% if sumologic_collector_accessid is defined %}
+accessid={{ sumologic_collector_accessid }}
+{% endif %}
+{% if sumologic_collector_accesskey is defined %}
+accesskey={{ sumologic_collector_accesskey }}
+{% endif %}
+{% if sumologic_collector_source_template is defined %}
+syncSources=/etc/sumologic-collector.json
+{% endif %}

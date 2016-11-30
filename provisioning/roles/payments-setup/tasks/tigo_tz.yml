@@ -1,0 +1,6 @@
+---
+- name: Create tz storage directory
+  file: path={{payments_app_application_dir}}/{{payments_app_tz_tigo_storage_path}} state=directory owner={{apache_user}} group={{apache_user}}
+  ignore_errors: true
+  tags:
+    - payments-app-tigo-tz

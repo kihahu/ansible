@@ -1,0 +1,8 @@
+- name: Set DNS forwarder
+  set_fact: 'dnsforwarder={{ {"us-west-2": dns_fwd_us_west_2 , "ap-southeast-1": dns_fwd_ap_southeast_1 , "eu-west-1": dns_fwd_eu_west_1 }[ansible_ec2_placement_region] | default("") }} '
+
+- name: Setup IPA master server
+  shell: ipa-server-install -U --setup-dns --hostname={{ inventory_hostname }} --domain={{ ansible_domain }} --realm={{ ansible_domain | upper }} --ds-password={{ ipaserver_dir_admin_password }} --admin-password={{ ipaserver_admin_password }} --forwarder={{ dnsforwarder }} --ip-address {{ ansible_default_ipv4.address }} --mkhomedir
+  args:
+    creates: /etc/ipa/default.conf
+  no_log: True

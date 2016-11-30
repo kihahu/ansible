@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  gather_facts: True
+  roles:
+       - {role: newrelic-setup }
+       - {role: sumologic-setup }
+

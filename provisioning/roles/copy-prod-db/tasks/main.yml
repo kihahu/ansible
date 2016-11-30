@@ -1,0 +1,47 @@
+---
+- name: Create the temp sync folder to dump schemas
+  file: path={{destination_folder}} state=directory
+  tags:
+     - refresh-internal-dbs
+     - country-setup-pull
+     - country-setup-push
+
+- name: Create databases loans_qa,loans_qa2,loans_staging
+  mysql_db: name={{ item }} state=present login_host={{ target_db_host }} login_user={{ target_db_username }} login_password={{ target_db_password }}
+  with_items:
+     - "{{ internal_databases }}"
+  tags:
+    - refresh-internal-dbs
+    - country-setup-pull
+    - country-setup-push
+
+- name: copy the base tables file
+  copy: src={{ item }} dest={{ destination_folder }}/{{ item }}
+  with_items:
+    - "{{ files_to_copy }}"
+  tags:
+    - refresh-internal-dbs
+    - country-setup-pull
+    - country-setup-push
+
+- name: copy the schema dump script
+  template: src=sync_prod_db.j2 dest={{ destination_folder }}/sync_prod_db.sh
+  tags:
+    - execute
+    - refresh-internal-dbs
+
+- include: new_country.yml
+
+- name: execute sync script
+  command: sh {{ destination_folder }}/sync_prod_db.sh
+  tags:
+    - execute
+    - refresh-internal-dbs
+
+- name: clean up the tmp directory
+  file: path={{ destination_folder }} state=absent
+  tags:
+    - cleanup
+    - refresh-internal-dbs
+    - country-setup-pull
+    - country-setup-push

@@ -1,0 +1,23 @@
+---
+# vars file for deploy
+docker_hub_auth: /root/.dockercfg
+http_default_port: 80
+ssh_default_port: 22
+http_port: 80
+ssh_port: 2222
+website_container: "inventure/website"
+data_receiver_container: "inventure/docker_datareceiver"
+api_container: "inventure/docker_api"
+website_dir: /home/ubuntu/sam/Docker_Website/
+home_dir: /home/ubuntu/
+website_docker_compose_config: docker-compose.yml
+ssl_certificate: wildcard.crt
+ssl_key: wildcard.key
+ssl_ca: ca.crt
+ssl_config: default-ssl.conf
+github_key: /home/ubuntu/.ssh/github
+organisation: inventure
+website_docker_repo: Docker_Website
+loadbalancer: jwilder/nginx-proxy
+public_ip: 54.69.141.203
+website_env: compose.env

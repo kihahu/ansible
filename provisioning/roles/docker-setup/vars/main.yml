@@ -1,0 +1,5 @@
+---
+firewall_accept: DEFAULT_FORWARD_POLICY="ACCEPT"
+firewall_default: DEFAULT_FORWARD_POLICY
+firewall_file: /etc/default/ufw
+

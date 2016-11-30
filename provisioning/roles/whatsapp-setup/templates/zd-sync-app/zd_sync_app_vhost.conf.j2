@@ -1,0 +1,19 @@
+Listen {{zd_sync_app_vhost_port}}
+<VirtualHost *:{{zd_sync_app_vhost_port}}>
+    ServerName {{zd_sync_app_vhost_server_name}}
+    ServerAdmin admin@{{zd_sync_app_vhost_server_name}}
+    WSGIDaemonProcess zd_sync_api user={{whatsapp_app_sys_user_name}} group={{whatsapp_app_sys_user_group}} threads=1
+    WSGIScriptAlias / {{zd_sync_app_vhost_wsgi_file}}
+    <Directory {{zd_sync_app_webroot_path}}/zd_sync/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    Alias /static {{zd_sync_app_webroot_path}}/zd_sync/static
+    <Directory {{zd_sync_app_webroot_path}}/zd_sync/static/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/zd_sync_app_error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/zd_sync_app_access.log combined
+</VirtualHost>

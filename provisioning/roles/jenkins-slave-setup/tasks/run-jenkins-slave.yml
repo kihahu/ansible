@@ -1,0 +1,5 @@
+---
+- name: Run jenkins slave
+  shell: chdir={{ jenkins_home_dir }} java -jar slave.jar http://{{ jenkins_server_ip }}:{{ jenkins_port }}//computer/Slave%201/slave-agent.jnlp -secret {{ jenkins_secret }}
+  tags:
+    - run-jenkins-slave

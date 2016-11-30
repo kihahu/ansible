@@ -1,0 +1,10 @@
+---
+- name: Update all packages
+  apt: update_cache=yes
+  tags:
+    - package-update
+
+- name: Upgrade all packages
+  apt: upgrade=yes
+  tags:
+    - package-update

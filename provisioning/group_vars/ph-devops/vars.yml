@@ -1,0 +1,25 @@
+---
+database: "loans"
+database_qa: "loans_qa"
+database_qa2: "loans_qa2"
+database_staging: "loans_staging"
+database_demo: "loans_demo"
+database_dev: "loans_dev"
+internal_databases:
+  - loans_qa
+  - loans_qa2
+  - loans_dev
+  - loans_staging
+  - loans_demo
+source_db_host: "ap-singapore-replica.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
+target_db_host: "internal-testing-db-aps.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
+tables: "tables"
+archive_database: loans
+source_db_username: "{{ vault_ph_source_db_username }}"
+target_db_username: "{{ vault_ph_target_db_username }}"
+source_db_password: "{{ vault_ph_source_db_password }}"
+target_db_password: "{{ vault_ph_target_db_password }}"
+archive_db_password: "{{ vault_ph_archive_db_password }}"
+archive_db_username: "{{ vault_ph_archive_db_username }}"
+archive_db_host: "ap-singapore-maindb.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
+

@@ -1,0 +1,30 @@
+---
+- name: Install Global MySQL Dependencies
+  apt: name={{item}} state=latest
+  with_items:
+    - libapache2-mod-auth-mysql
+  ignore_errors: True
+  tags:
+    - mysql-deps-php5
+    - mysql-deps-php7
+
+- name: Install PHP5 MySQL Dependencies
+  apt: name={{item}} state=latest
+  with_items:
+    - php5.6-mysql
+  tags:
+    - mysql-deps-php5
+
+- name: Install PHP7 MySQL Dependencies
+  apt: name={{item}} state=latest
+  with_items:
+    - php7.0-mysql
+  tags:
+    - mysql-deps-php7
+
+- name: set up mysql - install python-mysqldb
+  apt: name=python-mysqldb state=latest
+  ignore_errors: True
+  tags:
+    - mysql-deps-php5
+    - mysql-deps-php7

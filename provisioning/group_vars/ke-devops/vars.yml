@@ -1,0 +1,34 @@
+---
+source_db_host: "backup-replica.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+target_db_host: "internal-testing-db.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+tables: "tables"
+source_db_username: "{{ vault_ke_source_db_username }}"
+target_db_username: "{{ vault_ke_target_db_username }}"
+source_db_password: "{{ vault_ke_source_db_password }}"
+target_db_password: "{{ vault_ke_target_db_password }}"
+archive_database: loans
+archive_tables:
+  - ARCHIVED_TALA_error_message_template
+  - ARCHIVED_TALA_message_template
+  - ARCHIVED_TALA_referral_reward_type
+  - ARCHIVED_adjust_log
+  - ARCHIVED_android_access_log
+  - ARCHIVED_android_application_info
+  - ARCHIVED_android_device_information
+  - ARCHIVED_android_device_specification
+  - ARCHIVED_android_device_verification
+  - ARCHIVED_android_phonebook_frequency
+  - ARCHIVED_error_message_template
+  - ARCHIVED_experiment
+  - ARCHIVED_loan
+  - ARCHIVED_loan_application
+  - ARCHIVED_loan_application_incomplete
+  - ARCHIVED_loan_funding
+  - ARCHIVED_message_template
+  - ARCHIVED_people
+  - ARCHIVED_people_additional_data
+  - ARCHIVED_people_experiment
+  - ARCHIVED_people_referrals
+archive_db_password: "{{ vault_ke_archive_db_password }}"
+archive_db_username: "{{ vault_ke_archive_db_username }}"
+archive_db_host: "readreplica-2.ceiehgxanvdu.us-west-2.rds.amazonaws.com"

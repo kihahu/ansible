@@ -1,0 +1,31 @@
+---
+- name: add stable PHP 7 repo
+  apt_repository: repo='ppa:ondrej/php' state=present
+  tags:
+    - php-7-setup
+
+- name: Install PHP 7
+  apt: name=php7.0
+  tags:
+    - php-7-setup
+
+- name: Install PHP 7 JSON
+  apt: name=php7.0-json state=latest
+  tags:
+    - php-7-json
+    - php-7-setup
+
+- name: Install PHP 7 curl
+  apt: name=php7.0-curl state=latest
+  tags:
+    - php-7-setup
+
+- name: Install PHP 7 cli
+  apt: name=php7.0-cli state=latest
+  tags:
+    - php-7-setup
+
+- name: Install PHP 7 libapache2-mod-php7.0
+  apt: name=libapache2-mod-php7.0 state=latest
+  tags:
+    -php-7-setup

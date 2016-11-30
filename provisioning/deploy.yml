@@ -1,0 +1,8 @@
+---
+- hosts: rnd
+  sudo: yes
+  sudo_user: root
+  remote_user: ubuntu
+  gather_facts: False
+  roles:
+       - {role: docker-website }
