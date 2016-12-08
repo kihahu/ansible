@@ -61,4 +61,7 @@
   tags:
     - ssh-setup
 
-
+- name: Boto setup
+  include: boto_setup.yml
+  tags:
+    - boto-setup

@@ -1,0 +1,8 @@
+---
+- name: Install boto
+  pip: name=boto state=present
+
+- name: setup boto credentials file
+  template: src=boto/boto.j2 dest=/home/ubuntu/.boto mode=400 owner=ubuntu group=ubuntu
+  tags:
+    - setup-boto
