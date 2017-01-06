@@ -1,2 +1,10 @@
 ---
 country_code: tz
+
+# Server API urls
+dev_server_api_base_url: "tz-devserverapi.inventureaccess.com"
+demo_server_api_base_url: "tz-demoserverapi.inventureaccess.com"
+prod_server_api_base_url: "tz-api.inventureaccess.com"
+qa_server_api_base_url: "tz-qaserverapi.inventureaccess.com"
+qa2_server_api_base_url: "tz-qa2serverapi.inventureaccess.com"
+staging_server_api_base_url: "tz-stagingserverapi.inventureaccess.com"

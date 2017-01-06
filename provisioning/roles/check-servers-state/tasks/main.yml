@@ -1,0 +1,27 @@
+---
+# Role to ping servers to check their state
+
+- name: Set server api base url
+  include: set-server-api-baseurl.yml
+  tags:
+    - check-servers-state
+
+- name: Check servers state
+  uri:
+    url: "{{ server_api_base_url }}/admin/serverstatus/check"
+    return_content: yes
+    status_code: 200
+  register: servers_state
+  tags:
+    - check-servers-state
+
+- name: Fail when one of the servers is down
+  fail:
+    msg: >
+      "Server Name: {{ item.key }}"
+      "Status Code: {{ item.value.status }}"
+      "Error Details: {{ item.value.statusDetails }}"
+  failed_when: item.value.status != 200
+  with_dict: "{{ servers_state.content|from_json }}"
+  tags:
+    - check-servers-state

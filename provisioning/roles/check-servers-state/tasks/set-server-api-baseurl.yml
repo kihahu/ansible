@@ -1,0 +1,45 @@
+---
+# Set server_api_base_url based on the environment
+
+- include_vars: group_vars/{{ country_code }}/vars.yml
+
+- name: Set server api base url - local
+  set_fact: server_api_base_url="http://serverapi.lh"
+  tags:
+    - check-servers-state
+
+- name: Set server api base url - dev
+  set_fact: server_api_base_url="http://{{ dev_server_api_base_url }}"
+  when: env == "dev"
+  tags:
+    - check-servers-state
+
+- name: Set server api base url - demo
+  set_fact: server_api_base_url="http://{{ demo_server_api_base_url }}"
+  when: env == "demo"
+  tags:
+    - check-servers-state
+
+- name: Set server api base url - prod
+  set_fact: server_api_base_url="http://{{ prod_server_api_base_url }}"
+  when: env == "prod"
+  tags:
+    - check-servers-state
+
+- name: Set server api base url - qa
+  set_fact: server_api_base_url="http://{{ qa_server_api_base_url }}"
+  when: env == "qa"
+  tags:
+    - check-servers-state
+
+- name: Set server api base url - qa2
+  set_fact: server_api_base_url="http://{{ qa2_server_api_base_url }}"
+  when: env == "qa2"
+  tags:
+    - check-servers-state
+
+- name: Set server api base url - staging
+  set_fact: server_api_base_url="http://{{ staging_server_api_base_url }}"
+  when: env == "staging"
+  tags:
+    - check-servers-state

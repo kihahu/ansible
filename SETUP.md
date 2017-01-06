@@ -132,7 +132,7 @@ To set up a specific application, please run the deploy scripts for local enviro
 	- http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
 	- http://docs.aws.amazon.com/cli/latest/userguide/installing.html
 - To setup monitoring on a single instance you will need to filter it by its private ip using below command
-	- ` play -i hosts aws-monitor.yml -l {{ country_code }}-devops --vault-password ~/.vault -e "private_ip={{ PRIVATE_IP_GOES_HERE" ` 
+	- ` play -i hosts aws-monitor.yml -l {{ country_code }}-devops --vault-password ~/.vault -e "private_ip={{ PRIVATE_IP_GOES_HERE" `
 - To setup monitoring on all the instances in a region use `*` as the private ip using below command:
 	- `play -i hosts aws-monitor.yml -l {{ country_code }}-devops --vault-password ~/.vault -e "private_ip=*"`
 
@@ -152,5 +152,14 @@ To set up a specific application, please run the deploy scripts for local enviro
 ## use ansible >= 2.1
 #run the server setup role with only specific tags; upgrade, env-setup,utils-setup,python-setup,ssh-setup
 ansible-playbook -i provisioning/hosts provisioning/servers-basic-setup.yml --vault-password-file=vault
+
+# USING THE check-servers-state playbook
+- Run the ansible playbook command as shown below:
+  - `ansible-playbook -i hosts check-servers-state.yml -l {host}  --extra-vars "env={ env } country_code={ country code }"`
+
+**NOTE**:
+  -  env : can be 'prod', 'staging', 'dev', 'demo', 'prod', 'qa', 'qa2', 'staging'
+  -  country code:  this can be 'ke', 'tz', or 'ph'
+  -  host - the host you want to run the playbook from
 
 Happy Coding!
