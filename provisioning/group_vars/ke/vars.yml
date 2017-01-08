@@ -5,3 +5,11 @@ s3_payments_logs_bucket: "payments-logs-backup"
 country_code: ke
 aws_region: us-west-2
 payment_logs_dir: "/var/log/applications/payments/"
+
+# Server API urls
+dev_server_api_base_url: "devserverapi.inventureaccess.com"
+demo_server_api_base_url: "demo-serverapi.inventureaccess.com"
+prod_server_api_base_url: "api.inventureaccess.com"
+qa_server_api_base_url: "qaserverapi.inventureaccess.com"
+qa2_server_api_base_url: "qa2-serverapi.inventureaccess.com"
+staging_server_api_base_url: "staging-serverapi.inventureaccess.com"
