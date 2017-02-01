@@ -1,0 +1,4 @@
+- name: Remove updatedb mlocate cron
+  file: path={{ mlocate_path }} state=absent
+  tags:
+    - remove-mlocate

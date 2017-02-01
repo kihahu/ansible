@@ -65,3 +65,8 @@
   include: boto_setup.yml
   tags:
     - boto-setup
+
+- name: cron setup tasks
+  include: crons_setup.yml
+  tags:
+    - cron-setup
