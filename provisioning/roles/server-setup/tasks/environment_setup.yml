@@ -8,19 +8,19 @@
     - bash
 
 - name: Creates .ssh directory for root
-  sudo: yes
+  become: yes
   file: path=/root/.ssh state=directory
   tags:
     - github-deploy-keys
 
 - name: Upload the connection file used for Github cloning
-  sudo: yes
+  become: yes
   copy: src=env_setup/github/id_rsa dest=/root/.ssh/github
   tags:
     - github-deploy-keys
 
 - name: Correct SSH deploy key permissions
-  sudo: yes
+  become: yes
   file: dest=/root/.ssh/github mode=0600
   tags:
     - github-deploy-keys

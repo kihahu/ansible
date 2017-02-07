@@ -21,7 +21,7 @@
   apache2_module: name={{ item }} state=absent
   with_items:
     - php5
-  sudo: yes
+  become: yes
   ignore_errors: True
   notify:
     - restart apache
@@ -34,7 +34,7 @@
   with_items:
     - php5.6
     - ssl
-  sudo: yes
+  become: yes
   notify:
     - restart apache
   tags:
@@ -56,7 +56,7 @@
 
 - name: Apache Setup - enable mod_rewrite
   command: a2enmod rewrite
-  sudo: yes
+  become: yes
   notify:
     - restart apache
   tags:

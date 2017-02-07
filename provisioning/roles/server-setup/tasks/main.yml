@@ -66,6 +66,11 @@
   tags:
     - boto-setup
 
+- name: logrotation for application
+  include: logrotation_setup.yml
+  tags:
+    - log-rotation-setup
+
 - name: cron setup tasks
   include: crons_setup.yml
   tags:

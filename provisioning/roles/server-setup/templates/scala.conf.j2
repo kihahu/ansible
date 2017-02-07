@@ -1,0 +1,25 @@
+{{ base_log_path }}/applications/*/*.log
+{
+    daily
+    copytruncate
+    rotate 36500
+    missingok
+    notifempty
+    compress
+    delaycompress
+    dateext
+    su {{ normal_user }} {{ normal_user }}
+}
+
+{{ base_log_path }}/activatorLog_*.log
+{
+    daily
+    copytruncate
+    rotate 36500
+    missingok
+    notifempty
+    compress
+    delaycompress
+    dateext
+    su {{ normal_user }} {{ normal_user }}
+}

@@ -1,0 +1,11 @@
+- name: Setup logratation on scala applications
+  template: src=scala.conf.j2 dest={{ logrotate_path }}/scala owner={{ system_user }} group={{ system_user }} mode=0644
+  tags:
+    - copy-rotate-script
+    - setup-rotation
+
+- name: Test the rotation script
+  shell: logrotate -d -v {{ logrotate_path }}/scala
+  tags:
+    - test-rotate-script
+    - setup-rotation

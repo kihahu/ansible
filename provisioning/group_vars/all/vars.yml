@@ -42,5 +42,8 @@ monit_custom_config_path: "/etc/monit/monitrc.d/"
 monit_host: localhost
 monit_user: monit
 monit_admin_user: admin
-
+logrotate_path: /etc/logrotate.d
+base_log_path: /var/log
+system_user: root
+normal_user: ubuntu
 mlocate_path: /etc/cron.daily/mlocate
