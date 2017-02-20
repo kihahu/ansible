@@ -1,0 +1,50 @@
+---
+- name: create monitor scripts directory
+  file: path={{ monitor_scripts_dir }} state=directory
+  tags:
+   - create-monitor-dir
+   - scala-monitor
+
+- name: install monit service
+  apt: name=monit state=present update_cache=yes
+  tags:
+    - install-monit
+    - scala-monitor
+
+- name: copy monit custom config
+  template: src={{ item }} dest={{ monitor_scripts_dir }}
+  with_items:
+    - shared_functions.sh
+    - slackAlert.sh
+  tags:
+    - configure-monit
+    - scala-monitor
+
+- name: copy custom monitrc file
+  template: src=monit-web dest={{ monit_custom_config_path }}/monit-web
+  tags:
+    - configure-monit
+    - scala-monitor
+
+
+- name: copy custom monitrc file
+  template: src={{ item }} dest={{ monit_conf_path }}/{{ item }}
+  with_items:
+    - scala_monit.j2
+    - non_prod_monit 
+  tags:
+    - configure-monit
+    - scala-monitor
+
+- name: make monitor script executable
+  file: path={{ monitor_scripts_dir }}{{ monit_alert_script }}.sh mode="0755"
+  notify:
+    - restart-monit
+  tags:
+    - configure-monit
+    - scala-monitor
+
+- name: scala monitor setup
+  include: monitoring_setup.yml
+  tags:
+    - scala-monitor

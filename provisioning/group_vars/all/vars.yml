@@ -30,18 +30,6 @@ master_key: "{{ vault_master_key }}"
 master_key_dir: /tala/key
 android_build_tools_revision_number: 24
 monitor_scripts_dir: /apps/monitoring/
-monit_conf_path: /etc/monit/conf.d
-monit_slack_webhook: "{{ vault_slack_webhook }}"
-monit_memory_threshold: "90%"
-monit_disk_threshold: "90%"
-monit_swap_threshold: "90%"
-monit_slack_channel: "#dev-errors"
-monit_port: 2812
-monit_alert_script: "slackAlert"
-monit_custom_config_path: "/etc/monit/monitrc.d/"
-monit_host: localhost
-monit_user: monit
-monit_admin_user: admin
 logrotate_path: /etc/logrotate.d
 base_log_path: /var/log
 system_user: root

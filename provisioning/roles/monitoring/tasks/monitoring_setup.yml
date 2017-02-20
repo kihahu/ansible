@@ -1,0 +1,4 @@
+- name: setup scala apps uptime monitoring
+  template: src=scala_monit.j2 dest={{ monit_conf_path }}/{{ internal_environment }}_scala_monit
+  with_items:
+    - "{{ scala_port }}"

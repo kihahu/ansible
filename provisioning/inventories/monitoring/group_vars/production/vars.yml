@@ -1,0 +1,4 @@
+---
+internal_environment: production
+scala_port: 9000
+monit_slack_channel: "#alerts-infrastructure"

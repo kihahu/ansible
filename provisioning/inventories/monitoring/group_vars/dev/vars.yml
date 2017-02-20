@@ -1,0 +1,4 @@
+---
+internal_environment: dev
+scala_port: 9001
+monit_slack_channel: "#dev-errors"

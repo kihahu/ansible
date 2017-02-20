@@ -66,6 +66,11 @@
   tags:
     - boto-setup
 
+- name: setup scala monitor
+  include: setup-scala-monitors.yml
+  tags:
+    - setup-scala-monitor
+
 - name: logrotation for application
   include: logrotation_setup.yml
   tags:

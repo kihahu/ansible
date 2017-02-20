@@ -1,0 +1,2 @@
+check host {{ monit_host }} with address {{ monit_host }}
+    if failed port {{ production_scala_port }} protocol http then exec "{{ monit_alert_script }}"

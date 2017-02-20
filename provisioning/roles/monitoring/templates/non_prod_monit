@@ -1,0 +1,5 @@
+check filesystem Ubuntu with path /dev/xvda1
+    if space usage > {{ monit_disk_threshold }} then exec "{{ monit_alert_script }}"
+check System domain.com
+    if memory usage > {{ monit_memory_threshold }} then exec "{{ monit_alert_script }}"
+    if swap usage > {{ monit_swap_threshold }} then exec "{{ monit_alert_script }}"

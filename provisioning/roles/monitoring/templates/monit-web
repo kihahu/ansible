@@ -1,0 +1,6 @@
+set httpd port {{ monit_port }} and
+    use address {{ monit_host }} 
+    allow {{ monit_host }}        
+    allow {{ monit_admin_user }}:{{ monit_user }}      
+    allow @{{ monit_user }}           
+    allow @users readonly  

@@ -1,0 +1,178 @@
+[local]
+localhost ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+
+[ph-scala-dev]
+ph-profiling-dev-1 ansible_ssh_host=172.30.2.81
+ph-datareceiver-dev-1 ansible_ssh_host=172.30.2.128
+ph-loans-service-dev-1 ansible_ssh_host=172.30.5.208
+
+[ph-scala-qa]
+ph-profiling-qa-1 ansible_ssh_host=172.30.2.81
+ph-datareceiver-qa-1 ansible_ssh_host=172.30.2.128
+ph-loans-service-qa-1 ansible_ssh_host=172.30.5.208
+
+[ph-scala-qa2]
+ph-profiling-qa2-1 ansible_ssh_host=172.30.2.81
+ph-datareceiver-qa2-1 ansible_ssh_host=172.30.2.128
+ph-loans-service-qa2-1 ansible_ssh_host=172.30.5.208
+
+[ph-scala-demo]
+ph-profiling-demo-1 ansible_ssh_host=172.30.2.81
+ph-datareceiver-demo-1 ansible_ssh_host=172.30.2.128
+ph-loans-service-demo-1 ansible_ssh_host=172.30.5.208
+
+[ph-scala-staging]
+ph-profiling-staging-1 ansible_ssh_host=172.30.2.81
+ph-datareceiver-staging-1 ansible_ssh_host=172.30.2.128
+ph-loans-service-staging-1 ansible_ssh_host=172.30.5.208
+ph-loans-service-staging-2 ansible_ssh_host=172.30.8.66
+
+[ph-scala-production]
+ph-profiling-production-1 ansible_ssh_host=172.30.25.69
+ph-datareceiver-production-1 ansible_ssh_host=172.30.28.158
+ph-loans-service-prd-1 ansible_ssh_host=172.30.22.203
+ph-loans-service-prd-2 ansible_ssh_host=172.30.20.41
+
+[tz-scala-dev]
+tz-profiling-dev-1 ansible_ssh_host=172.29.8.213
+tz-datareceiver-dev-1 ansible_ssh_host=172.29.14.11
+tz-loans-service-dev-1 ansible_ssh_host=172.29.3.44
+
+[tz-scala-qa]
+tz-profiling-qa-1 ansible_ssh_host=172.29.8.213
+tz-datareceiver-qa-1 ansible_ssh_host=172.29.14.11
+tz-loans-service-qa-1 ansible_ssh_host=172.29.3.44
+
+[tz-scala-qa2]
+tz-profiling-qa2-1 ansible_ssh_host=172.29.8.213
+tz-datareceiver-qa2-1 ansible_ssh_host=172.29.14.11
+tz-loans-service-qa2-1 ansible_ssh_host=172.29.3.44
+
+[tz-scala-demo]
+tz-profiling-demo-1 ansible_ssh_host=172.29.8.213
+tz-datareceiver-demo-1 ansible_ssh_host=172.29.14.11
+tz-loans-service-demo-1 ansible_ssh_host=172.29.3.44
+
+[tz-scala-staging]
+tz-profiling-staging-1 ansible_ssh_host=172.29.8.213
+tz-datareceiver-staging-1 ansible_ssh_host=172.29.14.11
+tz-loans-service-staging-1 ansible_ssh_host=172.29.3.44
+tz-loans-service-staging-2 ansible_ssh_host=172.29.1.10
+
+[tz-scala-production]
+tz-profiling-production-1 ansible_ssh_host=172.29.9.152
+tz-datareceiver-production-1 ansible_ssh_host=172.29.0.230
+tz-loans-service-prd-1 ansible_ssh_host=172.29.2.109
+tz-loans-service-prd-2 ansible_ssh_host=172.29.13.73
+
+[ke-scala-dev]
+ke-profiling-dev-1 ansible_ssh_host=172.31.29.196
+ke-datareceiver-dev-1 ansible_ssh_host=172.31.42.75
+ke-loans-services-dev-1 ansible_ssh_host=172.31.27.9
+
+[ke-scala-qa]
+ke-profiling-qa-1 ansible_ssh_host=172.31.29.196
+ke-datareceiver-qa-1 ansible_ssh_host=172.31.42.75
+ke-loans-services-qa-1 ansible_ssh_host=172.31.27.9
+
+[ke-scala-qa2]
+ke-profiling-qa2-1 ansible_ssh_host=172.31.29.196
+ke-datareceiver-qa2-1 ansible_ssh_host=172.31.42.75
+ke-loans-services-qa2-1 ansible_ssh_host=172.31.27.9
+
+[ke-scala-demo]
+ke-profiling-demo-1 ansible_ssh_host=172.31.29.196
+ke-datareceiver-demo-1 ansible_ssh_host=172.31.42.75
+ke-loans-services-demo-1 ansible_ssh_host=172.31.27.9
+
+[ke-scala-staging]
+ke-profiling-staging-1 ansible_ssh_host=172.31.29.196
+ke-datareceiver-staging-1 ansible_ssh_host=172.31.42.75
+ke-loans-services-staging-1 ansible_ssh_host=172.31.27.9
+ke-loans-services-staging-2 ansible_ssh_host=172.31.16.93
+
+[ke-scala-production]
+ke-profiling-production-1 ansible_ssh_host=172.31.27.42
+ke-datareceiver-production-1 ansible_ssh_host=172.31.23.77
+ke-datareceiver-production-2 ansible_ssh_host=172.31.5.143
+ke-datareceiver-production-3 ansible_ssh_host=172.31.12.145
+ke-loans-services-prd-1 ansible_ssh_host=172.31.19.166
+ke-loans-services-prd-2 ansible_ssh_host=172.31.44.113
+
+# group by environment
+[dev:children]
+ke-scala-dev
+ph-scala-dev
+tz-scala-dev
+
+[qa:children]
+ke-scala-qa
+ph-scala-qa
+tz-scala-qa
+
+[qa2:children]
+ke-scala-qa2
+ph-scala-qa2
+tz-scala-qa2
+
+[demo:children]
+ke-scala-demo
+ph-scala-demo
+tz-scala-demo
+
+[staging:children]
+ke-scala-staging
+ph-scala-staging
+tz-scala-staging
+
+[qa2:children]
+ke-scala-qa2
+ph-scala-qa2
+tz-scala-qa2
+
+[non-production:children]
+ke-scala-staging
+ke-scala-dev
+ke-scala-demo
+ke-scala-qa
+ke-scala-qa2
+ph-scala-staging
+ph-scala-dev
+ph-scala-demo
+ph-scala-qa
+ph-scala-qa2
+tz-scala-staging
+tz-scala-dev
+tz-scala-demo
+tz-scala-qa
+tz-scala-qa2
+
+[production:children]
+ke-scala-production
+ph-scala-production
+tz-scala-production
+
+# group by country
+[ke:children]
+ke-scala-production
+ke-scala-dev
+ke-scala-qa
+ke-scala-qa2
+ke-scala-demo
+ke-scala-staging
+
+[ph:children]
+ph-scala-production
+ph-scala-dev
+ph-scala-qa
+ph-scala-qa2
+ph-scala-demo
+ph-scala-staging
+
+[tz:children]
+tz-scala-production
+tz-scala-dev
+tz-scala-qa
+tz-scala-qa2
+tz-scala-demo
+tz-scala-staging
