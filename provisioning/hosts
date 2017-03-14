@@ -1,5 +1,14 @@
-[local]
-inventure-local ansible_ssh_host=inventure-local ansible_ssh_port=22 ansible_ssh_private_key_file=~/.ssh/inventure-local.key
+[ke-local]
+ke-local ansible_connection=local
+
+[ph-local]
+ph-local ansible_connection=local
+
+[tz-local]
+tz-local ansible_connection=local
+
+[br-local]
+br-local ansible_connection=local
 
 [dev]
 
@@ -110,16 +119,19 @@ tz-payments-prd-1
 
 # group by country
 [ke:children]
+ke-local
 ke-payments
 ke-services
 ke-devops
 
 [ph:children]
+ph-local
 ph-payments
 ph-services
 ph-devops
 
 [tz:children]
+tz-local
 tz-services
 tz-payments
 tz-devops
@@ -128,4 +140,3 @@ tz-devops
 ke-scala-production
 ph-scala-production
 tz-scala-production
-

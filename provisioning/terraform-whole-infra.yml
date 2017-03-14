@@ -1,0 +1,122 @@
+---
+- hosts: all
+  become: no
+  become_user: root
+  remote_user: ubuntu
+  gather_facts: True
+  vars:
+      service: whole_infra
+
+  roles:
+      - { role: terraform }
+
+  vars_prompt:
+      - name: aws_terraform_instance_type
+        prompt: Enter the default instance type to launch
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_cidr_block
+        prompt: Enter aws vpc cidr block to launch instances in
+        default: "172.32.0.0/16"
+        private: no
+
+      - name: aws_terraform_instance_type_profiling
+        prompt: Enter instance type to launch for profiling server
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data_logging
+        prompt: Enter instance type to launch for data logging prd servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_dr
+        prompt: Enter instance type to launch for data receiver prd servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_api
+        prompt: Enter instance type to launch for api prd servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data
+        prompt: Enter instance type to launch for data prd servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data_logging
+        prompt: Enter instance type to launch for data logging prd servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data_repository
+        prompt: Enter instance type to launch for data repository prd servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_rds__maindb_identifier
+        prompt: Enter rds instance maindb identifier to launch
+        default: "maindb-test-instance"
+        private: no
+
+      - name: aws_terraform_rds_datareceiver_maindb_identifier
+        prompt: Enter rds datareceiver maindb instance identifier to launch
+        default: "datareceiver-maindb-test-instance"
+        private: no
+
+      - name: aws_terraform_rds_maindb_password
+        prompt: Enter rds instance password
+        confirm: yes
+        private: yes
+
+      - name: aws_terraform_rds_maindb_password
+        prompt: Enter rds instance password
+        confirm: yes
+        private: yes
+
+      - name: aws_terraform_rds_storage
+        prompt: Enter the storage space for rds instance
+        default: 1500
+        private: no
+
+      - name: aws_terraform_rds_instance_class
+        prompt: Enter AWS rds instance class to create
+        default: "db.t2.large"
+        private: no
+
+      - name: aws_terraform_instance_type_profiling_dev
+        prompt: Enter instance type to launch for profiling dev server
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data_logging_dev
+        prompt: Enter instance type to launch for data logging dev servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_dr_dev
+        prompt: Enter instance type to launch for data receiver dev servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_api
+        prompt: Enter instance type to launch for api prd servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data_dev
+        prompt: Enter instance type to launch for data dev servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data_logging_dev
+        prompt: Enter instance type to launch for data logging dev servers
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_type_data_repository_dev
+        prompt: Enter instance type to launch for data repository dev servers
+        default: "t2.micro"
+        private: no

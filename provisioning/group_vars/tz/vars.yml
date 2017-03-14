@@ -1,6 +1,7 @@
 ---
 country_code: tz
-
+aws_terraform_region_ami: ami-bea5f3cd
+aws_terraform_key_name: master_eu_ireland 
 # Server API urls
 dev_server_api_base_url: "tz-devserverapi.inventureaccess.com"
 demo_server_api_base_url: "tz-demoserverapi.inventureaccess.com"

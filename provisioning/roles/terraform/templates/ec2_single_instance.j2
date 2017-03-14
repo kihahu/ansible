@@ -1,0 +1,74 @@
+security_group" "sec_group" {
+   name = "sec_group"
+   description = "Restricted security group"
+
+   ingress {
+      from_port = "{{ aws_terraform_elb_ssl_port }}"
+      to_port = "{{ aws_terraform_elb_ssl_port }}"
+      protocol = "{{ aws_terraform_tcp_protocol }}"
+      cidr_blocks = ["{{ aws_terraform_cidr_block_28 }}","{{ aws_terraform_cidr_block_29 }}","{{ aws_terraform_cidr_block_30 }}","{{ aws_terraform_cidr_block_31 }}","{{ aws_terraform_cidr_block_32 }}"]
+   }
+
+   ingress {
+      from_port = "{{ aws_terraform_ssh_port }}"
+      to_port = "{{ aws_terraform_ssh_port }}"
+      protocol = "{{ aws_terraform_tcp_protocol }}"
+      cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+   }
+
+   ingress {
+      from_port = "{{ aws_terraform_data_team_from_port }}"
+      to_port = "{{ aws_terraform_data_team_to_port }}"
+      protocol = "{{ aws_terraform_tcp_protocol }}"
+      cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+   }
+
+   ingress {
+      from_port = "{{ aws_terraform_profiling_from_port }}"
+      to_port = "{{ aws_terraform_profiling_to_port }}"
+      protocol = "{{ aws_terraform_tcp_protocol }}"
+      cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+   }
+
+   ingress {
+      from_port = "{{ aws_terraform_elb_ssl_port }}"
+      to_port = "{{ aws_terraform_elb_ssl_port }}"
+      protocol = "{{ aws_terraform_tcp_protocol }}"
+      cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+   }
+   ingress {
+      from_port = "{{ aws_terraform_data_repository_from_port }}"
+      to_port = "{{ aws_terraform_data_repository_to_port }}"
+      protocol = "{{ aws_terraform_tcp_protocol }}"
+      cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+   }
+  egress {
+      from_port = "{{ aws_terraform_default_from_port }}"
+      to_port = "{{ aws_terraform_default_to_port }}"
+      protocol = "{{ aws_terraform_default_protocol }}"
+      cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+  }
+}
+
+
+/* DEPLOY SINGLE INSTANCES */
+resource "aws_instance" "data_repository_dev_ec2" {
+  ami           = "{{ aws_terraform_region_ami }}"
+  key_name      = "{{ aws_terraform_key_name }}"
+  instance_type = "{{ aws_terraform_instance_type_data_repository }}"
+  vpc_security_group_ids = ["${aws_security_group.sec_group.id}"]
+
+  count = {{ aws_terraform_default_instance_count }}
+
+    tags {
+        Name = "{{ aws_terraform_data_repository_tag }}-${count.index}"
+    }
+
+    root_block_device {
+        volume_type = "{{ aws_terraform_volume_type }}"
+        volume_size = {{ aws_terraform_block_device_size }}
+        delete_on_termination = true
+    }
+}
+
+

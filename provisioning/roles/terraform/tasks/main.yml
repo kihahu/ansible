@@ -1,0 +1,24 @@
+---
+- name: get shared function
+  include: shared-functions.yml
+  when: ( service == "whole_infra" )
+  vars:
+    - aws_service: whole_infra
+  tags:
+    - setup-all-ec2-instances
+
+- name: get shared function
+  include: shared-functions.yml
+  when: ( service == "ec2" )
+  vars:
+    - aws_service: ec2
+  tags:
+    - setup-ec2-instances
+
+- name: get shared function
+  include: shared-functions.yml
+  when: ( service == "rds" )
+  vars:
+    - aws_service: rds
+  tags:
+    - setup-rds-instance
