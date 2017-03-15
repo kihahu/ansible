@@ -1,4 +1,4 @@
 ---
 jenkins_master_public_key: "{{ vault_jenkins_master_public_key }}"
 jenkins_master_private_key: "{{ vault_jenkins_master_private_key }}"
-jenkins_server_ip: "172.31.21.23"
+jenkins_server_ip: "172.30.2.35"
