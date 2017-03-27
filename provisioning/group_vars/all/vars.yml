@@ -108,3 +108,8 @@ base_log_path: /var/log
 system_user: root
 normal_user: ubuntu
 mlocate_path: /etc/cron.daily/mlocate
+apt_packages:
+   - apt-transport-https
+   - ca-certificates
+   - curl
+   - software-properties-common
