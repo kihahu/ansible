@@ -30,8 +30,86 @@ master_key: "{{ vault_master_key }}"
 master_key_dir: /tala/key
 android_build_tools_revision_number: 24
 monitor_scripts_dir: /apps/monitoring/
+monit_conf_path: /etc/monit/conf.d
+monit_slack_webhook: "{{ vault_slack_webhook }}"
+monit_memory_threshold: "90%"
+monit_disk_threshold: "90%"
+monit_swap_threshold: "90%"
+monit_slack_channel: "#dev-errors"
+monit_port: 2812
+monit_alert_script: "slackAlert"
+monit_custom_config_path: "/etc/monit/monitrc.d/"
+monit_host: localhost
+monit_user: monit
+monit_admin_user: admin
+aws_terraform_provider: aws
+aws_terraform_elb_port: 80
+aws_terraform_elb_protocol: http
+aws_terraform_elb_ssl_protocol: https
+aws_terraform_elb_ssl_port: 443
+aws_terraform_block_device_size: 100
+aws_terraform_access_key: "{{ vault_aws_terraform_access_key }}"
+aws_terraform_secret_key: "{{ vault_aws_terraform_secret_key }}"
+aws_terraform_instance_type: "t2.micro"
+aws_terraform_volume_type: gp2
+aws_terraform_dir_path: ../terraform
+aws_terraform_rds_is_multi_az: yes
+aws_terraform_rds_storage_type: gp2
+aws_terraform_param_group_name: default.mysql5.6
+aws_terraform_backup_retention_period: 7
+aws_terraform_publicly_accessible: True
+aws_terraform_rds_engine_version: 5.6
+aws_terraform_rds_engine: MySQL
+aws_terraform_cidr_block_28: 172.28.0.0/16
+aws_terraform_cidr_block_29: 172.29.0.0/16
+aws_terraform_cidr_block_30: 172.30.0.0/16
+aws_terraform_cidr_block_31: 172.31.0.0/16
+aws_terraform_cidr_block_32: 172.32.0.0/16
+aws_terraform_default_cidr: "0.0.0.0/0"
+aws_terraform_default_from_port: 0
+aws_terraform_default_to_port: 0
+aws_terraform_default_protocol: -1
+aws_terraform_mysql_port: 3306
+aws_terraform_tcp_protocol: tcp
+aws_terraform_certificate_id: "arn:aws:iam::347023968887:server-certificate/inventureaccess-2016-2018"
+aws_terraform_ssh_port: 22
+aws_terraform_data_repository_tag: data-repository
+aws_terraform_data_repository_tag_dev: data-repository-dev
+aws_terraform_default_instance_count: 2
+aws_terraform_data_dev_instance_count: 6
+aws_terraform_data_logging_dev_tag: data-team-dev
+aws_terraform_data_tag: data-prd
+aws_terraform_data_logging_tag: data-logging-prd
+aws_terraform_dr_tag: data-receiver-prd
+aws_terraform_api_tag: api-prd
+aws_elb_name_dr: dr-elb-ldl
+aws_elb_name_data_logging: data-logging-elb-ldl
+aws_elb_name_data: data-elb-ldl
+aws_elb_name_api: api-elb-ldl
+aws_terraform_data_team_port: 5000
+aws_terraform_data_repository_from_port: 9000
+aws_terraform_data_repository_to_port: 9005
+aws_terraform_profiling_to_port: 9005
+aws_terraform_profiling_from_port: 9005
+aws_terraform_data_team_from_port: 5000
+aws_terraform_data_team_to_port: 5005
+aws_terraform_profiling_tag: profiling
+aws_terraform_profiling_tag_dev: profiling-dev
+aws_terraform_api_ec2_tag: api-prd
+aws_terraform_default_dns: inventureaccess.com
+aws_terraform_api_app_code: apiv2
+aws_terraform_dr_app_code: drv2
+aws_terraform_data_app_code: scoringv2
+aws_terraform_logging_app_code: loggingv2
+aws_terraform_rds_username: insightuser
+aws_terraform_rds_subnet_group_name: default
 logrotate_path: /etc/logrotate.d
 base_log_path: /var/log
 system_user: root
 normal_user: ubuntu
 mlocate_path: /etc/cron.daily/mlocate
+apt_packages:
+   - apt-transport-https
+   - ca-certificates
+   - curl
+   - software-properties-common

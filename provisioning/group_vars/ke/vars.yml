@@ -5,7 +5,8 @@ s3_payments_logs_bucket: "payments-logs-backup"
 country_code: ke
 aws_region: us-west-2
 payment_logs_dir: "/var/log/applications/payments/"
-
+aws_terraform_region_ami: ami-4c03562c
+aws_terraform_key_name: master 
 # Server API urls
 dev_server_api_base_url: "devserverapi.inventureaccess.com"
 demo_server_api_base_url: "demo-serverapi.inventureaccess.com"

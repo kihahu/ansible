@@ -1,14 +1,19 @@
 ---
 - name: Update all packages
+  become: yes
   apt: update_cache=yes
   tags:
     - package-update
 
-- name: Install docker-py
-  pip: name='docker-py' state='present'
+- name: Remove docker-compose
+  pip: name='docker-compose' state='absent'
   tags:
-    - docker-py
+    - docker-compose
 
 - name: Install docker
   include: docker_setup.yml
 
+- name: Install docker-py
+  pip: name='docker-py' state='latest'
+  tags:
+    - docker-py

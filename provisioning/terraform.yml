@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: no
+  become_user: root
+  remote_user: ubuntu
+  gather_facts: True
+  vars:
+      service: ec2
+
+  roles:
+      - { role: terraform }
+
+  vars_prompt:
+      - name: aws_terraform_instance_type
+        prompt: Enter instance type to launch
+        default: "t2.micro"
+        private: no
+
+      - name: aws_terraform_instance_count
+        prompt: Enter the number of instances to launch
+        default: 1
+        private: no
+
+      - name: aws_terraform_tag
+        prompt: Enter the instance tag name
+        default: "test"
+        private: no
+
+      - name: aws_terraform_cidr_block
+        prompt: Enter cidr block for the vpc
+        default: "172.32.0.0/16"
+        private: no

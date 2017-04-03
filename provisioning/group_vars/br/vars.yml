@@ -1,0 +1,10 @@
+---
+sns_arn: "arn:aws:sns:us-west-2:347023968887:Inventure-Alerts"
+sns_arn_notices: "arn:aws:sns:us-west-2:347023968887:inventure-notices"
+s3_payments_logs_bucket: "payments-logs-backup"
+country_code: br
+aws_region: sa-east-1
+payment_logs_dir: "/var/log/applications/payments/"
+aws_terraform_region_ami: ami-8bcc54e7
+aws_terraform_key_name: master_sao_paulo
+zone_id: Z306P7HF0KMLRB
