@@ -1,0 +1,11 @@
+- name: set replica_name
+  set_fact: replica_name={{ ansible_fqdn }}
+
+- name: copy resolv.conf
+  template: src=etc-resolv.conf.j2 dest=/etc/resolv.conf mode=0644
+
+- name: install the replica
+  shell: ipa-replica-install -U  --principal admin --setup-dns --auto-reverse --no-forwarders -w {{ ipaserver_admin_password }} --mkhomedir
+  args:
+    creates: /etc/ipa/default.conf
+

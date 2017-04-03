@@ -1,0 +1,16 @@
+- name: add ovpn autologin user
+  shell: "{{ ovpn_scrdir }}/sacli --user {{ inp_user }}  --key prop_autologin --value true UserPropPut"
+  when: task_to_do == "create_user"
+
+- name: generate ovpn profile
+  shell: "{{ ovpn_scrdir }}/sacli --user {{ inp_user }} GetAutologin > {{ ovpn_profiledir }}/{{ inp_user }}.ovpn"
+  when: task_to_do == "create_user"
+
+- name: fetch ovpn profile file
+  fetch: src="{{ ovpn_profiledir }}/{{ inp_user }}.ovpn" dest="{{ local_profiledir }}/{{ ansible_hostname }}/" flat=yes
+  when: task_to_do == "create_user"
+
+- name: delete ovpn user
+  shell: "{{ ovpn_scrdir }}/sacli --user {{ inp_user }} UserPropDelAll"
+  when: task_to_do == "delete_user"
+

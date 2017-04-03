@@ -1,0 +1,10 @@
+- hosts: ipaserver
+  become: yes
+  roles:
+    - role: ipaserver
+      ipamaster: us-west-2-ipa01.tala.aws
+      ipareplica:
+      - us-west-2-ipa02.tala.aws
+      - ap-southeast-1-ipa01.tala.aws
+      - eu-west-1-ipa01.tala.aws
+

@@ -1,0 +1,10 @@
+---
+# handlers file for ipaclient
+- name: restart sssd
+  service: name=sssd state=restarted
+
+- name: restart ssh
+  service: name=ssh state=restarted
+
+- name: restart auditd
+  service: name=auditd state=restarted

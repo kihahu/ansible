@@ -1,0 +1,113 @@
+---
+- name: update apt package cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: set hostname
+  hostname: name={{ inventory_hostname_short }}
+
+- name: update /etc/hostname
+  template: src=etc-hostname.j2 dest=/etc/hostname
+
+- name: ensure hostname is in /etc/hosts
+  lineinfile: dest=/etc/hosts regexp="^{{ ansible_default_ipv4.address }}.+$" line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }} {{ inventory_hostname_short }}" state=present
+
+- name: check /etc/dhcp/dhclient-enter-hooks.d
+  stat: path=/etc/dhcp/dhclient-enter-hooks.d
+  register: chkp1
+
+- name: check /etc/dhcp3/dhclient-enter-hooks.d
+  stat: path=/etc/dhcp3/dhclient-enter-hooks.d
+  register: chkp2
+
+- name: copy nodnsupdate to /etc/dhcp
+  copy: src=nodnsupdate dest=/etc/dhcp/dhclient-enter-hooks.d
+  when: chkp1.stat.exists
+
+- name: copy nodnsupdate to /etc/dhcp3
+  copy: src=nodnsupdate dest=/etc/dhcp3/dhclient-enter-hooks.d
+  when: chkp2.stat.exists
+
+- name: set aws nameserver
+  set_fact: 'awsnameserver={{ {"us-west-2": dns_fwd_us_west_2 , "ap-southeast-1": dns_fwd_ap_southeast_1 , "eu-west-1": dns_fwd_eu_west_1 }[ansible_ec2_placement_region] | default("") }} '
+
+- name: copy resolv.conf
+  template: src=etc-resolv.conf.j2 dest=/etc/resolv.conf mode=0644
+
+- name: update Sysctl
+  sysctl: name=kernel.domainname value={{ ansible_domain }} state=present reload=yes
+
+- name: set dns servers for dhclient.conf
+  set_fact: dnservers='{% set comma = joiner(", ") %} {% for item in ipaservers[ansible_ec2_placement_region] -%} {{ comma() }}{{ hostvars[item]["ansible_eth0"]["ipv4"]["address"] }} {%- endfor %}'
+
+- name: edit /etc/dhcp/dhclient.conf
+  lineinfile: 'dest=/etc/dhcp/dhclient.conf regexp="{{ item.regexp }}" line="{{ item.line }}" state=present'
+  with_items:
+    - { regexp: '^supersede domain-name-servers ', line: 'supersede domain-name-servers {{ dnservers }}, {{ awsnameserver }} ;' }
+    - { regexp: '^supersede domain-name ', line: 'supersede domain-name "{{ ansible_domain }}" ;' }
+    - { regexp: '^supersede domain-search ', line: 'supersede domain-search "{{ ansible_domain }}","{{ ansible_ec2_placement_region }}.compute.internal" ;' }
+
+- name: install required packages
+  apt: name={{ item }} state=present
+  with_items:
+    - freeipa-client
+    - auditd
+
+- name: check if ipa client is configured
+  stat: path=/etc/ipa/default.conf
+  register: freeipa_conf
+
+- set_fact: ipsrv=""
+
+- name: set ipa servers
+  set_fact: ipsrv='{{ ipsrv }} {% for srv in item.value %} --server={{srv}} {%- endfor %} '
+  with_dict: "{{ ipaservers }}"
+
+- name: configure ipa client
+  command: /usr/sbin/ipa-client-install -U --enable-dns-updates --mkhomedir --domain={{ ansible_domain }} --hostname {{ inventory_hostname }} --realm {{ ansible_domain | upper }}  -p {{ ipa_principal }}  -w {{ ipaserver_admin_password }} {{ ipsrv }} 
+  when: not freeipa_conf.stat.exists
+
+- name: set hostname
+  hostname: name={{ inventory_hostname_short }}
+
+- name: update /etc/hostname
+  template: src=etc-hostname.j2 dest=/etc/hostname
+
+- name: enable mkhomedir
+  lineinfile: dest=/etc/pam.d/common-session line='session     required      pam_mkhomedir.so skel=/etc/skel umask=0022'
+
+- name: enable password auth in /etc/ssh/sshd_config 
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^PasswordAuthentication' line='PasswordAuthentication yes' state=present
+  notify:
+    - restart ssh
+
+- name: bypass password auth for ubuntu and ansible in sshd_config
+  blockinfile: 
+    dest: /etc/ssh/sshd_config 
+    insertafter: EOF 
+    block: |
+      AuthenticationMethods "publickey,password" "publickey,keyboard-interactive"
+      Match User ubuntu,ansible
+      AuthenticationMethods publickey
+  notify:
+    - restart ssh
+  
+- name: update sssd.conf for krb timeout
+  lineinfile: dest=/etc/sssd/sssd.conf line='krb5_auth_timeout = 20' insertbefore='ipa_domain = tala.aws' state=present
+  notify:
+    - restart sssd
+    - restart ssh
+
+- name: update sssd.conf for sudo
+  lineinfile: dest=/etc/sssd/sssd.conf regexp='^services.*' line='services = nss, pam, ssh, sudo'
+  notify:
+    - restart sssd
+    - restart ssh
+
+- name: edit /etc/audit/auditd.conf
+  lineinfile: 'dest=/etc/audit/auditd.conf regexp="{{ item.regexp }}" line="{{ item.line }}" state=present'
+  with_items:
+    - { regexp: '^max_log_file ', line: 'max_log_file = 100' }
+    - { regexp: '^num_logs ', line: 'num_logs = 99' }
+  notify:
+    - restart auditd
+

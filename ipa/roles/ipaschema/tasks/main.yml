@@ -1,0 +1,30 @@
+- include: create_users_ipa.yml
+  when: task_to_do == "create_user"
+
+- include: passwd_user_ipa.yml
+  when: task_to_do == "create_user"
+
+- include: create_users_rds.yml
+  when: task_to_do == "create_user"
+
+- include: modify_users_ipa.yml
+  when: task_to_do == "modify_user"
+
+- include: modify_users_rds.yml
+  when: task_to_do == "modify_user"
+
+- include: create_groups_ipa.yml
+  when: task_to_do == "create_user" or task_to_do == "modify_user"
+
+- include: create_hostgroups.yml
+  when: task_to_do == "update_hostgroups"
+
+- include: create_hbac.yml
+  when: task_to_do == "update_hbac"
+
+- include: create_sudorule.yml
+  when: task_to_do == "update_sudorule"
+
+- include: delete_users.yml
+  when: task_to_do == "delete_user"
+

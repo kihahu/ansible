@@ -1,0 +1,11 @@
+- name: Check if OS is CentOS
+  fail: msg="IPA server should be CentOS"
+  when: ansible_distribution != 'CentOS'
+
+- name: Check if Master
+  debug: msg="Master setup"
+  when: inventory_hostname == ipamaster
+
+- name: Check if Replica
+  debug: msg="Replica setup"
+  when: inventory_hostname in ipareplica

@@ -1,0 +1,43 @@
+[ipaserver]
+us-west-2-ipa01.tala.aws ansible_host=172.31.45.121
+us-west-2-ipa02.tala.aws ansible_host=172.31.24.214
+ap-southeast-1-ipa01.tala.aws ansible_host=172.30.3.164
+eu-west-1-ipa01.tala.aws ansible_host=172.29.0.152
+
+[us-west-1-clients]
+we45-demo1.tala.aws ansible_host=172.31.38.59
+we45-demo4.tala.aws ansible_host=172.31.18.199
+we45-demo5.tala.aws ansible_host=172.29.11.54
+
+[openvpn]
+ph-openvpn-prd-1.tala.aws ansible_host=172.30.5.50
+
+[eu-west-1-clients]
+tz-api-staging-1.tala.aws ansible_host=172.29.9.72
+tz-api-staging-2.tala.aws ansible_host=172.29.30.80
+tz-datareceiver-staging-1.tala.aws ansible_host=172.29.7.99
+tz-api-prd-1.tala.aws ansible_host=172.29.10.85
+tz-api-prd-2.tala.aws ansible_host=172.29.30.9
+tz-data-dev-1.tala.aws ansible_host=172.29.9.15
+tz-data-dev-2.tala.aws ansible_host=172.29.2.102
+tz-data-logging-1.tala.aws ansible_host=172.29.3.72
+tz-data-logging-2.tala.aws ansible_host=172.29.20.212
+tz-data-prd-1.tala.aws ansible_host=172.29.4.239
+tz-data-prd-2.tala.aws ansible_host=172.29.18.168
+tz-data-qa-1.tala.aws ansible_host=172.29.1.91
+tz-data-qa-2.tala.aws ansible_host=172.29.16.121
+tz-data-receiver-prd-1.tala.aws ansible_host=172.29.1.52
+tz-data-receiver-prd-2.tala.aws ansible_host=172.29.25.245
+tz-data-repository-dev-1.tala.aws ansible_host=172.29.15.128
+tz-data-repository.tala.aws ansible_host=172.29.10.207
+tz-datareceiver-staging-2.tala.aws ansible_host=172.29.25.244
+tz-db-proxy.tala.aws ansible_host=172.29.22.11
+tz-devops.tala.aws ansible_host=172.29.6.131
+tz-eng-dev-1.tala.aws ansible_host=172.29.6.32
+tz-jenkins.tala.aws ansible_host=172.29.9.145
+tz-profiling-dev-1.tala.aws ansible_host=172.29.8.213
+tz-profiling-prd-1.tala.aws ansible_host=172.29.9.152
+tz-scala-datareceiver-dev.tala.aws ansible_host=172.29.14.11
+tz-scala-datareceiver-prd.tala.aws ansible_host=172.29.0.230
+tz-services-dev-1.tala.aws ansible_host=172.29.1.74
+tz-services-prd-1.tala.aws ansible_host=172.29.11.190

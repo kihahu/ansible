@@ -1,0 +1,67 @@
+---
+- hosts: us-west-2-ipa01.tala.aws
+  vars_prompt:
+    - name: "username"
+      prompt: "Username"
+      private: no
+    - name: "pass1"
+      prompt: "New Password [leave blank for no change]"
+    - name: "pass2"
+      prompt: "Confirm Password [leave blank for no change]"
+    - name: "sshkeys"
+      prompt: "Reset/Regenrate SSH keys [y/n]?"
+      private: no
+
+  vars_files:
+    - roles/ipaschema/vars/main.yml
+    - roles/ipaschema/vars/users/{{ username }}.yml
+
+  tasks:
+    - name: abort if passwords do not match
+      fail: msg="Passwords do no match"
+      when: ("{{ pass1|trim != '' }}") and ({{ pass1 != pass2 }})
+
+    - name: initialize
+      shell:  echo '{{ ipaserver_admin_password }}' |kinit {{ ipa_principal }}
+      register: kistatus
+      failed_when: "kistatus.rc != 0 "
+      changed_when: "kistatus.rc != 0"
+
+    - name: check user exists
+      shell: "ipa user-show {{ username }} "
+      register: ufstatus
+      failed_when: ufstatus.rc == 2
+      changed_when: "ufstatus.rc != 0"
+
+    - name: abort if user is not present
+      fail: msg="User {{ username }} doesn't exist in IPA"
+      when: "ufstatus.rc != 0"
+
+    - name: reset password in ipa
+      shell: "echo '{{ pass1 }}' | ipa passwd {{ username }}"
+      when: "{{ pass1|trim != '' }}"
+
+    - name: delete ssh private keys
+      file: path="{{ ssh_key_path }}/{{ username }}_id_rsa" state=absent
+      when: sshkeys == 'y'
+
+    - name : delete ssh public keys
+      file: path="{{ ssh_key_path }}/{{ username }}_id_rsa.pub" state=absent
+      when: sshkeys == 'y'
+
+    - name: create ssh keys
+      shell: 'ssh-keygen -b 2048 -t rsa -f {{ ssh_key_path }}/{{ username }}_id_rsa -q -N ""'
+      when: sshkeys == 'y'
+
+
+    - name: update ssh keys in ipa
+      shell: ipa user-mod --sshpubkey="{{ lookup("file", ssh_key_path+"/"+username+"_id_rsa.pub") }}"  {{ username }}
+      when: sshkeys == 'y'
+
+    - name: reset password in rds
+      mysql_user: name={{ item.0.username }} password={{ pass1 }} host="%"  login_user={{ mysql_admin }} login_password={{ mysql_passwd }} login_host={{ item.1.rds_instance }}
+      with_subelements:
+        - "{{ ipa_usr | selectattr('rds_privs', 'defined') | list }}"
+        - rds_privs
+      when: "{{ pass1|trim != '' }}"
+

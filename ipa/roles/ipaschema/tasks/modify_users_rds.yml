@@ -1,0 +1,23 @@
+- include_vars: "users/{{ inp_user }}.yml"
+
+- set_fact: rds_list=[]
+- set_fact: u_rds_list=[]
+
+- set_fact: rds_list="{{ rds_list }} + [ '{{ rds_servers[item] }}' ] "
+  with_items: "{{ rds_servers }}"
+
+- name: set fact
+  set_fact: u_rds_list="{{ item.rds_privs | map(attribute='rds_instance') | list  }}"
+  when: item.rds_privs is defined
+  with_items: "{{ipa_usr }}"
+
+- name: modify user in rds
+  mysql_user: name={{ item.0.username }} host="%" priv={{ item.1.privs | join('/') }} login_user={{ mysql_admin }} login_password={{ mysql_passwd }} login_host={{ item.1.rds_instance }}
+  with_subelements:
+    - "{{ ipa_usr | selectattr('rds_privs', 'defined') | list }}"
+    - rds_privs
+
+- name: remove user from other rds instances
+  mysql_user: name={{ inp_user }} host="%" state='absent' login_user={{ mysql_admin }} login_password={{ mysql_passwd }} login_host={{ item }}
+  with_items: "{{ rds_list | difference(u_rds_list) }}"
+

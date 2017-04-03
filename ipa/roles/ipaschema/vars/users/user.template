@@ -1,0 +1,23 @@
+ipa_usr:
+  - username: "< username >"
+    email: "< user email >"
+    fname: "< first name >"
+    lname: "< last name >"
+    ssh: "< ssh access to to be granted for hosts mapped to user group? value=yes/no >"
+    sudo: "< sudo privs to to be granted for hosts mapped to user group? value=yes/no >"
+    group:
+      - "< name of group eg. ug-dev-all >"
+      - "< name of group eg. ug-qa-all >"
+    aws_group: "< aws group for the user eg. tala-fullaccess >"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['< item name from vars/main.yml eg. us-west-2-prd-rds1>'] }}"
+        privs:
+          - "< privilege 1 eg. *.*:USAGE >"
+          - "< privilege 2 eg. datateam.*:ALL >"
+          - "< privilege 3 eg. loans.*:SELECT >"
+      - rds_instance: "{{ rds_servers['< item name from vars/main.yml eg. us-west-2-prd-rds2>'] }}"
+        privs:
+          - "< privilege 1 eg. *.*:USAGE >"
+          - "< privilege 2 eg. datateam.*:ALL >"
+          - "< privilege 3 eg. loans.*:SELECT >"
+

@@ -1,0 +1,8 @@
+- include_vars: "users/{{ inp_user }}.yml"
+
+- name: setup user in rds
+  mysql_user: name={{ item.0.username }} password={{ inp_passwd | default(init_userpass) }} update_password="on_create" host="%" priv={{ item.1.privs | join('/') }} state={{ item.0.mysqlstate | default('present') }} login_user={{ mysql_admin }} login_password={{ mysql_passwd }} login_host={{ item.1.rds_instance }}
+  with_subelements:
+    - "{{ ipa_usr | selectattr('rds_privs', 'defined') | list }}"
+    - rds_privs  
+

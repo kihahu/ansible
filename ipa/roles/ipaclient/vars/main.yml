@@ -1,0 +1,17 @@
+---
+# vars file for ipaclient
+ipaservers:
+   us-west-2: 
+      - us-west-2-ipa01.tala.aws
+      - us-west-2-ipa02.tala.aws
+   ap-southeast-1:
+      - ap-southeast-1-ipa01.tala.aws
+   eu-west-1:
+      - eu-west-1-ipa01.tala.aws 
+
+dns_fwd_us_west_2: "172.31.0.2"
+dns_fwd_ap_southeast_1: "172.30.0.2"
+dns_fwd_eu_west_1: "172.29.0.2"
+ipa_principal: "admin"
+ansible_domain: "tala.aws"
+

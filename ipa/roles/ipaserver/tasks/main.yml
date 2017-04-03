@@ -1,0 +1,20 @@
+- include_vars: ipavars.yml
+
+- name: check ipa server os is centos
+  fail: msg="IPA server should be CentOS"
+  when: ansible_distribution != 'CentOS'
+
+- name: gather ec2 facts
+  action: ec2_facts
+
+- name: include common tasks
+  include: common.yml
+
+- name: configure master
+  include: master.yml
+  when: inventory_hostname == ipamaster
+
+- name: configure replica
+  include: replica.yml
+  when: inventory_hostname in ipareplica
+

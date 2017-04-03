@@ -1,0 +1,4 @@
+dns_fwd_us_west_2: "172.31.0.2"
+dns_fwd_ap_southeast_1: "172.30.0.2"
+dns_fwd_eu_west_1: "172.29.0.2"
+

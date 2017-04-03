@@ -1,0 +1,36 @@
+- include_vars: "users/{{ inp_user }}.yml"
+
+- name: assemble user info for group mapping 
+  block:
+     - set_fact: temp_varfile="/tmp/allusers.yml"
+     - assemble: src="roles/ipaschema/vars/users/" dest="{{ temp_varfile }}"  regexp="yml$" ignore_hidden=true remote_src=false
+     - replace: dest="{{ temp_varfile }}" regexp="^ipa_usr:(.*)$" replace=""
+     - lineinfile: dest="{{ temp_varfile }}" insertbefore=BOF line="all_usr:"
+     - include_vars: "{{ temp_varfile }}"
+#     - file: path={{ temp_varfile }} state=absent
+
+- set_fact: u_grp="{{ lookup('flattened', all_usr | map(attribute='group') | list ) }}"
+- set_fact: uni_grp={{ u_grp.split(",") | unique }}
+
+- name: create/update groups and associate users
+  ipa_group: name={{ item }} user='{% set comma = joiner(",") %}{% for usr in all_usr %}{% for grp in usr.group if grp == item %}{{ comma() }}{{ usr.username }}{% endfor %}{% endfor %}' ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+  with_items: "{{ uni_grp }}"
+
+- set_fact: a_grp="{{ all_usr | selectattr('aws_group', 'defined') |selectattr('aws_group', 'match', '^tala-') | map(attribute='aws_group') | list | unique }}"
+
+- name: create/update aws groups and associate users
+  ipa_group: name='aws-{{ item }}' user='{% set comma = joiner(",") %}{% for usr in all_usr %}{% if usr.aws_group is defined and usr.aws_group == item %}{{ comma() }}{{ usr.username }}{% endif %}{% endfor %}' ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+  with_items: "{{ a_grp }}"
+
+- name: create/update ssh groups and associate users
+  ipa_group: name='{{ item }}-ssh' user='{% set comma = joiner(",") %}{% for usr in all_usr %}{% for grp in usr.group if grp == item and usr.ssh is defined and usr.ssh == "yes" %}{{ comma() }}{{ usr.username }}{% endfor %}{% endfor %}' ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+  with_items: "{{ uni_grp }}"
+
+- name: create/update sudo groups and associate users
+  ipa_group: name='{{ item }}-sudo' user='{% set comma = joiner(",") %}{% for usr in all_usr %}{% for grp in usr.group if grp == item and usr.sudo is defined and usr.sudo == "yes" %}{{ comma() }}{{ usr.username }}{% endfor %}{% endfor %}' ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+  with_items: "{{ uni_grp }}"
+
+- name: create/update ug-db-proxy-ssh group and associate users
+  ipa_group: name='ug-db-proxy-ssh' user='{% set comma = joiner(",") %}{% for usr in all_usr %}{% if usr.rds_privs is defined %}{{ comma() }}{{ usr.username }}{% endif %}{% endfor %}'  ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+  with_items: "{{ all_usr }}"
+

@@ -1,0 +1,24 @@
+- include_vars: "users/{{ inp_user }}.yml"
+
+- name: delete ssh private key
+  file: path="{{ ssh_key_path }}/{{ inp_user }}_id_rsa" state=absent
+
+- name: delete ssh public key
+  file: path="{{ ssh_key_path }}/{{ inp_user }}_id_rsa.pub" state=absent
+
+- name: delete user from IPA
+  ipa_user: name={{ inp_user }} state='absent' ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+
+- set_fact: rds_list=[]
+- set_fact: rds_list="{{ rds_list }} + [ '{{ rds_servers[item] }}' ] "
+  with_items: "{{ rds_servers }}"
+
+
+- name: delete user from RDS
+  mysql_user: name={{ inp_user }} state='absent' host="%" login_user={{ mysql_admin }} login_password={{ mysql_passwd }} login_host={{ item }}
+  with_items:
+    - "{{ rds_list }}" 
+
+- name: rename users config file
+  command: 'creates=" {{ user_config_dir }}/{{ inp_user }}.deleted " mv "{{ user_config_dir }}"/"{{ inp_user }}".yml "{{ user_config_dir }}"/"{{ inp_user }}".deleted'
+

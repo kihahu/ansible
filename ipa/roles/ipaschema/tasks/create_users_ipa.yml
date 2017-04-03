@@ -1,0 +1,17 @@
+- include_vars: "users/{{ inp_user }}.yml"
+
+- stat: path="{{ ssh_key_path }}/{{ item.username }}_id_rsa.pub"
+  with_items: "{{ ipa_usr }}"
+  register: keystat
+
+- name: create ssh keys
+  shell: 'ssh-keygen -b 2048 -t rsa -f {{ ssh_key_path }}/{{ item.item.username }}_id_rsa -q -N ""'
+  with_items: "{{ keystat.results }}"
+  when: item.stat.exists == false
+
+
+- name: create user in ipa
+  ipa_user: name={{ item.username }} password={{ init_userpass }} givenname={{ item.fname }} sn={{ item.lname }} mail={{ item.email }} sshpubkey="{{ lookup('file', ssh_key_path+'/'+item.username+'_id_rsa.pub') }}" state={{ item.state | default('present') }} ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+  with_items: "{{ ipa_usr }}"
+  ignore_errors: yes
+

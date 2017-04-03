@@ -1,0 +1,171 @@
+ipa_hg:
+  - hgname: hg-dev-all
+    hghosts:
+      - tz-data-dev-1.tala.aws
+      - tz-data-dev-2.tala.aws
+      - tz-data-repository-dev-1.tala.aws
+      - tz-eng-dev-1.tala.aws
+      - tz-profiling-dev-1.tala.aws
+      - tz-scala-datareceiver-dev.tala.aws
+      - tz-services-dev-1.tala.aws
+      - tz-devops.tala.aws
+      - ke-staging-1.tala.aws
+    ugroup:
+      - ug-dev-all-ssh
+    sudogroup:
+      - ug-dev-all-sudo
+
+  - hgname: hg-qa-all
+    hghosts:
+      - tz-data-qa-1.tala.aws
+      - tz-data-qa-2.tala.aws
+    ugroup:
+      - ug-qa-all-ssh
+    sudogroup:
+      - ug-qa-all-sudo
+
+  - hgname: hg-stag-all
+    hghosts:
+      - tz-api-staging-1.tala.aws
+      - tz-api-staging-2.tala.aws
+      - tz-datareceiver-staging-1.tala.aws
+      - tz-datareceiver-staging-2.tala.aws
+    ugroup:
+      - ug-stag-all-ssh
+    sudogroup:
+      - ug-stag-all-sudo
+
+  - hgname: hg-prod-all
+    hghosts:
+      - tz-api-prd-1.tala.aws
+      - tz-api-prd-2.tala.aws
+      - tz-data-prd-1.tala.aws
+      - tz-data-prd-2.tala.aws
+      - tz-data-receiver-prd-1.tala.aws
+      - tz-data-receiver-prd-2.tala.aws
+      - tz-profiling-prd-1.tala.aws
+      - tz-scala-datareceiver-prd.tala.aws
+      - tz-services-prd-1.tala.aws
+      - tz-data-logging-1.tala.aws
+      - tz-data-logging-2.tala.aws
+      - tz-data-repository.tala.aws
+      - tz-jenkins.tala.aws
+    ugroup:
+      - ug-prod-all-ssh
+    sudogroup:
+      - ug-prod-all-sudo
+
+  - hgname: hg-db-proxy
+    hghosts:
+      - tz-db-proxy.tala.aws
+    ugroup:
+      - ug-db-proxy-ssh
+    sudogroup:
+      - ug-db-proxy-sudo
+
+  - hgname: hg-ipa-all
+    hghosts:
+      - us-west-2-ipa01.tala.aws
+      - us-west-2-ipa02.tala.aws
+      - ap-southeast-1-ipa01.tala.aws
+      - eu-west-1-ipa01.tala.aws
+    ugroup:
+      - ug-ipa-all-ssh
+    sudogroup:
+      - ug-ipa-all-sudo
+
+  - hgname: hg-dev-us-west-2
+    hghosts:
+      -  
+    ugroup:
+      - ug-dev-us-west-2-ssh
+    sudogroup:
+      - ug-dev-us-west-2-sudo
+
+  - hgname: hg-qa-us-west-2
+    hghosts:
+      -  
+    ugroup:
+      - ug-qa-us-west-2-ssh
+    sudogroup:
+      - ug-qa-us-west-2-sudo
+
+  - hgname: hg-prod-us-west-2
+    hghosts:
+      -  
+    ugroup:
+      - ug-prod-us-west-2-ssh
+    sudogroup:
+      - ug-prod-us-west-2-sudo
+
+  - hgname: hg-dev-eu-west-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-dev-eu-west-1-ssh
+    sudogroup:
+      - ug-dev-eu-west-1-sudo
+
+  - hgname: hg-qa-eu-west-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-qa-eu-west-1-ssh
+    sudogroup:
+      - ug-qa-eu-west-1-sudo
+
+  - hgname: hg-prod-eu-west-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-prod-eu-west-1-ssh
+    sudogroup:
+      - ug-prod-eu-west-1-sudo
+
+  - hgname: hg-dev-ap-southeast-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-dev-ap-southeast-1-ssh
+    sudogroup:
+      - ug-dev-ap-southeast-1-sudo
+
+  - hgname: hg-qa-ap-southeast-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-qa-ap-southeast-1-ssh
+    sudogroup:
+      - ug-qa-ap-southeast-1-sudo
+
+  - hgname: hg-prod-ap-southeast-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-prod-ap-southeast-1-ssh
+    sudogroup:
+      - ug-prod-ap-southeast-1-sudo
+
+  - hgname: hg-staging-ap-southeast-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-staging-ap-southeast-1-ssh
+    sudogroup:
+      - ug-staging-ap-southeast-1-sudo
+
+  - hgname: hg-staging-us-west-2
+    hghosts:
+      -  
+    ugroup:
+      - ug-staging-us-west-2-ssh
+    sudogroup:
+      - ug-staging-us-west-2-sudo
+
+  - hgname: hg-staging-eu-west-1
+    hghosts:
+      -  
+    ugroup:
+      - ug-staging-eu-west-1-ssh
+    sudogroup:
+      - ug-staging-eu-west-1-sudo

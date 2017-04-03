@@ -1,0 +1,31 @@
+aws_ug:
+  - gname: aws-tala-fullaccess
+    desc: "Administrator Access to all AWS services"
+  - gname: aws-tala-readonly
+    desc: "Read only access to all AWS services"
+  - gname: aws-tala-fullaccess-s3
+    desc: "Administrator Access to all AWS s3"
+  - gname: aws-tala-readonly-s3
+    desc: "Read only access to all AWS s3"
+  - gname: aws-tala-fullaccess-ec2
+    desc: "Administrator Access to all AWS ec2"
+  - gname: aws-tala-readonly-ec2
+    desc: "Read only access to all AWS ec2"
+  - gname: aws-tala-fullaccess-rds
+    desc: "Administrator Access to all AWS rds"
+  - gname: aws-tala-readonly-rds
+    desc: "Read only access to all AWS rds"
+  - gname: aws-tala-fullaccess-elb
+    desc: "Administrator Access to all AWS elb"
+  - gname: aws-tala-readonly-elb
+    desc: "Read only access to all AWS elb"
+  - gname: aws-tala-fullaccess-sns
+    desc: "Administrator Access to all AWS sns"
+  - gname: aws-tala-readonly-sns
+    desc: "Read only access to all AWS sns"
+  - gname: aws-tala-fullaccess-cloudwatch
+    desc: "Administrator Access to all AWS cloudwatch"
+  - gname: aws-tala-readonly-cloudwatch
+    desc: "Read only access to all AWS cloudwatch"
+  - gname: aws-tala-tala-fullaccess-devicefarm
+    desc: "Read only access to all AWS Device farm"

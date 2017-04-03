@@ -1,0 +1,10 @@
+- hosts: us-west-2-ipa01.tala.aws
+  become: yes
+  roles:
+    - { role: ipaschema, task_to_do: "create_user" }
+
+- hosts: openvpn
+  become: yes
+  roles:
+    - { role: ovpn , task_to_do: "create_user" }
+

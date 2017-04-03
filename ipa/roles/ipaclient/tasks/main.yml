@@ -1,0 +1,8 @@
+- name: gather ec2 facts
+  action: ec2_facts
+
+
+- name: check if ubuntu
+  include: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+

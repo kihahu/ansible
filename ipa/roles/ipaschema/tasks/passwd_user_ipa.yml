@@ -1,0 +1,8 @@
+- name: initialize with kinit
+  shell:  echo '{{ ipaserver_admin_password }}' |kinit {{ ipa_principal }}
+  register: kistatus
+  changed_when: "kistatus.rc != 0"
+
+- name: set password in ipa
+  shell: "echo '{{ inp_passwd | default(init_userpass) }}' | ipa passwd {{ inp_user }}"
+

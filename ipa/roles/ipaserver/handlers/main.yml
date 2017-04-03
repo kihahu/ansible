@@ -1,0 +1,6 @@
+---
+- name: restart haveged
+  service: name=haveged state=restarted
+
+- name: restart ssh
+  service: name=sshd state=restarted

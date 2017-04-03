@@ -1,0 +1,8 @@
+search {{ ansible_domain }} {{ ansible_ec2_placement_region + '.compute.internal'}}
+{% for ns in ipaservers[ansible_ec2_placement_region] %}
+nameserver {{ hostvars[ns]['ansible_eth0']['ipv4']['address'] }}
+{% endfor %}
+{% if ansible_ec2_placement_region != "us-west-2" %}
+nameserver {{ hostvars[ipaservers['us-west-2'][0]]['ansible_eth0']['ipv4']['address'] }}
+{% endif %}
+nameserver {{ awsnameserver }}

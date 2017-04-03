@@ -1,0 +1,25 @@
+- hosts: us-west-2-ipa01.tala.aws
+  become: yes
+  vars_prompt:
+    - name: "username"
+      prompt: "Username"
+      private: no
+  pre_tasks:
+    - command: "echo {{ username }}"
+      register: userecho
+      failed_when: userecho.rc == 2
+      changed_when: "userecho.rc != 0"
+    - shell: "date +%s | sha256sum | base64 | head -c 8 ; echo"
+      register: userpass
+      failed_when: userpass.rc == 2
+      changed_when: "userpass.rc != 0"
+    - action: debug msg="{{ username }}\'s password is {{userpass.stdout}}"
+
+  roles:
+    - { role: ipaschema, task_to_do: "create_user" , inp_user: "{{ username }}" , inp_passwd: "{{ userpass.stdout }}" }
+
+- hosts: openvpn
+  become: yes
+  roles:
+    - { role: ovpn , task_to_do: "create_user" , inp_user: "{{ hostvars['us-west-2-ipa01.tala.aws']['userecho']['stdout'] }}" }
+

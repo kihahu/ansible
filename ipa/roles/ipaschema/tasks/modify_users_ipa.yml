@@ -1,0 +1,14 @@
+- include_vars: "users/{{ inp_user }}.yml"
+
+- name: initialize with kinit
+  shell:  echo '{{ ipaserver_admin_password }}' |kinit {{ ipa_principal }}
+  register: kistatus
+  changed_when: "kistatus.rc != 0"
+
+- name: modify user in ipa
+  shell: 'ipa user-mod --first="{{ item.fname }}" --last="{{ item.lname }}" --email="{{ item.email }}"  {{ inp_user }}'
+  with_items: "{{ ipa_usr }}"
+  register: umstatus
+  changed_when: "umstatus.rc == 0"
+  failed_when: "(umstatus.rc == 1 and umstatus.stderr != 'ipa: ERROR: no modifications to be performed') or (umstatus.rc == 2 )"
+

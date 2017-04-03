@@ -1,0 +1,4 @@
+ovpn_scrdir: "/usr/local/openvpn_as/scripts"
+ovpn_profiledir: "/home/openvpnas"
+local_profiledir: "/home/ansible/play-work/ovpn_profile"
+

@@ -1,0 +1,7 @@
+- include_vars: hostgroups.yml
+
+- name: create/update hostgroups
+  ipa_hostgroup: name={{ item.hgname }} host={{ item.hghosts }} state={{ item.state | default('present') }} ipa_user={{ ipa_principal }} ipa_pass={{ ipaserver_admin_password }} ipa_host="{{ inventory_hostname }}"
+  with_items: "{{ ipa_hg }}"
+  ignore_errors: yes
+

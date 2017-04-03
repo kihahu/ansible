@@ -1,0 +1,9 @@
+- hosts: us-west-2-ipa01.tala.aws
+  become: yes
+  vars_prompt:
+    - name: "username"
+      prompt: "Username"
+      private: no
+  roles:
+    - { role: ipaschema, task_to_do: "modify_user" , inp_user: "{{ username }}" }
+

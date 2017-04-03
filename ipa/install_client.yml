@@ -1,0 +1,16 @@
+- hosts: ipaserver
+  tasks: 
+    - setup:
+
+- hosts: < hostname or group name from ansible hosts file. eg. eu-west-1-clients >
+  become: yes
+  roles:
+    - { role: ipaclient }
+
+- hosts: us-west-2-ipa01.tala.aws
+  become: yes
+  roles:
+    - { role: ipaschema, task_to_do: "update_hostgroups" }
+    - { role: ipaschema, task_to_do: "update_hbac" }
+    - { role: ipaschema, task_to_do: "update_sudorule" }
+

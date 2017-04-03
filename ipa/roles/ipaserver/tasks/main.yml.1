@@ -1,0 +1,10 @@
+- name: Check if OS is CentOS
+  fail: msg="IPA server should be CentOS"
+  when: ansible_distribution != 'CentOS'
+
+- name: INCLUDE | Common tasks 
+  include: common.yml
+
+- name: Check if Master
+  debug: msg="Master setup"
+  when: inventory_hostname == ipamaster

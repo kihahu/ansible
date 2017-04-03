@@ -1,0 +1,7 @@
+- hosts: us-west-2-ipa01.tala.aws
+  become: yes
+  roles:
+    - { role: ipaschema, task_to_do: "update_hostgroups" }
+    - { role: ipaschema, task_to_do: "update_hbac" }
+    - { role: ipaschema, task_to_do: "update_sudorule" }
+

@@ -1,0 +1,94 @@
+- stat: path=/etc/ipa/default.conf
+  register: ipainst_status
+
+- name: update centos
+  yum: name=* state=latest update_cache=yes
+  when: not ipainst_status.stat.exists
+
+- name: install epel
+  yum: name=epel-release state=latest
+
+- name: install haveged
+  yum: name=haveged state=present
+  notify: restart haveged
+
+- name: set haveged as upstart
+  service: name=haveged enabled=yes
+
+- name: set Hostname
+  hostname: name={{ inventory_hostname }}
+  when: inventory_hostname != ansible_hostname
+
+- name: ensure hostname in /etc/sysconfig/network
+  lineinfile: dest=/etc/sysconfig/network regexp="^HOSTNAME" line="HOSTNAME={{ inventory_hostname }}" state=present
+
+- name: ensure hostname is in /etc/hosts
+  lineinfile: dest=/etc/hosts regexp="^{{ ansible_default_ipv4.address }}.+$" line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }} {{ inventory_hostname_short }}" state=present
+
+- name: edit /etc/cloud/cloud.cfg to preserve hostname post reboot
+  lineinfile: 'dest=/etc/cloud/cloud.cfg regexp="^preserve_hostname" line="preserve_hostname: true" state=present'
+
+- name: edit ifcfg-eth0 to preserve resolve.conf
+  lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-eth0 regexp="^PEERDNS" line='PEERDNS="no" ' state=present 
+
+- name: write swapfile
+  command: dd if=/dev/zero of={{ swapfile_location }} bs=1M count={{ swapfile_size }} creates={{ swapfile_location }}
+  register: write_swapfile
+  when: swapfile_size != false
+
+- name: set swapfile permissions
+  file: path={{ swapfile_location }} mode=600
+  when: swapfile_size != false
+
+- name: create swapfile
+  command: mkswap {{ swapfile_location }}
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/sbin:/usr/sbin:/sbin"
+  register: create_swapfile
+  when: swapfile_size != false and write_swapfile.changed
+
+- name: enable swapfile
+  command: swapon {{ swapfile_location }}
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/sbin:/usr/sbin:/sbin"
+  when: swapfile_size != false and create_swapfile.changed
+
+- name: add swapfile to /etc/fstab
+  lineinfile: dest=/etc/fstab line="{{ swapfile_location }}   none    swap    sw    0   0" state=present
+  when: swapfile_size != false
+
+- name: copy /etc/environment file
+  template: src=etc-environment.j2 dest=/etc/environment owner=root mode=0644
+
+- name: install ipa-server packages
+  yum: name={{ item }} state=present
+  with_items:
+  - ipa-server
+  - bind
+  - bind-dyndb-ldap
+  - bind-utils
+  - ipa-server-dns
+
+- name: enable password auth in /etc/ssh/sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^PasswordAuthentication' line='PasswordAuthentication yes' state=present
+  tags:
+    - sshd
+  notify:
+    - restart ssh
+
+- name: bypass password auth for centos and ansible in sshd_config
+  blockinfile:
+    dest: /etc/ssh/sshd_config
+    insertafter: EOF
+    block: |
+      UsePAM yes
+      AuthorizedKeysCommand /bin/sss_ssh_authorizedkeys
+      GSSAPIAuthentication yes
+      AuthorizedKeysCommandUser nobody
+      AuthenticationMethods "publickey,password" "publickey,keyboard-interactive"
+      Match User centos,ansible
+      AuthenticationMethods publickey
+  tags:
+    - sshd
+  notify:
+    - restart ssh
