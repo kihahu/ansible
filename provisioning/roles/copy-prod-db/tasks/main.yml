@@ -5,15 +5,18 @@
      - refresh-internal-dbs
      - country-setup-pull
      - country-setup-push
+     - create-schemas
 
-- name: Create databases loans_qa,loans_qa2,loans_staging
-  mysql_db: name={{ item }} state=present login_host={{ target_db_host }} login_user={{ target_db_username }} login_password={{ target_db_password }}
-  with_items:
+- name: Create qa qa2 demo staging schemas on non prod instance
+  mysql_db: name={{ item[0] }}_{{ item[1] }} state=present login_host={{ target_db_host }} login_user={{ target_db_username }} login_password={{ target_db_password }}
+  with_nested:
      - "{{ internal_databases }}"
+     - "{{ internal_environment_tag }}"
   tags:
     - refresh-internal-dbs
     - country-setup-pull
     - country-setup-push
+    - create-schemas
 
 - name: copy the base tables file
   copy: src={{ item }} dest={{ destination_folder }}/{{ item }}
@@ -30,7 +33,26 @@
     - execute
     - refresh-internal-dbs
 
-- include: new_country.yml
+- name: new country setup
+  include: new_country.yml
+
+- name: payments application tables refresh
+  include: payments.yml
+  tags:
+    - refresh-internal-dbs
+    - payments-reset
+
+- name: profiling application reset
+  include: profiling.yml
+  tags:
+    - refresh-internal-dbs
+    - profiling-reset
+
+- name: approval application reset
+  include: approval.yml
+  tags:
+    - refresh-internal-dbs
+    - approval-reset
 
 - name: execute sync script
   command: sh {{ destination_folder }}/sync_prod_db.sh

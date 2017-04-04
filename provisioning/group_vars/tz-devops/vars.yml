@@ -1,4 +1,5 @@
 ---
+aws_dns: "c2ouxvpejoh2.eu-west-1.rds.amazonaws.com"
 country_code: tz
 aws_region: eu-west-1
 database: "loans"
@@ -7,14 +8,8 @@ database_qa2: "loans_qa2"
 database_staging: "loans_staging"
 database_demo: "loans_demo"
 database_dev: "loans_dev"
-internal_databases:
-  - loans_qa
-  - loans_qa2
-  - loans_dev
-  - loans_staging
-  - loans_demo
-source_db_host: "eu-ireland-maindb-v2.c2ouxvpejoh2.eu-west-1.rds.amazonaws.com"
-target_db_host: "internal-testing-db-eu1-v2.c2ouxvpejoh2.eu-west-1.rds.amazonaws.com"
+source_db_host: "eu-ireland-maindb-v2.{{ aws_dns }}"
+target_db_host: "internal-testing-db-eu1-v2.{{ aws_dns }}"
 tables: "tables"
 archive_database: loans
 source_db_username: "{{ vault_tz_source_db_username }}"
@@ -23,6 +18,5 @@ source_db_password: "{{ vault_tz_source_db_password }}"
 target_db_password: "{{ vault_tz_target_db_password }}"
 archive_db_password: "{{ vault_tz_archive_db_password }}"
 archive_db_username: "{{ vault_tz_archive_db_username }}"
-archive_db_host: "eu-ireland-maindb-v2.c2ouxvpejoh2.eu-west-1.rds.amazonaws.com"
-
+archive_db_host: "eu-ireland-maindb-v2.{{ aws_dns }}"
 sns_arn: "arn:aws:sns:eu-west-1:347023968887:tz-aws-alerts"

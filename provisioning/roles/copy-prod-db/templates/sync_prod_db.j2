@@ -4,7 +4,7 @@
 dump_loans_schema()
 {
 	loans_dump_status=$(mysqldump --single-transaction --no-data -u {{ source_db_username }} -p"{{ source_db_password }}" -h {{ source_db_host }} {{ database }} --result-file={{destination_folder}}/{{database}}.sql)
-	if [ "$?"" -eq "0" ]
+	if [ "$?" -eq "0" ]
 	then
 		echo "Success dumping the {{ database }} schema"
 	else

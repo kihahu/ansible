@@ -1,0 +1,19 @@
+---
+- name: dump base empty schema from main instance
+  shell: mysqldump --single-transaction --no-data -u {{ source_db_username }} -p'{{ source_db_password }}' -h {{ source_db_host }} {{ source_database }} --result-file={{ destination_folder }}/{{ source_database }}.sql
+
+- name: restore empty schema to target databases
+  shell: mysql -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} {{ source_database }}_{{ item }} < {{ destination_folder }}/{{ source_database }}.sql
+  with_items:
+    - "{{ environment_tag }}"
+
+- name: dump base tables with data
+  shell: mysqldump --single-transaction -u {{ source_db_username }} -p'{{ source_db_password }}' -h {{ source_db_host }} {{ source_database }} {{ item }} > {{ destination_folder }}/{{ source_database }}_{{ item }}.sql
+  with_items:
+    - "{{ base_tables }}"
+
+- name: restore base tables to non prod environments
+  shell: mysql -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} {{ source_database }}_{{ item[1] }} < {{ destination_folder }}/{{ source_database }}_{{ item[0] }}.sql
+  with_nested:
+    - "{{ base_tables }}"
+    - "{{ environment_tag }}"

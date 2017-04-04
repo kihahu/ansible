@@ -1,0 +1,3 @@
+---
+- name: reset profiling
+  include: dump_tables.yml source_database=profiling environment_tag="{{ internal_environment_tag }}" base_tables="{{ profiling_dump_tables }}"

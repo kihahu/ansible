@@ -21,74 +21,65 @@ ph-api-prd-2 ansible_ssh_host=172.30.18.254 ansible_ssh_port=22 ansible_ssh_user
 ph-api-prd-3-crons ansible_ssh_host=172.30.13.80 ansible_ssh_port=22 ansible_ssh_user=ubuntu
 
 # payments
-[ke-payments]
-ke-payments-dev-1 ansible_ssh_host=172.31.16.213 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ke-payments-prd-1 ansible_ssh_host=172.31.43.62 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+[ke-payments-dev]
+ke-payments-dev-1 ansible_ssh_host=172.31.16.213
 
-[ph-payments]
-ph-payments-dev-1 ansible_ssh_host=172.30.11.126 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ph-payments-prd-1 ansible_ssh_host=172.30.28.7 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+[ph-payments-dev]
+ph-payments-dev-1 ansible_ssh_host=172.30.11.126
 
-[tz-payments]
-tz-payments-dev-1 ansible_ssh_host=192.168.1.217 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-tz-payments-prd-1 ansible_ssh_host=192.168.1.80 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+[tz-payments-dev]
+tz-payments-dev-1 ansible_ssh_host=192.168.1.217
 
 [qa]
 
 # services
-[ke-services]
-ke-services-dev-1 ansible_ssh_host=172.31.16.213 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ke-services-prd-1 ansible_ssh_host=172.31.8.240 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+[ke-services-dev]
+ke-services-dev-1 ansible_ssh_host=172.31.16.213
 
-[ph-services]
-ph-services-dev-1 ansible_ssh_host=172.30.9.14 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ph-services-prd-1 ansible_ssh_host=172.30.16.73 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-ph-profiling-prd-1 ansible_ssh_host=172.30.25.69 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+[ke-services-production]
+ke-services-prd-1 ansible_ssh_host=172.31.8.240
 
-[tz-services]
-tz-services-dev-1 ansible_ssh_host=172.29.1.74 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-tz-services-prd-1 ansible_ssh_host=172.29.11.190 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+[ph-services-dev]
+ph-services-dev-1 ansible_ssh_host=172.30.9.14
+
+[ph-services-production]
+ph-services-prd-1 ansible_ssh_host=172.30.16.73
+
+[tz-services-dev]
+tz-services-dev-1 ansible_ssh_host=172.29.1.74
+
+[tz-services-production]
+tz-services-prd-1 ansible_ssh_host=172.29.11.190
 
 [ke-devops]
-ke-devops_1 ansible_ssh_host=172.31.3.82 ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ke-devops-1 ansible_ssh_host=172.31.3.82
 
 [ph-devops]
-ph-devops_1 ansible_ssh_host= ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-devops-1 ansible_ssh_host=172.30.2.114
 
 [tz-devops]
-tz-devops_1 ansible_ssh_host=172.29.6.131 ansible_ssh_port=22 ansible_ssh_user=ubuntu
-
-[ke-scala-dev]
-ke-profiling-dev ansible_ssh_host=172.31.29.196
-ke-datareceiver-dev ansible_ssh_host=172.31.42.75
-
-[ke-scala-qa]
-ke-profiling-qa ansible_ssh_host=172.31.29.196
-ke-datareceiver-qa ansible_ssh_host=172.31.42.75
-
-[ke-scala-qa2]
-ke-profiling-qa2 ansible_ssh_host=172.31.29.196
-ke-datareceiver-qa2 ansible_ssh_host=172.31.42.75
-
-[ke-scala-demo]
-ke-profiling-demo ansible_ssh_host=172.31.29.196
-ke-datareceiver-demo ansible_ssh_host=172.31.42.75
-
-[ke-scala-staging]
-ke-profiling-staging ansible_ssh_host=172.31.29.196
-ke-datareceiver-staging ansible_ssh_host=172.31.42.75
-
-[ke-scala-production]
-ke-profiling-production-1 ansible_ssh_host=172.31.27.42
-ke-datareceiver-production-1 ansible_ssh_host=172.31.23.77
-ke-datareceiver-production-2 ansible_ssh_host=172.31.5.143
+tz-devops-1 ansible_ssh_host=172.29.6.131
 
 # jenkins
 [ke-jenkins]
-#ke-jenkins_1 ansible_ssh_host= ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ke-jenkins-1 ansible_ssh_host=172.31.39.153
+ke-jenkins-2 ansible_ssh_host=172.31.11.46
+ke-jenkins-3 ansible_ssh_host=172.31.33.0
+ke-jenkins-4 ansible_ssh_host=172.31.26.44
+ke-jenkins-5 ansible_ssh_host=172.31.3.162
+ke-jenkins-portfolio ansible_ssh_host=172.31.46.152
 
 [ph-jenkins]
-#ph-jenkins_1 ansible_ssh_host= ansible_ssh_port=22 ansible_ssh_user=ubuntu
+ph-jenkins-1 ansible_ssh_host=172.30.2.35
+ph-jenkins-2 ansible_ssh_host=172.30.11.99
+ph-jenkins-3 ansible_ssh_host=172.30.2.124
+ph-jenkins-4 ansible_ssh_host=172.30.2.35
+ph-jenkins-5 ansible_ssh_host=172.30.15.118
+ph-jenkins-6 ansible_ssh_host=172.30.5.76
+
+[tz-jenkins]
+tz-jenkins-1 ansible_ssh_host=172.29.9.145
+tz-jenkins-2 ansible_ssh_host=172.29.17.142
 
 [jenkins:children]
 ke-jenkins
@@ -120,24 +111,19 @@ tz-payments-prd-1
 
 # group by country
 [ke:children]
-ke-local
-ke-payments
-ke-services
+ke-payments-dev
+ke-services-dev
+ke-services-production
 ke-devops
 
 [ph:children]
-ph-local
-ph-payments
-ph-services
+ph-payments-dev
+ph-services-dev
+ph-services-production
 ph-devops
 
 [tz:children]
-tz-local
-tz-services
-tz-payments
+tz-services-dev
+tz-services-production
+tz-payments-dev
 tz-devops
-
-[scala-production]
-ke-scala-production
-ph-scala-production
-tz-scala-production

@@ -1,0 +1,6 @@
+---
+- name: reset tables
+  shell: mysql -u {{ target_db_username }} -p'{{ target_db_password }}' -h {{ target_db_host }} -e 'truncate {{ database_name_to_clear }}_{{ item[1] }}.{{ item[0] }};'
+  with_nested:
+    - "{{ table_list_to_clear }}"
+    - "{{ environment_tag }}"

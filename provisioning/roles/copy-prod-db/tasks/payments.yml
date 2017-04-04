@@ -1,0 +1,5 @@
+---
+- name: reset payments tables
+  shell: "{{ base_artisan_binary }} db:seed"
+  tags:
+    - reset-payments-tables
