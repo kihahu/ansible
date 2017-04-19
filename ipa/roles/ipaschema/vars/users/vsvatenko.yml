@@ -1,0 +1,38 @@
+ipa_usr:
+  - username: "vsvatenko"
+    email: "vlad@tala.co"
+    fname: "Vlad"
+    lname: "Svatenko"
+    ssh: "yes"
+    sudo: "yes"
+    group:
+      - "ug-dev-all"
+      - "ug-qa-all"
+#    rds_privs:
+#      - rds_instance: "{{ rds_servers['us-west-2-dev-rds1'] }}"
+#        privs:
+#          - "experiments_dev.*:ALL"
+#          - "loans_demo.*:ALL"
+#          - "loans_dev.*:ALL"
+#          - "loans_qa2.*:ALL"
+#          - "loans_qa.*:ALL"
+#          - "loans_staging.*:ALL"
+#          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+#      - rds_instance: "{{ rds_servers['ap-southeast-1-dev-rds1'] }}"
+#        privs:
+#          - "experiments_dev.*:ALL"
+#          - "loans_demo.*:ALL"
+#          - "loans_dev.*:ALL"
+#          - "loans_qa2.*:ALL"
+#          - "loans_qa.*:ALL"
+#          - "loans_staging.*:ALL"
+#          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+#      - rds_instance: "{{ rds_servers['eu-west-1-dev-rds1'] }}"
+#        privs:
+#          - "experiments_dev.*:ALL"
+#          - "loans_demo.*:ALL"
+#          - "loans_dev.*:ALL"
+#          - "loans_qa2.*:ALL"
+#          - "loans_qa.*:ALL"
+#          - "loans_staging.*:ALL"
+#          - "PROCEDURE mysql.change_time_zone:EXECUTE"

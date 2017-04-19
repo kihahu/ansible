@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "shoysal"
+    email: "sofi@tala.co"
+    fname: "Sofi"
+    lname: "Hoysal"
+    ssh: "no"
+    group:
+      - "ug-operations-all"
+    

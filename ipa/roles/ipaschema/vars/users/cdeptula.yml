@@ -1,0 +1,28 @@
+ipa_usr:
+  - username: "cdeptula"
+    email: "cdeptula@tala.co"
+    fname: "Chris"
+    lname: "Deptula"
+    ssh: "yes"
+    group:
+      - "ug-operations-all"
+      - "ug-proxy-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
+        privs:
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds2'] }}"
+        privs:
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"

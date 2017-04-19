@@ -1,0 +1,11 @@
+ipa_usr:
+  - username: "mcampos"
+    email: "myee@tala.co"
+    fname: "myee"
+    lname: "campos"
+    ssh: "no"
+    group:
+      - "ug-customer-service-ph"
+    mysql_privs:
+      - "loans.*:SELECT"
+    

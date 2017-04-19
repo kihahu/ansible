@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "msundstrom"
+    email: "magna@tala.co"
+    fname: "Magna"
+    lname: "Sundstrom"
+    ssh: "no"
+    group:
+      - "ug-executive-all"
+    

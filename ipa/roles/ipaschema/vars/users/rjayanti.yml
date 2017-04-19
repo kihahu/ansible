@@ -1,0 +1,33 @@
+ipa_usr:
+  - username: "rjayanti"
+    email: "roshan@tala.co"
+    fname: "Roshan"
+    lname: "Jayanti"
+    ssh: "yes"
+    group:
+      - "ug-operations-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds2'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"

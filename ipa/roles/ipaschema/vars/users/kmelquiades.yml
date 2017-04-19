@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "kmelquiades"
+    email: "kristian@tala.co"
+    fname: "Kristian"
+    lname: "Melquiades"
+    ssh: "yes"
+    group:
+      - "ug-customer-service-ph"

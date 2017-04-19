@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "boliva-porter"
+    email: "bonnie@tala.co"
+    fname: "Bonnie"
+    lname: "Oliva-Porter"
+    ssh: "no"
+    group:
+      - "ug-operations-all"

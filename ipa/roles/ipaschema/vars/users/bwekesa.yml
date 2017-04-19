@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "bwekesa"
+    email: "betty@tala.co"
+    fname: "Betty"
+    lname: "Wekesa"
+    ssh: "no"
+    group:
+      - "ug-customer-service-ke"

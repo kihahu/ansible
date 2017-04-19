@@ -1,0 +1,47 @@
+ipa_usr:
+  - username: "jbivins"
+    email: "joshuab@tala.co"
+    fname: "Joshua"
+    lname: "Bivins"
+    ssh: "yes"
+    sudo: "yes"
+    group:
+      - "ug-dev-all"
+      - "ug-qa-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "invre.*:SELECT"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "invre.*:SELECT"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "invre.*:SELECT"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "invre.*:SELECT"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds2'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "invre.*:SELECT"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "invre.*:SELECT"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"

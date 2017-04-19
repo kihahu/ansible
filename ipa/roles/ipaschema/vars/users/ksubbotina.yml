@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "ksubbotina"
+    email: "ksubbotina@tala.co"
+    fname: "Kristina"
+    lname: "Subbotina"
+    ssh: "yes"
+    group:
+      - "ug-expansion-all"
+    

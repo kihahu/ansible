@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "jvazquez"
+    email: "jvazquez@tala.co"
+    fname: "Jessica"
+    lname: "Vazquez"
+    ssh: "no"
+    group:
+      - "ug-operations-all"

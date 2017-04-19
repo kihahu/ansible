@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "nokiri"
+    email: "nancy@tala.co"
+    fname: "Nancy"
+    lname: "Okiri"
+    ssh: "no"
+    group:
+      - "ug-operations-ke"
+    

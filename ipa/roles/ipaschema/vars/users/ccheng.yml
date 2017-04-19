@@ -1,0 +1,60 @@
+ipa_usr:
+  - username: "ccheng"
+    email: "cheng@tala.co"
+    fname: "Cheng"
+    lname: "Cheng"
+    ssh: "yes"
+    group:
+      - "ug-expansion-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-dev-rds1'] }}"
+        privs:
+          - "*.*:USAGE"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "experiments.*:SELECT"
+          - "loans_ng.*:SELECT"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-dev-rds1'] }}"
+        privs:
+          - "*.*:USAGE"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "experiments.*:SELECT"
+          - "loans_ng.*:SELECT"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-dev-rds1'] }}"
+        privs:
+          - "*.*:USAGE"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "experiments.*:SELECT"
+          - "loans_ng.*:SELECT"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
+        privs:
+          - "experiments.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "experiments.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "experiments.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds1'] }}"
+        privs:
+          - "experiments.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds2'] }}"
+        privs:
+          - "experiments.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "experiments.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"

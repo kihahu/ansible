@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "dnica"
+    email: "nica@tala.co"
+    fname: "Danica"
+    lname: "Garcia"
+    ssh: "no"
+    sudo: "no"
+    group:
+      - "ug-customer-service-ph"

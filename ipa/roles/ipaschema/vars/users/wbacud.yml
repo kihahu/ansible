@@ -1,0 +1,10 @@
+ipa_usr:
+  - username: "wbacud"
+    email: "winkle@tala.co"
+    fname: "Winkle"
+    lname: "Bacud"
+    ssh: "yes"
+    group:
+      - "ug-customer-service-ph"
+    mysql_privs:
+      - "loans.*:SELECT"

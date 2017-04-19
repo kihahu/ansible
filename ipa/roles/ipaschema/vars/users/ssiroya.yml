@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "ssiroya"
+    email: "shivani@tala.co"
+    fname: "Shivani"
+    lname: "Siroya"
+    ssh: "no"
+    group:
+      - "ug-executive-all"
+    

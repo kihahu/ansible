@@ -1,0 +1,10 @@
+ipa_usr:
+  - username: "mngeno"
+    email: "mngeno@tala.co"
+    fname: "Michael"
+    lname: "Ngeno"
+    ssh: "no"
+    group:
+      - "ug-customer-service-ke"
+    mysql_privs:
+      - "loans.*:SELECT"
