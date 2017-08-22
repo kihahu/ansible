@@ -10,6 +10,9 @@ tz-local ansible_connection=local
 [br-local]
 br-local ansible_connection=local
 
+[mx-local]
+mx-local ansible_connection=local
+
 [dev]
 
 [staging]
@@ -141,3 +144,4 @@ tz-devops
 ke-scala-production
 ph-scala-production
 tz-scala-production
+

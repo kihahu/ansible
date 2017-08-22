@@ -9,3 +9,5 @@ Vagrantfile
 *.swp
 # ansible retry files
 *.retry
+.terraform
+.DS_Store

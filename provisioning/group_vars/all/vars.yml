@@ -44,26 +44,43 @@ monit_user: monit
 monit_admin_user: admin
 aws_terraform_provider: aws
 aws_terraform_elb_port: 80
+aws_terraform_api_staging_elb_port: 8002
+aws_terraform_api_dev_elb_port: 8001
+aws_terraform_api_demo_elb_port: 8005
+aws_terraform_api_qa_elb_port: 8003
+aws_terraform_api_qa2_elb_port: 8007
+aws_terraform_scala_elb_port: 9000
+aws_terraform_zendesk_prod_elb_port: 8000
+aws_terraform_zendesk_staging_elb_port: 8000
+aws_terraform_payments_prod_elb_port: 8400
+aws_terraform_payments_staging_elb_port: 8400
+aws_terraform_scala_dev_elb_port: 9001
+aws_terraform_scala_qa_elb_port: 9002
+aws_terraform_scala_qa2_elb_port: 9003
+aws_terraform_scala_staging_elb_port: 9004
+aws_terraform_scala_demo_elb_port: 9005
+aws_terraform_scala_prod_elb_port: 9000
 aws_terraform_elb_protocol: http
 aws_terraform_elb_ssl_protocol: https
 aws_terraform_elb_ssl_port: 443
 aws_terraform_block_device_size: 100
 aws_terraform_access_key: "{{ vault_aws_terraform_access_key }}"
 aws_terraform_secret_key: "{{ vault_aws_terraform_secret_key }}"
-aws_terraform_instance_type: "t2.micro"
 aws_terraform_volume_type: gp2
-aws_terraform_dir_path: ../terraform
-aws_terraform_rds_is_multi_az: yes
+aws_terraform_path: ../terraform
+aws_terraform_modules_path: "{{ aws_terraform_path }}/modules"
+aws_terraform_rds_is_multi_az: no
 aws_terraform_rds_storage_type: gp2
 aws_terraform_param_group_name: default.mysql5.6
 aws_terraform_backup_retention_period: 7
-aws_terraform_publicly_accessible: True
+aws_terraform_publicly_accessible: False
 aws_terraform_rds_engine_version: 5.6
 aws_terraform_rds_engine: MySQL
 aws_terraform_cidr_block_28: 172.28.0.0/16
 aws_terraform_cidr_block_29: 172.29.0.0/16
 aws_terraform_cidr_block_30: 172.30.0.0/16
-aws_terraform_cidr_block_31: 172.31.0.0/16
+aws_terraform_cidr_block_31: 172.31.128.0/20
+aws_terraform_cidr_block_31_all: 172.31.0.0/16
 aws_terraform_cidr_block_32: 172.32.0.0/16
 aws_terraform_default_cidr: "0.0.0.0/0"
 aws_terraform_default_from_port: 0
@@ -86,23 +103,115 @@ aws_elb_name_dr: dr-elb-ldl
 aws_elb_name_data_logging: data-logging-elb-ldl
 aws_elb_name_data: data-elb-ldl
 aws_elb_name_api: api-elb-ldl
+aws_elb_name_auth: auth-elb-ldl
+aws_elb_name_assignment: assignment-elb-ldl
+aws_elb_name_approval: approval-elb-ldl
+aws_elb_name_profiling: profiling-elb-ldl
+aws_elb_name_payments: payments-elb-ldl
+aws_elb_name_zendesk: zendesk-elb-ldl
 aws_terraform_data_team_port: 5000
-aws_terraform_data_repository_from_port: 9000
-aws_terraform_data_repository_to_port: 9005
-aws_terraform_profiling_to_port: 9005
-aws_terraform_profiling_from_port: 9005
-aws_terraform_data_team_from_port: 5000
-aws_terraform_data_team_to_port: 5005
-aws_terraform_profiling_tag: profiling
+aws_terraform_api_from_port: 8001
+aws_terraform_api_to_port: 8007
+aws_terraform_payments_from_port: 8001
+aws_terraform_payments_to_port: 8007
+aws_terraform_zendesk_from_port: 8000
+aws_terraform_zendesk_to_port: 8005
+aws_terraform_scala_to_port: 9005
+aws_terraform_scala_from_port: 9000
+aws_terraform_from_port: 5000
+aws_terraform_to_port: 9005
+aws_terraform_profiling_tag: profiling-prd
 aws_terraform_profiling_tag_dev: profiling-dev
-aws_terraform_api_ec2_tag: api-prd
+aws_terraform_api_ec2_prd_tag: api-prd
+aws_terraform_profiling_ec2_prd_tag: profiling-prd
+aws_terraform_assignment_ec2_prd_tag: assignment-prd
+aws_terraform_auth_ec2_prd_tag: auth-prd
+aws_terraform_approval_ec2_prd_tag: approval-prd
+aws_terraform_payments_ec2_prd_tag: payments-prd
+aws_terraform_zendesk_ec2_prd_tag: zendesk-prd
+aws_terraform_api_ec2_dev_tag: api-dev
+aws_terraform_profiling_ec2_dev_tag: profiling-dev
+aws_terraform_assignment_ec2_dev_tag: assignment-dev
+aws_terraform_auth_ec2_dev_tag: auth-dev
+aws_terraform_approval_ec2_dev_tag: approval-dev
+aws_terraform_payments_ec2_dev_tag: payments-dev
+aws_terraform_zendesk_ec2_dev_tag: zendesk-dev
 aws_terraform_default_dns: inventureaccess.com
-aws_terraform_api_app_code: apiv2
-aws_terraform_dr_app_code: drv2
+aws_terraform_api_app_code: serverapi
+aws_terraform_scala_apps:
+aws_terraform_scala_app_code:
+  - assignment-service
+  - approval-service
+  - profiling-service
+  - datareceiver
+  - loans-service
+aws_terraform_module_code:
+  - assignment-service
+  - approval-service
+  - profiling-service
+  - datareceiver
+  - loans-service
+  - serverapi
+  - payments
+  - zendesk
+aws_terraform_environment:
+  - demo
+  - dev
+  - qa
+  - qa2
+  - staging
+  - prod
+aws_terraform_apps:
+  - api
+  - scala
+  - payments
+  - zendesk
+aws_terraform_approval_app_metadata: approval-service
+aws_terraform_profiling_app_metadata: profiling-service
+aws_terraform_payments_app_metadata: payments
+aws_terraform_zendesk_app_metadata: zendesk-service
+aws_terraform_dr_app_metadata: datareceiver
 aws_terraform_data_app_code: scoringv2
 aws_terraform_logging_app_code: loggingv2
 aws_terraform_rds_username: insightuser
 aws_terraform_rds_subnet_group_name: default
+aws_terraform_instance_type: "t2.medium"
+aws_terraform_cidr_block: "172.31.128.0/20"
+aws_terraform_instance_type_profiling: "t2.large"
+aws_terraform_instance_type_approval: "t2.large"
+aws_terraform_instance_type_assignment: "t2.large"
+aws_terraform_instance_type_payments: "t2.large"
+aws_terraform_instance_type_zendesk: "t2.large"
+aws_terraform_instance_type_auth: "t2.large"
+aws_terraform_instance_type_dr: "t2.large"
+aws_terraform_instance_type_api: "t2.large"
+aws_terraform_rds_maindb_identifier: "prod-{{ country_code }}-maindb"
+aws_terraform_rds_datareceiver_maindb_identifier: "prod-{{ country_code }}-datareceiver-maindb"
+aws_terraform_rds_internal_testing_identifier: "dev-{{ country_code }}"
+aws_terraform_rds_maindb_password: "{{ vault_rds_maindb_password }}"
+aws_terraform_rds_dr_maindb_password: "{{ vault_rds_dr_maindb_password }}"
+aws_terraform_rds_internal_testing_password: "{{ vault_rds_internal_testing_password }}"
+aws_terraform_rds_storage: 1500
+aws_terraform_rds_storage_internal: 500
+aws_terraform_rds_instance_class: "db.m4.large"
+aws_terraform_rds_internal_testing_instance_class: "db.t2.large"
+aws_terraform_rds_auto_minor_version_upgrade: no
+aws_terraform_rds_apply_immediately: yes
+aws_terraform_rds_replicate_source_db: null
+aws_terraform_subnet_private_id: "subnet-7779ad2c"
+aws_terraform_subnet_public_id: "subnet-02aa7c69"
+aws_terraform_default_instance_type: "t2.medium"
+aws_terraform_default_user: "ubuntu"
+aws_terraform_ec2_metrics:
+  - CPUCreditBalance
+  - CPUUtilization
+aws_terraform_elb_metrics:
+  - UnHealthyHostCount
+  - HTTPCode_ELB_4XX_Count
+  - HTTPCode_ELB_5XX_Count
+aws_terraform_instance_type_medium: "t2.medium"
+aws_terraform_instance_type_small: "t2.small"
+zone_id: Z306P7HF0KMLRB
 logrotate_path: /etc/logrotate.d
 base_log_path: /var/log
 system_user: root

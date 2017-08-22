@@ -1,0 +1,16 @@
+provider "{{ aws_terraform_provider }}" {}
+
+resource "aws_vpc" "main_vpc" {
+  cidr_block = "{{ aws_terraform_cidr_block }}"
+}
+
+{% for item in aws_terraform_module_code %}
+module "{{ item }}" {
+  source = "./modules/{{ item }}"
+}
+
+{% endfor %}
+
+module "rds" {
+  source = "./modules/database"
+}

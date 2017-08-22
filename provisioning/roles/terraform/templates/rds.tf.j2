@@ -1,0 +1,71 @@
+# Setup rds security group
+resource "aws_security_group" "db-vpn-sg" {
+  name        = "{{ country_code }}-db-vpn-sg"
+  description = "Restricted inbound traffic"
+
+  ingress {
+    from_port   = "{{ aws_terraform_mysql_port }}"
+    to_port     = "{{ aws_terraform_mysql_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
+  }
+
+  egress {
+    from_port   = "{{ aws_terraform_mysql_port }}"
+    to_port     = "{{ aws_terraform_mysql_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
+  }
+}
+# Create maindb instance
+resource "aws_db_instance" "main_database" {
+  identifier              = "{{ aws_terraform_rds_maindb_identifier }}"
+  allocated_storage       = "{{ aws_terraform_rds_storage }}"
+  engine                  = "{{ aws_terraform_rds_engine }}"
+  engine_version          = "{{ aws_terraform_rds_engine_version }}"
+  instance_class          = "{{ aws_terraform_rds_instance_class }}"
+  username                = "{{ aws_terraform_rds_username }}"
+  password                = "{{ aws_terraform_rds_maindb_password }}"
+  multi_az                = "{{ aws_terraform_rds_is_multi_az }}"
+  storage_type            = "{{ aws_terraform_rds_storage_type }}"
+  parameter_group_name    = "{{ aws_terraform_param_group_name }}"
+  backup_retention_period = "{{ aws_terraform_backup_retention_period }}"
+  publicly_accessible     = "{{ aws_terraform_publicly_accessible }}"
+  vpc_security_group_ids  = ["${aws_security_group.db-vpn-sg.id}"]
+  db_subnet_group_name    = "{{ aws_terraform_rds_subnet_group_name }}"
+}
+# Create datareceiver instance
+resource "aws_db_instance" "datareceiver_main_database" {
+  identifier              = "{{ aws_terraform_rds_datareceiver_maindb_identifier }}"
+  allocated_storage       = "{{ aws_terraform_rds_storage }}"
+  engine                  = "{{ aws_terraform_rds_engine }}"
+  engine_version          = "{{ aws_terraform_rds_engine_version }}"
+  instance_class          = "{{ aws_terraform_rds_instance_class }}"
+  username                = "{{ aws_terraform_rds_username }}"
+  password                = "{{ aws_terraform_rds_dr_maindb_password }}"
+  multi_az                = "{{ aws_terraform_rds_is_multi_az }}"
+  storage_type            = "{{ aws_terraform_rds_storage_type }}"
+  parameter_group_name    = "{{ aws_terraform_param_group_name }}"
+  backup_retention_period = "{{ aws_terraform_backup_retention_period }}"
+  publicly_accessible     = "{{ aws_terraform_publicly_accessible }}"
+  vpc_security_group_ids  = ["${aws_security_group.db-vpn-sg.id}"]
+  db_subnet_group_name    = "{{ aws_terraform_rds_subnet_group_name }}"
+}
+
+# Create dev rds instance
+resource "aws_db_instance" "internal_testing_database" {
+  identifier              = "{{ aws_terraform_rds_internal_testing_identifier }}"
+  allocated_storage       = "{{ aws_terraform_rds_storage_internal }}"
+  engine                  = "{{ aws_terraform_rds_engine }}"
+  engine_version          = "{{ aws_terraform_rds_engine_version }}"
+  instance_class          = "{{ aws_terraform_rds_internal_testing_instance_class }}"
+  username                = "{{ aws_terraform_rds_username }}"
+  password                = "{{ aws_terraform_rds_internal_testing_password }}"
+  multi_az                = "{{ aws_terraform_rds_is_multi_az }}"
+  storage_type            = "{{ aws_terraform_rds_storage_type }}"
+  parameter_group_name    = "{{ aws_terraform_param_group_name }}"
+  backup_retention_period = "{{ aws_terraform_backup_retention_period }}"
+  publicly_accessible     = "{{ aws_terraform_publicly_accessible }}"
+  vpc_security_group_ids  = ["${aws_security_group.db-vpn-sg.id}"]
+  db_subnet_group_name    = "{{ aws_terraform_rds_subnet_group_name }}"
+}

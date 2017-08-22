@@ -1,0 +1,8 @@
+---
+sns_arn: "arn:aws:sns:us-west-2:347023968887:Inventure-Alerts"
+sns_arn_notices: "arn:aws:sns:us-west-2:347023968887:inventure-notices"
+country_code: mx
+aws_region: us-west-2
+payment_logs_dir: "/var/log/applications/payments/"
+aws_terraform_region_ami: ami-718c6909
+aws_terraform_key_name: Master

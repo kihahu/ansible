@@ -1,24 +1,59 @@
 ---
-- name: get shared function
-  include: shared-functions.yml
-  when: ( service == "whole_infra" )
-  vars:
-    - aws_service: whole_infra
+- name: create terraform database module dir
+  local_action: file path={{ aws_terraform_modules_path }}/{{ item }} state=directory
+  with_items:
+    - database
   tags:
-    - setup-all-ec2-instances
+    - setup-paths
+    - generate-configs
 
-- name: get shared function
-  include: shared-functions.yml
-  when: ( service == "ec2" )
-  vars:
-    - aws_service: ec2
+- name: create terraform modules dir
+  local_action: file path={{ aws_terraform_modules_path }}/{{ item }} state=directory
+  with_items:
+    - "{{ aws_terraform_module_code }}"
   tags:
-    - setup-ec2-instances
+    - setup-paths
+    - generate-configs
 
-- name: get shared function
-  include: shared-functions.yml
-  when: ( service == "rds" )
-  vars:
-    - aws_service: rds
+- name: generate terraform config file from template
+  local_action: template src=scala.tf.j2 dest={{ aws_terraform_modules_path }}/{{ item }}/{{ item }}.tf
+  with_items:
+    - "{{ aws_terraform_scala_app_code }}"
   tags:
-    - setup-rds-instance
+    - generate-configs
+
+- name: generate terraform config file from template
+  include: shared-function-1.yml
+  vars:
+    app_template:
+      - "zendesk"
+      - "payments"
+      - "serverapi"
+
+  tags:
+    - generate-configs
+
+- name: generate terraform database config file from template
+  local_action: template src=rds.tf.j2 dest={{ aws_terraform_modules_path }}/database/rds.tf
+  tags:
+    - generate-configs
+
+- name: generate main terraform config file from template
+  local_action: template src=deploy.tf.j2 dest={{ aws_terraform_path }}/deploy.tf
+  tags:
+    - generate-configs
+
+- name: terraform plan
+  local_action: shell terraform plan chdir={{ aws_terraform_module_path }}
+  tags:
+    - terraform-plan
+
+- name: Backup terraform state to s3 bucket
+  local_action: shell terraform remote config -backend=s3 -backend-config="bucket={{ country_code }}-terraform-state-backup" -backend-config="key={ aws_terraform_dir_path }}/{{ aws_service }}/terraform.tfstate" -backend-config="region={{ aws_region }}"
+  environment:
+     AWS_ACCESS_KEY_ID: "{{ aws_terraform_access_key }}"
+     AWS_SECRET_ACCESS_KEY: "{{ aws_terraform_secret_key }}"
+     AWS_DEFAULT_REGION: "{{ aws_region }}"
+  no_log: no
+  tags:
+    - terraform-backup
