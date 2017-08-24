@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "rmaleon"
+    email: "maleon@tala.co"
+    fname: "Rocel-Mae"
+    lname: "Maleon"
+    ssh: "no"
+    sudo: "no"
+    group:
+      - "ug-customer-service-ph"

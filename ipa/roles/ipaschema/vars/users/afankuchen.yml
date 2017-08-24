@@ -1,8 +1,0 @@
-ipa_usr:
-  - username: "afankuchen"
-    email: "alex@tala.co"
-    fname: "Alex"
-    lname: "Fankuchen"
-    ssh: "yes"
-    group:
-      - "ug-expansion-all"

@@ -7,6 +7,9 @@ ipa_usr:
     sudo: "yes"
     group:
       - "ug-data-all"
+      - "ug-dev-all"
+      - "ug-prod-all"
+      - "ug-db-proxy-all"
     aws_group: "tala-fullaccess"
     rds_privs:
       - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"

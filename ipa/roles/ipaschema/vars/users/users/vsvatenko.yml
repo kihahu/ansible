@@ -8,6 +8,7 @@ ipa_usr:
     group:
       - "ug-dev-all"
       - "ug-qa-all"
+      - "ug-stag-all"
 #    rds_privs:
 #      - rds_instance: "{{ rds_servers['us-west-2-dev-rds1'] }}"
 #        privs:

@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "agupta"
+    email: "agupta@tala.co"
+    fname: "Ankita"
+    lname: "Gupta"
+    ssh: "no"
+    group:
+      - "ug-devops-all"

@@ -1,0 +1,13 @@
+ipa_usr:
+  - username: "psingh"
+    email: "preet@randomcanary.com"
+    fname: "Preet"
+    lname: "Singh"
+    ssh: "yes"
+    sudo: "no"
+    group:
+      - "ug-db-proxy-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds2'] }}"
+        privs:
+          - "loans.*:SELECT"

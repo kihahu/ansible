@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "dlee"
+    email: "dlee@tala.co"
+    fname: "Dai"
+    lname: "Lee"
+    ssh: "yes"
+    sudo: "yes"
+    group:
+      - "ug-devops-all"

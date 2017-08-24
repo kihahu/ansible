@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "fivetran"
+    email: "five@tala.co"
+    fname: "five"
+    lname: "tran"
+    ssh: "yes"
+    group:
+      - "ug-devops"

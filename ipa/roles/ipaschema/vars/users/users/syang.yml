@@ -1,14 +1,16 @@
 ipa_usr:
-  - username: "zmarks"
-    email: "zach@tala.co"
-    fname: "Zach"
-    lname: "Marks"
+  - username: "syang"
+    email: "sara@tala.co"
+    fname: "Sara"
+    lname: "Yang"
     ssh: "yes"
     group:
-      - "ug-expansion-all"
+      - "ug-product-all"
+      - "ug-db-proxy-all"
     rds_privs:
       - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
         privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
           - "loans.*:SELECT"
       - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
         privs:
@@ -24,4 +26,5 @@ ipa_usr:
           - "loans.*:SELECT"
       - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
         privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
           - "loans.*:SELECT"

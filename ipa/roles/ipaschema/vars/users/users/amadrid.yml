@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "amadrid"
+    email: "amadrid@tala.co"
+    fname: "Angelo"
+    lname: "Madrid"
+    ssh: "no"
+    group:
+      - "ug-operations-all"

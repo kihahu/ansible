@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "gpolkam"
+    email: "gpolkam@tala.co"
+    fname: "Bhumi"
+    lname: "Gajjar"
+    ssh: "no"
+    group:
+      - "ug-devops-all"

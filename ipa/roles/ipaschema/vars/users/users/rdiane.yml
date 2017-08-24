@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "rdiane"
+    email: "rdiane@tala.co"
+    fname: "Radezza"
+    lname: "Diane"
+    ssh: "no"
+    group:
+      - "ug-customer-service-ph"
+    

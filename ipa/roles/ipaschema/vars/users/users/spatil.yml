@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "spatil"
+    email: "spatil@tala.co"
+    fname: "sandeep"
+    lname: "patil"
+    ssh: "no"
+    sudo: "no"
+    group:
+         - "dummy"

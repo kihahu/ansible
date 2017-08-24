@@ -1,0 +1,14 @@
+ipa_usr:
+  - username: "ankur"
+    email: "ankur@tala.co"
+    fname: "ankur"
+    lname: "ankur"
+    ssh: "yes"
+    group:
+      - "ug-operations-all"
+      - "ug-devops-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "approval.*:SELECT"

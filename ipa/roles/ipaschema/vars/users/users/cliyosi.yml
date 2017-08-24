@@ -1,0 +1,60 @@
+ipa_usr:
+  - username: "cliyosi"
+    email: "cliyosi@tala.co"
+    fname: "Collins"
+    lname: "Liyosi"
+    ssh: "yes"
+    sudo: "yes"
+    group:
+      - "ug-dev-all"
+      - "ug-qa-all"
+      - "ug-devops-all"
+    a_group: "tala-readonly"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-dev-rds1'] }}"
+        privs:
+          - "*.*:SELECT"
+          - "inventure_services_dev.*:ALL"
+          - "loans_qa2.*:ALL"
+          - "loans_qa.*:ALL"
+          - "payments_dev.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-dev-rds1'] }}"
+        privs:
+          - "*.*:SELECT"
+          - "inventure_services_dev.*:ALL"
+          - "loans_qa2.*:ALL"
+          - "loans_qa.*:ALL"
+          - "payments_dev.*:ALL"
+      - rds_instance: "{{ rds_servers['eu-west-1-dev-rds1'] }}"
+        privs:
+          - "*.*:SELECT"
+          - "inventure_services_dev.*:ALL"
+          - "loans_qa2.*:ALL"
+          - "loans_qa.*:ALL"
+          - "payments_dev.*:ALL"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
+        privs:
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"          
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"          
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"          
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"          
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds2'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"

@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "fmunyao"
+    email: "fmunyao@tala.co"
+    fname: "Faith"
+    lname: "Munyao"
+    ssh: "no"
+    group:
+      - "ug-customer-service-ke"
+    

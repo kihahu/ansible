@@ -1,0 +1,15 @@
+ipa_usr:
+  - username: "zmarks"
+    email: "zach@tala.co"
+    fname: "Zach"
+    lname: "Marks"
+    ssh: "yes"
+    group:
+      - "ug-expansion-all"
+      - "ug-devops-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "approval.*:SELECT"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"

@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "bgajjar"
+    email: "bgajjar@tala.co"
+    fname: "Greeshma"
+    lname: "Polkam"
+    ssh: "no"
+    group:
+      - "ug-operations-all"

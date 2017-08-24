@@ -1,0 +1,17 @@
+ipa_usr:
+  - username: "jearl"
+    email: "jearl@tala.co"
+    fname: "John"
+    lname: "Batungbacal"
+    ssh: "no"
+    sudo: "no"
+    group:
+      - "ug-customer-service-ph"
+      - "ug-devops-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "invre.*:SELECT"
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+          - "profiling.*:SELECT"

@@ -6,6 +6,7 @@ ipa_usr:
     ssh: "yes"
     group:
       - "ug-finance-analytics-all"
+      - "ug-dev-all"
     rds_privs:
       - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
         privs:
@@ -20,7 +21,6 @@ ipa_usr:
         privs:
           - "profiles.*:ALL"
           - "profiles.deals:ALL"
-          - "PROCEDURE mysql.change_time_zone:EXECUTE"
           - "datateam.*:SELECT"
           - "inventure_loans.*:SELECT"
           - "loans.*:SELECT"
@@ -29,7 +29,6 @@ ipa_usr:
         privs:
           - "profiles.*:ALL"
           - "profiles.deals:ALL"
-          - "PROCEDURE mysql.change_time_zone:EXECUTE"
           - "datateam.*:SELECT"
           - "inventure_loans.*:SELECT"
           - "loans.*:SELECT"

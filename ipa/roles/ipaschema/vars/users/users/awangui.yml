@@ -1,0 +1,8 @@
+ipa_usr:
+  - username: "awangui"
+    email: "awangui@tala.co"
+    fname: "Abigael"
+    lname: "Wangui"
+    ssh: "no"
+    group:
+      - "ug-operations-all"

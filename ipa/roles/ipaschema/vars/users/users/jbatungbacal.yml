@@ -1,0 +1,9 @@
+ipa_usr:
+  - username: "jbatungbacal"
+    email: "jbatungbacal@tala.co"
+    fname: "John"
+    lname: "Batungbacal"
+    ssh: "no"
+    group:
+      - "ug-customer-service-ke"
+    

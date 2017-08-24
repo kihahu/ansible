@@ -1,8 +1,0 @@
-ipa_usr:
-  - username: "jhamilton"
-    email: "jessica@tala.co"
-    fname: "Jessica"
-    lname: "Hamilton"
-    ssh: "no"
-    group:
-      - "ug-operations-all"

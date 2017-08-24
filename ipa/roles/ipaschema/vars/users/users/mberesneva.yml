@@ -1,0 +1,61 @@
+ipa_usr:
+  - username: "mberesneva"
+    email: "mberesneva@distillery.com"
+    fname: "Maria"
+    lname: "Beresneva"
+    ssh: "yes"
+    sudo: "yes"
+    group:
+      - "ug-dev-all"
+      - "ug-qa-all"
+    rds_privs:
+      - rds_instance: "{{ rds_servers['us-west-2-dev-rds1'] }}"
+        privs:
+          - "loans_demo.*:ALL"
+          - "loans_dev.*:ALL"
+          - "loans_qa2.*:ALL"
+          - "loans_qa.*:ALL"
+          - "loans_staging.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-dev-rds1'] }}"
+        privs:
+          - "loans_demo.*:ALL"
+          - "loans_dev.*:ALL"
+          - "loans_qa2.*:ALL"
+          - "loans_qa.*:ALL"
+          - "loans_staging.*:ALL"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-dev-rds1'] }}"
+        privs:
+          - "loans_demo.*:ALL"
+          - "loans_dev.*:ALL"
+          - "loans_qa2.*:ALL"
+          - "loans_qa.*:ALL"
+          - "loans_staging.*:ALL"
+          - "PROCEDURE mysql.change_time_zone:EXECUTE"
+          - "loans.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds2'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['ap-southeast-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['eu-west-1-prd-rds2'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
+      - rds_instance: "{{ rds_servers['us-west-2-prd-rds1'] }}"
+        privs:
+          - "loans.*:SELECT"
+          - "payments.*:SELECT"
