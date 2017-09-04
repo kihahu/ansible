@@ -1,7 +1,7 @@
 ---
 country_code: tz
 aws_terraform_region_ami: ami-bea5f3cd
-aws_terraform_key_name: master_eu_ireland 
+aws_terraform_key_name: master_eu_ireland
 # Server API urls
 dev_server_api_base_url: "tz-devserverapi.inventureaccess.com"
 demo_server_api_base_url: "tz-demoserverapi.inventureaccess.com"
@@ -9,3 +9,6 @@ prod_server_api_base_url: "tz-api.inventureaccess.com"
 qa_server_api_base_url: "tz-qaserverapi.inventureaccess.com"
 qa2_server_api_base_url: "tz-qa2serverapi.inventureaccess.com"
 staging_server_api_base_url: "tz-stagingserverapi.inventureaccess.com"
+sns_arn_pagerduty: "arn:aws:sns:eu-west-1:347023968887:aws-pagerduty-alerts"
+sns_arn_notices: "arn:aws:sns:eu-west-1:347023968887:tz-aws-notices"
+sns_arn_alerts: "arn:aws:sns:eu-west-1:347023968887:tz-aws-alerts"

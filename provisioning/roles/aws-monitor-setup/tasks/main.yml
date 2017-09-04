@@ -3,6 +3,8 @@
   local_action: file path={{ tmp_aws_alerts }} state=directory
   tags:
       - setup-tmp-dir
+      - credit-alert
+      - generate-downtime-alert-template
 
 - name: Get single ec2 remote facts
   local_action:
@@ -14,22 +16,56 @@
   register: ec2_facts
   tags:
     - gather-ec2-facts
+    - generate-downtime-alert-template
+    - credit-alert
 
 - name: Generate alert json
   local_action: template src=templates/aws_downtime.j2 dest=/tmp/aws_alerts/{{ item.tags.Name }}_aws_downtime.json
   with_items:
     - "{{ ec2_facts.instances }}"
   tags:
-    - generate-alert-template
- 
+    - generate-downtime-alert-template
+
+- name: Generate cpu credit alert json
+  local_action: template src=templates/aws_cpucredits.j2 dest=/tmp/aws_alerts/{{ item.tags.Name }}_aws_cpucredits.json
+  with_items:
+    - "{{ ec2_facts.instances }}"
+  tags:
+    - credit-alert
+
+- name: Generate cpu credit alert json
+  local_action: template src=templates/aws_cpucredits_pd.j2 dest=/tmp/aws_alerts/{{ item.tags.Name }}_aws_cpucredits_pd.json
+  with_items:
+    - "{{ ec2_facts.instances }}"
+  tags:
+    - credit-alert
+
 - name: Configure aws alert
   local_action: shell aws cloudwatch put-metric-alarm --cli-input-json file:///{{ tmp_aws_alerts }}/{{ item.tags.Name }}_aws_downtime.json
   with_items:
     - "{{ ec2_facts.instances }}"
   tags:
+    - generate-downtime-alert-template
+
+- name: Configure aws alert
+  local_action: shell aws cloudwatch put-metric-alarm --cli-input-json file:///{{ tmp_aws_alerts }}/{{ item.tags.Name }}_aws_cpucredits.json
+  with_items:
+    - "{{ ec2_facts.instances }}"
+  tags:
     - configure-downtime-alert
+    - credit-alert
+
+- name: Configure aws alert
+  local_action: shell aws cloudwatch put-metric-alarm --cli-input-json file:///{{ tmp_aws_alerts }}/{{ item.tags.Name }}_aws_cpucredits_pd.json
+  with_items:
+    - "{{ ec2_facts.instances }}"
+  tags:
+    - configure-downtime-alert
+    - credit-alert
 
 - name: Remove temp folder used to store json templates
   local_action: file path={{ tmp_aws_alerts }} state=absent
   tags:
       - remove-tmp-dir
+      - generate-downtime-alert-template
+      - credit-alert

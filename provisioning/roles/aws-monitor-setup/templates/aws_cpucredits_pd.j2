@@ -1,0 +1,24 @@
+{
+    "EvaluationPeriods": 2,
+    "ComparisonOperator": "LessThanOrEqualToThreshold",
+    "AlarmActions": [
+        "{{ sns_arn_pagerduty }}"
+    ],
+    "Namespace": "AWS/EC2",
+    "AlarmDescription": "CPU Credit Monitor Alert Created from CloudWatch API",
+    "Period": 300,
+    "Threshold": 10,
+    "AlarmName": "CPU Credit Monitor {{ item.tags.Name }} PD",
+    "Dimensions": [
+	{
+	    "Name": "InstanceId",
+	    "Value": "{{ item.id }}"
+	}
+    ],
+    "Statistic": "Average",
+    "InsufficientDataActions": [
+    ],
+    "OKActions": [],
+    "ActionsEnabled": true,
+    "MetricName": "CPUCreditBalance"
+}
