@@ -1,0 +1,163 @@
+# setup zendesk security groups for prod and non-prod environments
+{% if item[1] == "prod" or item[1] == "staging" %}
+resource "aws_security_group" "{{ item[0] }}_sec_group_{{ item[1] }}" {
+  name        = "{{ country_code }}-{{ item[0] }}-{{ item[1] }}-sg"
+  description = "{{ country_code }} {{ item[0] }} restricted security group"
+
+  ingress {
+    from_port   = "{{ aws_terraform_mysql_port }}"
+    to_port     = "{{ aws_terraform_mysql_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
+  }
+
+  ingress {
+    from_port   = "{{ aws_terraform_elb_ssl_port }}"
+    to_port     = "{{ aws_terraform_elb_ssl_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+  }
+
+  ingress {
+    from_port   = "{{ aws_terraform_ssh_port }}"
+    to_port     = "{{ aws_terraform_ssh_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
+  }
+
+  ingress {
+    from_port   = "{{ aws_terraform_api_dev_elb_port }}"
+    to_port     = "{{ aws_terraform_api_qa2_elb_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
+  }
+
+  ingress {
+    from_port   = "{{ aws_terraform_from_port }}"
+    to_port     = "{{ aws_terraform_to_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+  }
+
+  ingress {
+    from_port   = "{{ aws_terraform_elb_port }}"
+    to_port     = "{{ aws_terraform_elb_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
+  }
+
+  egress {
+    from_port   = "{{ aws_terraform_default_from_port }}"
+    to_port     = "{{ aws_terraform_default_to_port }}"
+    protocol    = "{{ aws_terraform_default_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+  }
+}
+
+# setup zendesk elb or prod and non-prod environments
+resource "aws_elb" "{{ item[0] }}_elb_{{ item[1] }}" {
+  name = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}"
+
+  listener {
+    {% if  item[1] == "staging" %}
+    instance_port = "{{ aws_terraform_zendesk_staging_elb_port }}"
+
+    {% else %}
+    instance_port = "{{ aws_terraform_zendesk_prod_elb_port }}"
+
+    {% endif %}
+    instance_protocol  = "{{ aws_terraform_elb_protocol }}"
+    lb_port            = "{{ aws_terraform_elb_ssl_port }}"
+    lb_protocol        = "{{ aws_terraform_elb_ssl_protocol }}"
+    ssl_certificate_id = "{{ aws_terraform_certificate_id }}"
+  }
+
+  health_check {
+    healthy_threshold   = 10
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+
+    {% if  item[1] =="staging" %}
+    target = "tcp:{{ aws_terraform_zendesk_staging_elb_port }}"
+
+    {% else %}
+    target = "tcp:{{ aws_terraform_zendesk_prod_elb_port }}"
+
+    {% endif %}
+  }
+
+  instances       = ["${aws_instance.{{ item[0] }}_ec2_{{ item[1] }}.*.id}"]
+  security_groups = ["${aws_security_group.{{ item[0] }}_sec_group_{{ item[1] }}.id}"]
+  internal        = "False"
+  subnets         = ["subnet-03aa7c68", "subnet-02aa7c69", "subnet-0caa7c67"]
+}
+
+# setup zendesk aws instance or prod and non-prod environments
+resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
+  ami      = "{{ aws_terraform_region_ami }}"
+  key_name = "{{ aws_terraform_key_name }}"
+
+  {% if item[1] == "prod" %}
+  instance_type = "{{ aws_terraform_instance_type_api }}"
+  count         = "{{ aws_terraform_default_instance_count }}"
+
+  {% elif item[1] == "staging" %}
+  instance_type = "{{ aws_terraform_instance_type_medium }}"
+  count         = "{{ aws_terraform_default_instance_count }}"
+
+  {% else %}
+  instance_type = "{{ aws_terraform_instance_type_small }}"
+  count         = 1
+
+  {% endif %}
+  vpc_security_group_ids = ["${aws_security_group.{{ item[0] }}_sec_group_{{ item[1] }}.id}"]
+
+  tags {
+    Name = "{{ country_code }}-{{ item[0] }}-{{ item[1] }}-${count.index + 1}"
+  }
+
+  root_block_device {
+    volume_type           = "{{ aws_terraform_volume_type }}"
+    volume_size           = "{{ aws_terraform_block_device_size }}"
+    delete_on_termination = true
+  }
+
+  subnet_id = "{{ aws_terraform_subnet_private_id }}"
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo hostnamectl set-hostname {{ country_code }}-{{ item[0]}}-{{ item[1] }}-${count.index + 1 }",
+    ]
+  }
+
+  connection {
+    user = "{{ aws_terraform_default_user }}"
+    host = "${self.private_ip}"
+  }
+}
+
+# setup zendesk route53 or prod and non-prod environments
+resource "aws_route53_record" "{{ item[0] }}_route53_{{ item[1] }}" {
+  zone_id = "{{ zone_id }}"
+
+  {% if item[1] == "prod" %}
+  name    = "{{ country_code }}-{{ item[0] }}.{{ aws_terraform_default_dns }}"
+  type    = "CNAME"
+  records = ["${aws_elb.{{ item[0] }}_elb_{{ item[1] }}.dns_name}"]
+
+  {% elif item[1] == "staging" %}
+  name    = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}.{{ aws_terraform_default_dns }}"
+  type    = "CNAME"
+  records = ["${aws_elb.{{ item[0] }}_elb_{{ item[1] }}.dns_name}"]
+
+  {% else %}
+  name    = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}.{{ aws_terraform_default_dns }}"
+  type    = "A"
+  records = ["${aws_instance.{{ item[0] }}_ec2_{{ item[1] }}.*.private_ip}"]
+
+  {% endif %}
+  ttl = "300"
+}
+{% endif %}
+
