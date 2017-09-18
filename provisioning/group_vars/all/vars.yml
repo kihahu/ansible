@@ -44,9 +44,9 @@ monit_user: monit
 monit_admin_user: admin
 aws_terraform_provider: aws
 aws_terraform_elb_port: 80
-aws_terraform_api_staging_elb_port: 8002
+aws_terraform_api_staging_elb_port: 80
 aws_terraform_api_dev_elb_port: 8001
-aws_terraform_api_demo_elb_port: 8005
+aws_terraform_api_demo_elb_port: 8008
 aws_terraform_api_qa_elb_port: 8003
 aws_terraform_api_qa2_elb_port: 8007
 aws_terraform_scala_elb_port: 9000

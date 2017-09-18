@@ -1,6 +1,9 @@
-resource "aws_security_group" "{{ item[0] }}_sec_group_{{ item[1] }}" {
-  name        = "{{ country_code }}-{{ item[0] }}-{{ item[1] }}-sg"
-  description = "{{ country_code }} {{ item[0] }} restricted security group"
+{% for environment in aws_terraform_environment %}
+{% if environment == "prod" or environment == "staging" or item == "datareceiver" %}
+# setup scala apps security groups for prod and non-prod environments
+resource "aws_security_group" "{{ item }}_sec_group_{{ environment }}" {
+  name        = "{{ country_code }}-{{ item }}-{{ environment }}-sg"
+  description = "{{ country_code }} {{ item }} restricted security group"
 
   ingress {
     from_port   = "{{ aws_terraform_mysql_port }}"
@@ -52,27 +55,28 @@ resource "aws_security_group" "{{ item[0] }}_sec_group_{{ item[1] }}" {
   }
 }
 
-resource "aws_elb" "{{ item[0] }}_elb_{{ item[1] }}" {
-  name = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}"
+# setup scala apps elb for prod and non-prod environments
+resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
+  name = "{{ country_code }}-{{ environment }}-{{ item }}"
 
   listener {
-    {% if  item[1] =="dev" %}
-    instance_port = "{{ aws_terraform_api_dev_elb_port }}"
+    {% if  environment == "staging" %}
+    instance_port = "{{ aws_terraform_scala_staging_elb_port }}"
 
-    {% elif  item[1] =="demo" %}
-    instance_port = "{{ aws_terraform_api_demo_elb_port }}"
+    {% elif  environment == "dev" %}
+    instance_port = "{{ aws_terraform_scala_dev_elb_port }}"
 
-    {% elif  item[1] =="qa" %}
-    instance_port = "{{ aws_terraform_api_qa_elb_port }}"
+    {% elif  environment == "qa" %}
+    instance_port = "{{ aws_terraform_scala_qa_elb_port }}"
 
-    {% elif  item[1] =="qa2" %}
-    instance_port = "{{ aws_terraform_api_qa2_elb_port }}"
+    {% elif  environment == "qa2" %}
+    instance_port = "{{ aws_terraform_scala_qa2_elb_port }}"
 
-    {% elif  item[1] =="staging" %}
-    instance_port = "{{ aws_terraform_api_staging_elb_port }}"
+    {% elif  environment == "demo" %}
+    instance_port = "{{ aws_terraform_scala_demo_elb_port }}"
 
     {% else %}
-    instance_port = "{{ aws_terraform_elb_port }}"
+    instance_port = "{{ aws_terraform_scala_prod_elb_port }}"
 
     {% endif %}
     instance_protocol  = "{{ aws_terraform_elb_protocol }}"
@@ -87,61 +91,63 @@ resource "aws_elb" "{{ item[0] }}_elb_{{ item[1] }}" {
     timeout             = 5
     interval            = 30
 
-    {% if  item[1] =="dev" %}
-    target = "TCP:{{ aws_terraform_api_dev_elb_port }}"
+    {% if  environment == "staging" %}
+    target = "tcp:{{ aws_terraform_scala_staging_elb_port }}"
 
-    {% elif  item[1] =="demo" %}
-    target = "TCP:{{ aws_terraform_api_demo_elb_port }}"
+    {% elif  environment == "dev" %}
+    target = "tcp:{{ aws_terraform_scala_dev_elb_port }}"
 
-    {% elif  item[1] =="qa" %}
-    target = "TCP:{{ aws_terraform_api_qa_elb_port }}"
+    {% elif  environment == "qa" %}
+    target = "tcp:{{ aws_terraform_scala_qa_elb_port }}"
 
-    {% elif  item[1] =="qa2" %}
-    target = "TCP:{{ aws_terraform_api_qa2_elb_port }}"
+    {% elif  environment == "qa2" %}
+    target = "tcp:{{ aws_terraform_scala_qa2_elb_port }}"
 
-    {% elif  item[1] =="staging" %}
-    target = "TCP:{{ aws_terraform_api_staging_elb_port }}"
+    {% elif  environment == "demo" %}
+    target = "tcp:{{ aws_terraform_scala_demo_elb_port }}"
 
     {% else %}
-    target = "TCP:{{ aws_terraform_elb_port }}"
+    target = "tcp:{{ aws_terraform_scala_prod_elb_port }}"
 
     {% endif %}
   }
 
-  instances       = ["${aws_instance.{{ item[0] }}_ec2_{{ item[1] }}.*.id}"]
-  security_groups = ["${aws_security_group.{{ item[0] }}_sec_group_{{ item[1] }}.id}"]
-  internal        = "False"
-  subnets         = ["subnet-03aa7c68", "subnet-02aa7c69", "subnet-0caa7c67"]
+  instances       = ["${aws_instance.{{ item }}_ec2_{{ environment }}.*.id}"]
+  security_groups = ["${aws_security_group.{{ item }}_sec_group_{{ environment }}.id}"]
+
+  {% if item == "datareceiver" %}
+  internal = "False"
+  subnets  = ["subnet-03aa7c68", "subnet-02aa7c69", "subnet-0caa7c67"]
+
+  {% else %}
+  internal = "True"
+  subnets  = ["{{ aws_terraform_subnet_private_id }}"]
+
+  {% endif %}
 }
 
-resource "aws_lb_cookie_stickiness_policy" "{{ item[0] }}_ec2_{{ item[1] }}" {
-  name                     = "elb-policy-{{ item[0] }}-{{ item[1]}}"
-  load_balancer            = "${aws_elb.{{ item[0] }}_elb_{{ item[1] }}.id}"
-  lb_port                  = 443
-  cookie_expiration_period = 1800
-}
-
-resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
+# setup scala apps ec2 instances for prod and non-prod environments
+resource "aws_instance" "{{ item }}_ec2_{{ environment }}" {
   ami      = "{{ aws_terraform_region_ami }}"
   key_name = "{{ aws_terraform_key_name }}"
 
-  {% if item[1] == "prod" %}
+  {% if environment == "prod" %}
   instance_type = "{{ aws_terraform_instance_type_api }}"
   count         = "{{ aws_terraform_default_instance_count }}"
 
-  {% elif item[1] == "staging" %}
+  {% elif environment == "staging" %}
   instance_type = "{{ aws_terraform_instance_type_medium }}"
   count         = "{{ aws_terraform_default_instance_count }}"
 
-  {% else %}
-  instance_type = "{{ aws_terraform_instance_type_small }}"
+  {% elif item == "datareceiver" %}
+  instance_type = "{{ aws_terraform_instance_type_medium }}"
   count         = 1
 
   {% endif %}
-  vpc_security_group_ids = ["${aws_security_group.{{ item[0] }}_sec_group_{{ item[1] }}.id}"]
+  vpc_security_group_ids = ["${aws_security_group.{{ item }}_sec_group_{{ environment }}.id}"]
 
   tags {
-    Name = "{{ country_code }}-{{ item[0] }}-{{ item[1] }}-${count.index + 1}"
+    Name = "{{ country_code }}-{{ item }}-{{ environment }}-${count.index + 1}"
   }
 
   root_block_device {
@@ -154,7 +160,7 @@ resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo hostnamectl set-hostname {{ country_code }}-{{ item[0]}}-{{ item[1] }}-${count.index + 1 }",
+      "sudo hostnamectl set-hostname {{ country_code }}-{{ item}}-{{ environment }}-${count.index + 1 }",
     ]
   }
 
@@ -164,17 +170,30 @@ resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
   }
 }
 
-resource "aws_route53_record" "{{ item[0] }}_route53_{{ item[1] }}" {
+{% endif %}
+
+# setup scala apps route53 records for prod and non-prod environments
+# datareceiver and auth are public, the rest are private
+resource "aws_route53_record" "{{ item }}_route53_{{ environment }}" {
   zone_id = "{{ zone_id }}"
 
-  {% if item[1] == "prod" %}
-  name = "{{ country_code }}-api.{{ aws_terraform_default_dns }}"
+  {% if environment == "prod" %}
+  name    = "{{ country_code }}-{{ item }}.{{ aws_terraform_default_dns }}"
+  type    = "CNAME"
+  records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
+
+  {% elif environment == "staging" or ( item == "datareceiver" and ( environment != "prod")) %}
+  name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
+  type    = "CNAME"
+  records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
 
   {% else %}
-  name = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}.{{ aws_terraform_default_dns }}"
+  name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
+  type    = "A"
+  records = ["${aws_instance.{{ item }}_ec2_staging.*.private_ip}"]
 
   {% endif %}
-  type    = "CNAME"
-  records = ["${aws_elb.{{ item[0] }}_elb_{{ item[1] }}.dns_name}"]
-  ttl     = "300"
+  ttl = "300"
 }
+
+{% endfor %}

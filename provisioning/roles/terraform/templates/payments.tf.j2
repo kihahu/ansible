@@ -1,8 +1,9 @@
+{% for environment in aws_terraform_environment %}
 # setup payments security group for production and staging
-{% if item[1] == "prod" or item[1] == "staging" %}
-resource "aws_security_group" "{{ item[0] }}_sec_group_{{ item[1] }}" {
-  name        = "{{ country_code }}-{{ item[0] }}-{{ item[1] }}-sg"
-  description = "{{ country_code }} {{ item[0] }} restricted security group"
+{% if environment == "prod" or environment == "staging" %}
+resource "aws_security_group" "{{ item }}_sec_group_{{ environment }}" {
+  name        = "{{ country_code }}-{{ item }}-{{ environment }}-sg"
+  description = "{{ country_code }} {{ item }} restricted security group"
 
   ingress {
     from_port   = "{{ aws_terraform_mysql_port }}"
@@ -53,13 +54,12 @@ resource "aws_security_group" "{{ item[0] }}_sec_group_{{ item[1] }}" {
     cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
   }
 }
-
 # setup payments load balancer for production and staging (to be shared by non prod environment)
-resource "aws_elb" "{{ item[0] }}_elb_{{ item[1] }}" {
-  name = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}"
+resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
+  name = "{{ country_code }}-{{ environment }}-{{ item }}"
 
   listener {
-    {% if  item[1] =="staging" %}
+    {% if  environment =="staging" %}
     instance_port = "{{ aws_terraform_payments_staging_elb_port }}"
 
     {% else %}
@@ -78,7 +78,7 @@ resource "aws_elb" "{{ item[0] }}_elb_{{ item[1] }}" {
     timeout             = 5
     interval            = 30
 
-    {% if  item[1] =="staging" %}
+    {% if  environment =="staging" %}
     target = "tcp:{{ aws_terraform_payments_staging_elb_port }}"
 
     {% else %}
@@ -87,22 +87,21 @@ resource "aws_elb" "{{ item[0] }}_elb_{{ item[1] }}" {
     {% endif %}
   }
 
-  instances       = ["${aws_instance.{{ item[0] }}_ec2_{{ item[1] }}.*.id}"]
-  security_groups = ["${aws_security_group.{{ item[0] }}_sec_group_{{ item[1] }}.id}"]
+  instances       = ["${aws_instance.{{ item }}_ec2_{{ environment }}.*.id}"]
+  security_groups = ["${aws_security_group.{{ item }}_sec_group_{{ environment }}.id}"]
   internal        = "False"
   subnets         = ["subnet-03aa7c68", "subnet-02aa7c69", "subnet-0caa7c67"]
 }
 
-# setup payments aws instance for production and staging
-resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
+resource "aws_instance" "{{ item }}_ec2_{{ environment }}" {
   ami      = "{{ aws_terraform_region_ami }}"
   key_name = "{{ aws_terraform_key_name }}"
 
-  {% if item[1] == "prod" %}
+  {% if environment == "prod" %}
   instance_type = "{{ aws_terraform_instance_type_api }}"
   count         = "{{ aws_terraform_default_instance_count }}"
 
-  {% elif item[1] == "staging" %}
+  {% elif environment == "staging" %}
   instance_type = "{{ aws_terraform_instance_type_medium }}"
   count         = "{{ aws_terraform_default_instance_count }}"
 
@@ -111,10 +110,10 @@ resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
   count         = 1
 
   {% endif %}
-  vpc_security_group_ids = ["${aws_security_group.{{ item[0] }}_sec_group_{{ item[1] }}.id}"]
+  vpc_security_group_ids = ["${aws_security_group.{{ item }}_sec_group_{{ environment }}.id}"]
 
   tags {
-    Name = "{{ country_code }}-{{ item[0] }}-{{ item[1] }}-${count.index + 1}"
+    Name = "{{ country_code }}-{{ item }}-{{ environment }}-${count.index + 1}"
   }
 
   root_block_device {
@@ -127,7 +126,7 @@ resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo hostnamectl set-hostname {{ country_code }}-{{ item[0]}}-{{ item[1] }}-${count.index + 1 }",
+      "sudo hostnamectl set-hostname {{ country_code }}-{{ item}}-{{ environment }}-${count.index + 1 }",
     ]
   }
 
@@ -136,28 +135,36 @@ resource "aws_instance" "{{ item[0] }}_ec2_{{ item[1] }}" {
     host = "${self.private_ip}"
   }
 }
-
 # setup payments aws route53 records for production and staging
-resource "aws_route53_record" "{{ item[0] }}_route53_{{ item[1] }}" {
+resource "aws_route53_record" "{{ item }}_route53_{{ environment }}" {
   zone_id = "{{ zone_id }}"
 
-  {% if item[1] == "prod" %}
-  name    = "{{ country_code }}-{{ item[0] }}.{{ aws_terraform_default_dns }}"
+  {% if environment == "prod" %}
+  name    = "{{ country_code }}-{{ item }}.{{ aws_terraform_default_dns }}"
   type    = "CNAME"
-  records = ["${aws_elb.{{ item[0] }}_elb_{{ item[1] }}.dns_name}"]
+  records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
 
-  {% elif item[1] == "staging" %}
-  name    = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}.{{ aws_terraform_default_dns }}"
+  {% elif environment == "staging" %}
+  name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
   type    = "CNAME"
-  records = ["${aws_elb.{{ item[0] }}_elb_{{ item[1] }}.dns_name}"]
+  records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
 
   {% else %}
-  name    = "{{ country_code }}-{{ item[1] }}-{{ item[0] }}.{{ aws_terraform_default_dns }}"
+  name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
   type    = "A"
-  records = ["${aws_instance.{{ item[0] }}_ec2_{{ item[1] }}.*.private_ip}"]
+  records = ["${aws_instance.{{ item }}_ec2_{{ environment }}.*.private_ip}"]
 
   {% endif %}
   ttl = "300"
 }
-{% endif %}
 
+output "{{ item }}-{{ environment }}-id" {
+  value = "${aws_instance.{{ item }}_ec2_{{ environment }}.*.id}"
+}
+
+output "{{ item }}-{{ environment }}-ip" {
+  value = "${aws_instance.{{ item }}_ec2_{{ environment }}.*.private_ip}"
+}
+
+{% endif %}
+{% endfor %}

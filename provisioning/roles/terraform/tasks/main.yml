@@ -29,7 +29,6 @@
       - "zendesk"
       - "payments"
       - "serverapi"
-
   tags:
     - generate-configs
 

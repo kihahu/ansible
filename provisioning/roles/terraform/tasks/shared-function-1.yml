@@ -1,0 +1,5 @@
+---
+- name: Generate terraform files from application jinja2 templates
+  local_action: template src={{ item }}.tf.j2 dest={{ aws_terraform_modules_path }}/{{ item }}/{{ item }}.tf
+  with_items:
+    - "{{ app_template }}"
