@@ -223,3 +223,9 @@ apt_packages:
    - curl
    - software-properties-common
 base_artisan_binary: /srv/applications/payments/artisan
+elb_scala_ports:
+  - 9001
+  - 9002
+  - 9003
+  - 9004
+  - 9005
