@@ -112,7 +112,7 @@ resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
   instances       = ["${aws_instance.{{ item }}_ec2_{{ environment }}.*.id}"]
   security_groups = ["${aws_security_group.{{ item }}_sec_group_{{ environment }}.id}"]
 
-  {% if item == "datareceiver" or item == "loans-service" %}
+  {% if item == "datareceiver" or item == "loans-service" or item == "payments-service" %}
   internal = "False"
   subnets  = ["subnet-03aa7c68", "subnet-02aa7c69", "subnet-0caa7c67"]
 
