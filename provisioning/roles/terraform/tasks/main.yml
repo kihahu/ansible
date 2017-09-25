@@ -27,7 +27,6 @@
   vars:
     app_template:
       - "zendesk"
-      - "payments"
       - "serverapi"
   tags:
     - generate-configs
