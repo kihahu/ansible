@@ -89,7 +89,7 @@ resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
     interval            = 30
 
     {% if  environment == "staging" %}
-    target = "tcp:{{ aws_terraform_scala_staging_elb_port }}"
+    target = "tcp:{{ aws_terraform_scala_dev_elb_port }}"
 
     {% elif  environment == "dev" %}
     target = "tcp:{{ aws_terraform_scala_dev_elb_port }}"
@@ -169,11 +169,19 @@ resource "aws_route53_record" "{{ item }}_route53_{{ environment }}" {
   zone_id = "{{ zone_id }}"
 
   {% if environment == "prod" %}
-  name    = "{{ country_code }}-{{ item }}.{{ aws_terraform_default_dns }}"
-  records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
+      {% if item == "payments-service" %}
+          name    = "{{ country_code }}-payments.{{ aws_terraform_default_dns }}"
+      {% else %}
+          name    = "{{ country_code }}-{{ item }}.{{ aws_terraform_default_dns }}"
+      {% endif %}
+          records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
   {% else %}
-  name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
-  records = ["${aws_elb.{{ item }}_elb_staging.dns_name}"]
+      {% if item == "payments-service" %}
+          name    = "{{ country_code }}-{{ environment }}-payments.{{ aws_terraform_default_dns }}"
+      {% else %}
+          name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
+      {% endif %}
+          records = ["${aws_elb.{{ item }}_elb_staging.dns_name}"]
   {% endif %}
   type    = "CNAME"
   ttl = "300"

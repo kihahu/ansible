@@ -63,7 +63,7 @@ resource "aws_db_instance" "internal_testing_database" {
   password                = "{{ aws_terraform_rds_internal_testing_password }}"
   multi_az                = "{{ aws_terraform_rds_is_multi_az }}"
   storage_type            = "{{ aws_terraform_rds_storage_type }}"
-  parameter_group_name    = "{{ aws_terraform_param_group_name }}"
+  parameter_group_name    = "{{ aws_terraform_test_param_group_name }}"
   backup_retention_period = "{{ aws_terraform_backup_retention_period }}"
   publicly_accessible     = "{{ aws_terraform_publicly_accessible }}"
   vpc_security_group_ids  = ["${aws_security_group.db-vpn-sg.id}"]

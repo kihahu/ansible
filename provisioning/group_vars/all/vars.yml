@@ -72,6 +72,7 @@ aws_terraform_modules_path: "{{ aws_terraform_path }}/modules"
 aws_terraform_rds_is_multi_az: no
 aws_terraform_rds_storage_type: gp2
 aws_terraform_param_group_name: default.mysql5.6
+aws_terraform_test_param_group_name: internal-testing-connections
 aws_terraform_backup_retention_period: 7
 aws_terraform_publicly_accessible: False
 aws_terraform_rds_engine_version: 5.6
@@ -195,7 +196,7 @@ aws_terraform_rds_internal_testing_password: "{{ vault_rds_internal_testing_pass
 aws_terraform_rds_storage: 1500
 aws_terraform_rds_storage_internal: 500
 aws_terraform_rds_instance_class: "db.m4.large"
-aws_terraform_rds_internal_testing_instance_class: "db.t2.large"
+aws_terraform_rds_internal_testing_instance_class: "db.m4.xlarge"
 aws_terraform_rds_auto_minor_version_upgrade: no
 aws_terraform_rds_apply_immediately: yes
 aws_terraform_rds_replicate_source_db: null
