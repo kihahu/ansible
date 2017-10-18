@@ -1,5 +1,12 @@
 provider "{{ aws_terraform_provider }}" {}
 
+terraform {
+  backend "s3" {
+    bucket = "mx-terraform"
+    key    = "terraform.tfstate"
+    region = "us-west-2"
+  }
+}
 resource "aws_vpc" "main_vpc" {
   cidr_block = "{{ aws_terraform_cidr_block }}"
 }

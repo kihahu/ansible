@@ -59,19 +59,27 @@ resource "aws_security_group" "{{ item }}_sec_group_{{ environment }}" {
 resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
   name = "{{ country_code }}-{{ environment }}-{{ item }}"
 
-  listener {
     {% if  environment == "staging" %}
-    instance_port = "{{ aws_terraform_zendesk_staging_elb_port }}"
-
+            {% for port in elb_services_dev_ports %}
+                listener {
+                instance_port = "{{ port }}"
+                instance_protocol  = "{{ aws_terraform_elb_protocol }}"
+                lb_port            = "{{ port }}"
+                lb_protocol        = "{{ aws_terraform_elb_ssl_protocol }}"
+                ssl_certificate_id = "{{ aws_terraform_certificate_id }}"
+              }
+            {% endfor %}
     {% else %}
-    instance_port = "{{ aws_terraform_zendesk_prod_elb_port }}"
-
+            {% for port in elb_services_prod_ports %}
+                listener {
+                instance_port = "{{ port }}"
+                instance_protocol  = "{{ aws_terraform_elb_protocol }}"
+                lb_port            = "{{ port }}"
+                lb_protocol        = "{{ aws_terraform_elb_ssl_protocol }}"
+                ssl_certificate_id = "{{ aws_terraform_certificate_id }}"
+                }
+            {% endfor %}
     {% endif %}
-    instance_protocol  = "{{ aws_terraform_elb_protocol }}"
-    lb_port            = "{{ aws_terraform_elb_ssl_port }}"
-    lb_protocol        = "{{ aws_terraform_elb_ssl_protocol }}"
-    ssl_certificate_id = "{{ aws_terraform_certificate_id }}"
-  }
 
   health_check {
     healthy_threshold   = 10
@@ -80,7 +88,7 @@ resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
     interval            = 30
 
     {% if  environment =="staging" %}
-    target = "tcp:{{ aws_terraform_zendesk_staging_elb_port }}"
+    target = "tcp:8000"
 
     {% else %}
     target = "tcp:{{ aws_terraform_zendesk_prod_elb_port }}"
@@ -137,28 +145,20 @@ resource "aws_instance" "{{ item }}_ec2_{{ environment }}" {
     host = "${self.private_ip}"
   }
 }
-
+{% endif %}
 # setup zendesk route53 or prod and non-prod environments
 resource "aws_route53_record" "{{ item }}_route53_{{ environment }}" {
   zone_id = "{{ zone_id }}"
 
   {% if environment == "prod" %}
-  name    = "{{ country_code }}-{{ item }}.{{ aws_terraform_default_dns }}"
-  type    = "CNAME"
-  records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
-
-  {% elif environment == "staging" %}
-  name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
-  type    = "CNAME"
-  records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
-
+      name    = "{{ country_code }}-services.{{ aws_terraform_default_dns }}"
+      type    = "CNAME"
+      records = ["${aws_elb.{{ item }}_elb_{{ environment }}.dns_name}"]
   {% else %}
-  name    = "{{ country_code }}-{{ environment }}-{{ item }}.{{ aws_terraform_default_dns }}"
-  type    = "A"
-  records = ["${aws_instance.{{ item }}_ec2_{{ environment }}.*.private_ip}"]
-
+      name    = "{{ country_code }}-{{ environment }}-services.{{ aws_terraform_default_dns }}"
+      type    = "CNAME"
+      records = ["${aws_elb.{{ item }}_elb_staging.dns_name}"]
   {% endif %}
-  ttl = "300"
+      ttl = "300"
 }
-{% endif %}
 {% endfor %}

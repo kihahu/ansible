@@ -16,6 +16,19 @@ resource "aws_security_group" "db-vpn-sg" {
     protocol    = "{{ aws_terraform_tcp_protocol }}"
     cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
   }
+  ingress {
+    from_port   = "{{ aws_terraform_mysql_port }}"
+    to_port     = "{{ aws_terraform_mysql_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_iac }}"]
+  }
+
+  egress {
+    from_port   = "{{ aws_terraform_mysql_port }}"
+    to_port     = "{{ aws_terraform_mysql_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_cidr_block_iac }}"]
+  }
 }
 # Create maindb instance
 resource "aws_db_instance" "main_database" {

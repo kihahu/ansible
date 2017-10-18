@@ -51,7 +51,7 @@ aws_terraform_api_qa_elb_port: 8003
 aws_terraform_api_qa2_elb_port: 8007
 aws_terraform_scala_elb_port: 9000
 aws_terraform_zendesk_prod_elb_port: 8000
-aws_terraform_zendesk_staging_elb_port: 8000
+aws_terraform_zendesk_staging_elb_port: 8005
 aws_terraform_payments_prod_elb_port: 8400
 aws_terraform_payments_staging_elb_port: 8400
 aws_terraform_scala_dev_elb_port: 9001
@@ -82,6 +82,7 @@ aws_terraform_cidr_block_29: 172.29.0.0/16
 aws_terraform_cidr_block_30: 172.30.0.0/16
 aws_terraform_cidr_block_31: 172.31.128.0/20
 aws_terraform_cidr_block_31_all: 172.31.0.0/16
+aws_terraform_cidr_block_iac: 10.0.0.0/8
 aws_terraform_cidr_block_32: 172.32.0.0/16
 aws_terraform_default_cidr: "0.0.0.0/0"
 aws_terraform_default_from_port: 0
@@ -115,8 +116,8 @@ aws_terraform_api_from_port: 8001
 aws_terraform_api_to_port: 8007
 aws_terraform_payments_from_port: 8001
 aws_terraform_payments_to_port: 8007
-aws_terraform_zendesk_from_port: 8000
-aws_terraform_zendesk_to_port: 8005
+aws_terraform_zendesk_from_port: 4002
+aws_terraform_zendesk_to_port: 9002
 aws_terraform_scala_to_port: 9005
 aws_terraform_scala_from_port: 9000
 aws_terraform_from_port: 5000
@@ -226,8 +227,30 @@ apt_packages:
    - software-properties-common
 base_artisan_binary: /srv/applications/payments/artisan
 elb_scala_ports:
+  - 9000
   - 9001
   - 9002
   - 9003
   - 9004
   - 9005
+elb_services_dev_ports:
+  - 8000
+  - 8001
+  - 8003
+  - 8004
+  - 8005
+  - 4004
+  - 5004
+  - 6004
+  - 7004
+  - 8004
+  - 9004
+  - 4002
+  - 5002
+  - 6002
+  - 7002
+  - 9002
+elb_services_prod_ports:
+  - 8000
+  - 5004
+  - 5002
