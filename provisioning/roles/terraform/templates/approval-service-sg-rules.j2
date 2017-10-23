@@ -1,0 +1,20 @@
+  ingress {
+    from_port   = "{{ aws_terraform_from_port }}"
+    to_port     = "{{ aws_terraform_to_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_mx_nat_cidr }}"]
+  }
+
+  ingress {
+    from_port   = "{{ aws_terraform_from_port }}"
+    to_port     = "{{ aws_terraform_to_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_iac_nat_cidr_1 }}"]
+  }
+
+  ingress {
+    from_port   = "{{ aws_terraform_from_port }}"
+    to_port     = "{{ aws_terraform_to_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_iac_nat_cidr_2 }}"]
+  }

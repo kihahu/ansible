@@ -1,0 +1,6 @@
+  ingress {
+    from_port   = "{{ aws_terraform_from_port }}"
+    to_port     = "{{ aws_terraform_to_port }}"
+    protocol    = "{{ aws_terraform_tcp_protocol }}"
+    cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
+  }

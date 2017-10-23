@@ -254,3 +254,6 @@ elb_services_prod_ports:
   - 8000
   - 5004
   - 5002
+aws_terraform_mx_nat_cidr: "52.41.210.18/32"
+aws_terraform_iac_nat_cidr_1: "34.211.3.87/32"
+aws_terraform_iac_nat_cidr_2: "34.212.99.58/32"

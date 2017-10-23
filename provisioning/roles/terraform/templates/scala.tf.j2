@@ -5,6 +5,11 @@ resource "aws_security_group" "{{ item }}_sec_group_{{ environment }}" {
   name        = "{{ country_code }}-{{ item }}-{{ environment }}-sg"
   description = "{{ country_code }} {{ item }} restricted security group"
 
+# Allow Approval Service To Be Accessed By IaC and MX Nat Gateway IPs 
+  {% if item == "approval-service" %}
+      {% include "approval-service-sg-rules.j2" %}
+  {% endif %}
+
   ingress {
     from_port   = "{{ aws_terraform_mysql_port }}"
     to_port     = "{{ aws_terraform_mysql_port }}"
@@ -33,12 +38,10 @@ resource "aws_security_group" "{{ item }}_sec_group_{{ environment }}" {
     cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
   }
 
-  ingress {
-    from_port   = "{{ aws_terraform_from_port }}"
-    to_port     = "{{ aws_terraform_to_port }}"
-    protocol    = "{{ aws_terraform_tcp_protocol }}"
-    cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
-  }
+# Allow Public Access To datareceiver loans and payments services
+  {% if item != "approval-service" %}
+      {% include "scala-applications-public-sg-rules.j2" %}
+  {% endif %}
 
   ingress {
     from_port   = "{{ aws_terraform_elb_port }}"
@@ -112,7 +115,7 @@ resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
   instances       = ["${aws_instance.{{ item }}_ec2_{{ environment }}.*.id}"]
   security_groups = ["${aws_security_group.{{ item }}_sec_group_{{ environment }}.id}"]
 
-  {% if item == "datareceiver" or item == "loans-service" or item == "payments-service" %}
+  {% if item == "datareceiver" or item == "loans-service" or item == "payments-service" or item == "approval-service" %}
   internal = "False"
   subnets  = ["subnet-03aa7c68", "subnet-02aa7c69", "subnet-0caa7c67"]
 
