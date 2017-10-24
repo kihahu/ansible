@@ -2,26 +2,12 @@
     from_port   = "{{ aws_terraform_from_port }}"
     to_port     = "{{ aws_terraform_to_port }}"
     protocol    = "{{ aws_terraform_tcp_protocol }}"
-    cidr_blocks = ["{{ aws_terraform_mx_nat_cidr }}"]
+    cidr_blocks = ["{{ aws_terraform_mx_nat_cidr }}","{{ aws_terraform_iac_nat_cidr_1 }}","{{ aws_terraform_iac_nat_cidr_2 }}","{{ aws_terraform_cidr_block_31_all }}","{{ aws_terraform_vpn_cidr }}"]
   }
 
   ingress {
-    from_port   = "{{ aws_terraform_from_port }}"
-    to_port     = "{{ aws_terraform_to_port }}"
+    from_port   = "{{ aws_terraform_elb_ssl_port }}"
+    to_port     = "{{ aws_terraform_elb_ssl_port }}"
     protocol    = "{{ aws_terraform_tcp_protocol }}"
-    cidr_blocks = ["{{ aws_terraform_iac_nat_cidr_1 }}"]
-  }
-
-  ingress {
-    from_port   = "{{ aws_terraform_from_port }}"
-    to_port     = "{{ aws_terraform_to_port }}"
-    protocol    = "{{ aws_terraform_tcp_protocol }}"
-    cidr_blocks = ["{{ aws_terraform_iac_nat_cidr_2 }}"]
-  }
-
-  ingress {
-    from_port   = "{{ aws_terraform_from_port }}"
-    to_port     = "{{ aws_terraform_to_port }}"
-    protocol    = "{{ aws_terraform_tcp_protocol }}"
-    cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
+    cidr_blocks = ["{{ aws_terraform_mx_nat_cidr }}","{{ aws_terraform_iac_nat_cidr_1 }}","{{ aws_terraform_iac_nat_cidr_2 }}","{{ aws_terraform_cidr_block_31_all }}","{{ aws_terraform_vpn_cidr }}"]
   }

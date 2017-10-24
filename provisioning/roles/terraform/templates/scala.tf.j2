@@ -17,12 +17,6 @@ resource "aws_security_group" "{{ item }}_sec_group_{{ environment }}" {
     cidr_blocks = ["{{ aws_terraform_cidr_block_31_all }}"]
   }
 
-  ingress {
-    from_port   = "{{ aws_terraform_elb_ssl_port }}"
-    to_port     = "{{ aws_terraform_elb_ssl_port }}"
-    protocol    = "{{ aws_terraform_tcp_protocol }}"
-    cidr_blocks = ["{{ aws_terraform_default_cidr }}"]
-  }
 
   ingress {
     from_port   = "{{ aws_terraform_ssh_port }}"

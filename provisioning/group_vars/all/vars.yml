@@ -257,3 +257,4 @@ elb_services_prod_ports:
 aws_terraform_mx_nat_cidr: "52.41.210.18/32"
 aws_terraform_iac_nat_cidr_1: "34.211.3.87/32"
 aws_terraform_iac_nat_cidr_2: "34.212.99.58/32"
+aws_terraform_vpn_cidr: "52.36.100.195/32"
