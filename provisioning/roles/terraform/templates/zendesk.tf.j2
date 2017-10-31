@@ -80,7 +80,32 @@ resource "aws_elb" "{{ item }}_elb_{{ environment }}" {
                 }
             {% endfor %}
     {% endif %}
-
+# TELERIVET SERVICES ELB SPECIFIC PORTS
+    {% if  environment == "staging" %}
+            {% for port in elb_services_dev_ports_telerivet %}
+                listener {
+                {% if port == "8443" %}
+                    instance_port = "{{ telerivet_staging_port }}"
+                {% else %}
+                    instance_port = "{{ telerivet_qa_port }}"
+                {% endif %}
+                instance_protocol  = "{{ aws_terraform_elb_protocol }}"
+                lb_port            = "{{ port }}"
+                lb_protocol        = "{{ aws_terraform_elb_ssl_protocol }}"
+                ssl_certificate_id = "{{ aws_terraform_certificate_id }}"
+              }
+            {% endfor %}
+    {% else %}
+            {% for port in elb_services_prod_ports_telerivet %}
+                listener {
+                instance_port = "{{ telerivet_prod_port }}"
+                instance_protocol  = "{{ aws_terraform_elb_protocol }}"
+                lb_port            = "{{ port }}"
+                lb_protocol        = "{{ aws_terraform_elb_ssl_protocol }}"
+                ssl_certificate_id = "{{ aws_terraform_certificate_id }}"
+                }
+            {% endfor %}
+    {% endif %}
   health_check {
     healthy_threshold   = 10
     unhealthy_threshold = 2

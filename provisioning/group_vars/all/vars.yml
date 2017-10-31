@@ -258,3 +258,11 @@ aws_terraform_mx_nat_cidr: "52.41.210.18/32"
 aws_terraform_iac_nat_cidr_1: "34.211.3.87/32"
 aws_terraform_iac_nat_cidr_2: "34.212.99.58/32"
 aws_terraform_vpn_cidr: "52.36.100.195/32"
+elb_services_dev_ports_telerivet:
+  - 8080
+  - 8443
+elb_services_prod_ports_telerivet:
+  - 443
+telerivet_prod_port: 8000
+telerivet_staging_port: 8005
+telerivet_qa_port: 8003
