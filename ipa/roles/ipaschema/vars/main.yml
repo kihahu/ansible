@@ -12,3 +12,6 @@ rds_servers:
   us-west-2-dev-rds1: "internal-testing-db.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
   ap-southeast-1-dev-rds1: "internal-testing-db-aps.cwd2hhzm4zws.ap-southeast-1.rds.amazonaws.com"
   eu-west-1-dev-rds1: "internal-testing-db-eu1.c2ouxvpejoh2.eu-west-1.rds.amazonaws.com"
+  mx-dev-rds1: "dev-mx.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+  mx-prd-rds1: "prod-mx-maindb.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
+  mx-prd-rds2: "prod-mx-datareceiver-maindb.ceiehgxanvdu.us-west-2.rds.amazonaws.com"
