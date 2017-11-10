@@ -11,3 +11,5 @@ Vagrantfile
 *.retry
 .terraform
 .DS_Store
+*.backup
+*.tfstate

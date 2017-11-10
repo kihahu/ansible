@@ -67,7 +67,7 @@ aws_terraform_block_device_size: 100
 aws_terraform_access_key: "{{ vault_aws_terraform_access_key }}"
 aws_terraform_secret_key: "{{ vault_aws_terraform_secret_key }}"
 aws_terraform_volume_type: gp2
-aws_terraform_path: ../terraform
+aws_terraform_path: ../terraform/{{ country_code }}
 aws_terraform_modules_path: "{{ aws_terraform_path }}/modules"
 aws_terraform_rds_is_multi_az: no
 aws_terraform_rds_storage_type: gp2
