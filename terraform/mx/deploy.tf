@@ -44,6 +44,10 @@ module "zendesk" {
   source = "./modules/zendesk"
 }
 
+module "customersupport" {
+  source = "./modules/customersupport"
+}
+
 module "rds" {
   source = "./modules/database"
 }

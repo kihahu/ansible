@@ -1,0 +1,21 @@
+---
+- name: manage_ssh_keys | managing KE, MX and TZ Jenkins ssh keys
+  authorized_key:
+    user: "{{ item.0.remote_user }}"
+    key: "{{ lookup('file', item.1) }}"
+    state: "{{ item.0.state }}"
+  with_subelements:
+    - '{{ manage_ssh_keys }}'
+    - keys
+  when: " 'sharing' in group_names "
+
+
+- name: manage_ssh_keys | managing PH Jenkins ssh keys
+  authorized_key:
+    user: "{{ item.0.remote_user }}"
+    key: "{{ lookup('file', item.1) }}"
+    state: "{{ item.0.state }}"
+  with_subelements:
+    - '{{ ph_ssh_keys }}'
+    - keys
+  when: " 'sharing' not in group_names "

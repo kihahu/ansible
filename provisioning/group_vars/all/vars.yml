@@ -148,6 +148,7 @@ aws_terraform_scala_app_code:
   - datareceiver
   - loans-service
   - payments-service
+  - customersupport
 aws_terraform_module_code:
   - assignment-service
   - approval-service
@@ -157,6 +158,7 @@ aws_terraform_module_code:
   - serverapi
   - payments-service
   - zendesk
+  - customersupport
 aws_terraform_environment:
   - demo
   - dev

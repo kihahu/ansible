@@ -1,0 +1,17 @@
+---
+enable_manage_ssh_keys: true #defines if remote ssh keys should be managed
+manage_ssh_keys:
+  - remote_user: ubuntu  #define username on remote system to add defined keys to
+    state: present  #defines if ssh key should be added or removed (absent|present)
+    keys:  #define key(s) to add to remote username
+      - ssh_pub_keys/ke_jenkins_ubuntu.pub
+      - ssh_pub_keys/ke_jenkins_jenkins.pub
+      - ssh_pub_keys/ke_jenkins.pub
+
+ph_ssh_keys:
+  - remote_user: ubuntu  #define username on remote system to add defined keys to
+    state: present  #defines if ssh key should be added or removed (absent|present)
+    keys:  #define key(s) to add to remote username
+      - ssh_pub_keys/ph_jenkins_ubuntu.pub
+      - ssh_pub_keys/ph_jenkins_jenkins.pub
+
