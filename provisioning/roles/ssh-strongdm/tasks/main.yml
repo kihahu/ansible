@@ -1,0 +1,30 @@
+---
+- name: put devops pubkey to allow Jenkins ssh access
+  lineinfile: path="/home/{{ username }}/.ssh/authorized_keys" line="{{ devops_ssh_pub_key }}"
+  tags:
+    - sdm-ssh-hosts
+
+- name: Create temp folder to store script
+  local_action: file path={{ sdm_folder }} state=directory
+  tags:
+    - sdm-ssh-hosts
+
+- name: Create script from template
+  local_action: template src=add-sdm-ssh-hosts.sh.j2 dest={{ sdm_folder }}/add-sdm-ssh-hosts.sh
+  tags:
+    - sdm-ssh-hosts
+
+- name: Install zip package
+  become: yes
+  package:  name=unzip state=present
+
+- name: Run strongdm script
+  script: "{{ sdm_folder }}/add-sdm-ssh-hosts.sh"
+  tags:
+    - sdm-ssh-hosts
+
+- name: Clean up temp folder
+  local_action: file path={{ sdm_folder }} state=absent
+  tags:
+    - sdm-ssh-hosts
+

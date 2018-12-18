@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: no
+  become_user: root
+  gather_facts: True
+  vars:
+      username: "{{ username }}"
+  roles:
+       - {role: ssh-strongdm }

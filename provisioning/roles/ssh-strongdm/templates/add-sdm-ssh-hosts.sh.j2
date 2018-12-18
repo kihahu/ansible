@@ -1,0 +1,14 @@
+#!/bin/bash
+ sudo rm -vf sdm*
+ export SDM_ADMIN_TOKEN={{ sdm_secret }}
+
+ curl -o sdm.zip -L https://app.strongdm.com/releases/cli/linux
+ unzip sdm.zip
+ ./sdm login
+ ./sdm admin servers add \
+   -p `hostname` \
+   $TARGET_USER@`curl http://169.254.169.254/latest/meta-data/local-ipv4` \
+   | tee -a "/home/$TARGET_USER/.ssh/authorized_keys"
+ ./sdm admin roles grant `hostname`   devops tala-eng
+ rm sdm.zip
+echo "{{ sdm_public_ssh_key }}" >> ~/.ssh/authorized_keys

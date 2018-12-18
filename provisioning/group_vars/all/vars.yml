@@ -268,3 +268,4 @@ elb_services_prod_ports_telerivet:
 telerivet_prod_port: 8000
 telerivet_staging_port: 8005
 telerivet_qa_port: 8003
+sdm_secret: "{{ vault_sdm_secret }}"
